@@ -23,7 +23,7 @@ public class AndroidCommandPlugin implements Plugin<Project> {
                 project.android.libraryVariants
 
         project.android.metaClass.createTasks = { String name, type ->
-            String taskType = type.name.capitalize()
+            String taskType = type.simpleName.capitalize()
 
             variants.all { variant ->
                 String buildType = variant.buildType.name.capitalize()
