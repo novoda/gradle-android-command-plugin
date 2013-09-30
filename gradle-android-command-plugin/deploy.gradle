@@ -1,0 +1,62 @@
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { deployment -> signing.signPom(deployment) }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots") {
+                authentication(userName: novodaUsername, password: novodaPassword)
+            }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2") {
+                authentication(userName: novodaUsername, password: novodaPassword)
+            }
+
+            uniqueVersion = false
+
+            pom.project {
+
+                parent {
+                    groupId 'org.sonatype.oss'
+                    artifactId 'oss-parent'
+                    version '7'
+                }
+
+                name 'Gradle Android Command Plugin'
+                artifactId 'gradle-android-command-plugin'
+                groupId 'com.novoda'
+                version '0.9.0-SNAPSHOT'
+                url 'https://github.com/novoda/gradle-android-command-plugin'
+                description 'Useful tasks for gradle android builds'
+                inceptionYear '2013'
+
+                scm {
+                    url 'https://github.com/novoda/gradle-android-command-plugin'
+                    connection 'scm:https://novoda@github.com/novoda/gradle-android-command-plugin.git'
+                    developerConnection 'scm:git@github.com:novoda/gradle-android-command-plugin.git'
+                }
+
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        distribution 'repo'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'frankiesardo'
+                        name 'Frankie Sardo'
+                    }
+                    developer {
+                        id 'xrigau'
+                        name 'Xavi Rigau'
+                    }
+                }
+            }
+        }
+    }
+}
