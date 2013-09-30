@@ -26,7 +26,8 @@ public class AndroidCommandPlugin implements Plugin<Project> {
             String taskType = type.simpleName.capitalize()
 
             variants.all { variant ->
-                String buildType = variant.buildType.name.capitalize()
+                // Get the build type name (e.g., "Debug", "Release").
+                def buildTypeName = variant.buildType.name.capitalize()
                 def projectFlavorNames = [""]
                 if (hasAppPlugin) {
                     // Flavors are only available for the app plugin (e.g., "Free", "Paid").
@@ -36,9 +37,13 @@ public class AndroidCommandPlugin implements Plugin<Project> {
                         projectFlavorNames = [""]
                     }
                 }
-                def projectFlavors = projectFlavorNames.join()
+                def projectFlavorName = projectFlavorNames.join()
 
-                Apk task = project.tasks.create(name + taskType + buildType + projectFlavors, type)
+                // The combination of flavor and type yield a unique "variation". This value is used for
+                // looking up existing associated tasks as well as naming the task we are about to create.
+                def variationName = "$projectFlavorName$buildTypeName"
+
+                Apk task = project.tasks.create(name + taskType + variationName, type)
                 task.apkPath = variant.packageApplication.outputFile
             }
 
