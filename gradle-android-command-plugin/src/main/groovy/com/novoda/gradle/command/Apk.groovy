@@ -4,7 +4,7 @@ class Apk extends Command {
 
     def apkPath
 
-    def packageName2 = "${-> packageName()}"
+    def packageName = "${-> packageName()}"
     def launchableActivity = "${-> launchableActivity()}"
 
     def packageName() {
