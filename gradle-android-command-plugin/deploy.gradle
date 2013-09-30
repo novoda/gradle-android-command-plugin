@@ -1,17 +1,25 @@
 apply plugin: 'maven'
 apply plugin: 'signing'
 
+def username () {
+    System.getProperty("novodaUsername") ?: novodaUsername
+}
+
+def password () {
+    System.getProperty("novodaPassword") ?: novodaPassword
+}
+
 uploadArchives {
     repositories {
         mavenDeployer {
             beforeDeployment { deployment -> signing.signPom(deployment) }
 
             snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots") {
-                authentication(userName: novodaUsername, password: novodaPassword)
+                authentication(userName: username(), password: password())
             }
 
             repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2") {
-                authentication(userName: novodaUsername, password: novodaPassword)
+                authentication(userName: username(), password: password())
             }
 
             uniqueVersion = false
