@@ -27,7 +27,18 @@ public class AndroidCommandPlugin implements Plugin<Project> {
 
             variants.all { variant ->
                 String buildType = variant.buildType.name.capitalize()
-                Apk task = project.tasks.create(name + taskType + buildType, type)
+                def projectFlavorNames = [""]
+                if (hasAppPlugin) {
+                    // Flavors are only available for the app plugin (e.g., "Free", "Paid").
+                    projectFlavorNames = variant.productFlavors.collect { it.name.capitalize() }
+                    // TODO support flavor groups... ugh
+                    if (projectFlavorNames.isEmpty()) {
+                        projectFlavorNames = [""]
+                    }
+                }
+                def projectFlavors = projectFlavorNames.join()
+
+                Apk task = project.tasks.create(name + taskType + buildType + projectFlavors, type)
                 task.apkPath = variant.packageApplication.outputFile
             }
 

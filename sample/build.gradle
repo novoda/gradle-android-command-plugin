@@ -27,10 +27,31 @@ android {
         minSdkVersion 7
         targetSdkVersion 16
     }
+
+    buildTypes {
+        debug {}
+        release {}
+        QA {}
+    }
+
+    productFlavors {
+
+        beta {
+        }
+
+        normal {
+        }
+
+        free {
+        }
+
+        paid {
+        }
+    }
 }
 
 dependencies {
-	compile 'com.android.support:appcompat-v7:18.0.0'
+    compile 'com.android.support:appcompat-v7:18.0.0'
 }
 
 project.android.createTasks("install", Apk).all {
