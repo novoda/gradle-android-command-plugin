@@ -1,24 +1,11 @@
 package com.novoda.gradle.command
+import org.gradle.api.tasks.Exec
 
-import org.gradle.api.DefaultTask
-import org.gradle.api.tasks.TaskAction
-
-class Command extends DefaultTask {
-
-    def command
+class Command extends Exec {
 
     def adb = "$System.env.ANDROID_HOME/platform-tools/adb"
     def aapt = "$System.env.ANDROID_HOME/build-tools/$project.android.buildToolsRevision/aapt"
     def deviceId = "${deviceIdProperty() ?: defaultDeviceId()}"
-
-    @TaskAction
-    def run() {
-        if (command == null) {
-            throw new IllegalStateException("No command set for the task $name")
-        }
-
-        println command.execute().text
-    }
 
     def deviceIdProperty() {
         System.properties['deviceId']
