@@ -21,7 +21,11 @@ class Command extends DefaultTask {
     }
 
     def defaultDeviceId() {
-        attachedDevices()[0]
+        def devices = attachedDevices()
+        if (devices.isEmpty()) {
+            throw new IllegalStateException("No attached devices found")
+        }
+        devices[0]
     }
 
     def attachedDevices() {
