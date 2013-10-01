@@ -5,7 +5,7 @@ class Command extends Exec {
 
     def adb = "$System.env.ANDROID_HOME/platform-tools/adb"
     def aapt = "$System.env.ANDROID_HOME/build-tools/$project.android.buildToolsRevision/aapt"
-    def deviceId = "${deviceIdProperty() ?: defaultDeviceId()}"
+    def deviceId = "${ -> deviceIdProperty() ?: defaultDeviceId()}"
 
     def deviceIdProperty() {
         System.properties['deviceId']
