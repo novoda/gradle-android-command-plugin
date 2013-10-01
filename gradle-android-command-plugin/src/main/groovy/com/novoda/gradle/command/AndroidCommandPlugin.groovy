@@ -13,7 +13,7 @@ public class AndroidCommandPlugin implements Plugin<Project> {
             throw new IllegalStateException("The 'android' plugin is required.")
         }
 
-        project.android.metaClass.createTasks = { String name, Apk type ->
+        project.android.metaClass.createTasks = { String name, Class<? extends Apk> type ->
             String taskType = type.simpleName.capitalize()
             String taskNamePrefix = name + taskType
 
