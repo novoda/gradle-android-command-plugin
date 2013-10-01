@@ -13,6 +13,10 @@ class Command extends DefaultTask {
 
     @TaskAction
     def run() {
+        if (command == null) {
+            throw new IllegalStateException("No command set for the task $name")
+        }
+
         println command.execute().text
     }
 

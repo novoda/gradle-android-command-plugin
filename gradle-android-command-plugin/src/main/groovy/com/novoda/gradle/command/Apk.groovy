@@ -8,6 +8,10 @@ class Apk extends Command {
     def launchableActivity = "${-> launchableActivity()}"
 
     def packageName() {
+        if (apkPath == null) {
+            throw new IllegalStateException("No apk found for the task $name")
+        }
+
         String output = "$aapt dump badging $apkPath".execute().text.readLines().find {
             it.startsWith("package:")
         }
@@ -18,6 +22,10 @@ class Apk extends Command {
     }
 
     def launchableActivity() {
+        if (apkPath == null) {
+            throw new IllegalStateException("No apk found for the task $name")
+        }
+
         String output = "$aapt dump badging $apkPath".execute().text.readLines().find {
             it.startsWith("launchable-activity:")
         }
