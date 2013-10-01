@@ -78,17 +78,17 @@ class Hudl extends Apk {
 }
 
 project.android.createTasks("install", Hudl).all {
-    doFirst { command = "$adb -s $deviceId install -r $apkPath" }
+    doFirst { commandLine "$adb -s $deviceId install -r $apkPath".split(" ") }
 }
 
 project.android.createTasks("clearPreferences", Hudl).all {
-    doFirst { command = "$adb -s $deviceId shell pm clear $packageName" }
+    doFirst { commandLine "$adb -s $deviceId shell pm clear $packageName".split(" ") }
 }
 
 project.android.createTasks("run", Hudl).all {
-    doFirst { command = "$adb -s $deviceId shell am start -a android.intent.action.MAIN -c android.intent.category.LAUNCHER $packageName/$launchableActivity" }
+    doFirst { commandLine "$adb -s $deviceId shell am start -a android.intent.action.MAIN -c android.intent.category.LAUNCHER $packageName/$launchableActivity".split(" ") }
 }
 
 project.android.createTasks("monkey", Hudl).all {
-    doFirst { command = "$adb -s $deviceId shell monkey -p $packageName -v 50" }
+    doFirst { commandLine "$adb -s $deviceId shell monkey -p $packageName -v 50".split(" ") }
 }
