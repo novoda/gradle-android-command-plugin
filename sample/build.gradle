@@ -60,18 +60,35 @@ dependencies {
     compile 'com.android.support:appcompat-v7:18.0.0'
 }
 
-project.android.createTasks("install", Apk).all {
+class Hudl extends Apk {
+
+    def defaultDeviceId() {
+        def hudlDevices = attachedDevices().findResults { deviceId ->
+            def brand = "$adb -s $deviceId shell getprop ro.product.brand".execute()
+            String brandName = brand.text.trim()
+            brandName == "hudl" ? deviceId : null
+        }
+
+        if (hudlDevices.isEmpty()) {
+            throw new IllegalStateException("No hudl devices found")
+        }
+
+        hudlDevices[0]
+    }
+}
+
+project.android.createTasks("install", Hudl).all {
     doFirst { command = "$adb -s $deviceId install -r $apkPath" }
 }
 
-project.android.createTasks("clearPreferences", Apk).all {
+project.android.createTasks("clearPreferences", Hudl).all {
     doFirst { command = "$adb -s $deviceId shell pm clear $packageName" }
 }
 
-project.android.createTasks("monkey", Apk).all {
-    doFirst { command = "$adb -s $deviceId shell monkey -p $packageName -v 50" }
+project.android.createTasks("run", Hudl).all {
+    doFirst { command = "$adb -s $deviceId shell am start -a android.intent.action.MAIN -c android.intent.category.LAUNCHER $packageName/$launchableActivity" }
 }
 
-project.android.createTasks("run", Apk).all {
-    doFirst { command = "$adb -s $deviceId shell am start -a android.intent.action.MAIN -c android.intent.category.LAUNCHER $packageName/$launchableActivity" }
+project.android.createTasks("monkey", Hudl).all {
+    doFirst { command = "$adb -s $deviceId shell monkey -p $packageName -v 50" }
 }
