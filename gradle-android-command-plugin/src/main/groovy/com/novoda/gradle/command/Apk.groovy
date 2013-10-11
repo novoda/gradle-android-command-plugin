@@ -3,6 +3,7 @@ package com.novoda.gradle.command
 class Apk extends Command {
 
     def apkPath
+    def variationName
 
     def packageName = "${-> packageName()}"
     def launchableActivity = "${-> launchableActivity()}"

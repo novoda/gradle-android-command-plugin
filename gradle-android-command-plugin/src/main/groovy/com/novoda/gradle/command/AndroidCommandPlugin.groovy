@@ -25,6 +25,7 @@ public class AndroidCommandPlugin implements Plugin<Project> {
 
                 Apk task = project.tasks.create(taskNamePrefix + variationName, type)
                 task.apkPath = variant.packageApplication.outputFile
+                task.variationName = variationName
             }
 
             project.tasks.matching {

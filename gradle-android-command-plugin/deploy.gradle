@@ -2,11 +2,11 @@ apply plugin: 'maven'
 apply plugin: 'signing'
 
 def username () {
-    System.getProperty("novodaUsername") ?: novodaUsername
+    System.getProperty("novodaUsername")
 }
 
 def password () {
-    System.getProperty("novodaPassword") ?: novodaPassword
+    System.getProperty("novodaPassword")
 }
 
 uploadArchives {
@@ -35,7 +35,7 @@ uploadArchives {
                 name 'Gradle Android Command Plugin'
                 artifactId 'gradle-android-command-plugin'
                 groupId 'com.novoda'
-                version '0.9.0-SNAPSHOT'
+                version '0.9.1-SNAPSHOT'
                 url 'https://github.com/novoda/gradle-android-command-plugin'
                 description 'Useful tasks for gradle android builds'
                 inceptionYear '2013'
