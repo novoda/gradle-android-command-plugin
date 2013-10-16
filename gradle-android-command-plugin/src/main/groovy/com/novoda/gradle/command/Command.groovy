@@ -1,7 +1,7 @@
 package com.novoda.gradle.command
 import org.gradle.api.tasks.Exec
 
-class Command extends Exec {
+public class Command extends Exec {
 
     def adb = "$System.env.ANDROID_HOME/platform-tools/adb"
     def aapt = "$System.env.ANDROID_HOME/build-tools/$project.android.buildToolsRevision/aapt"

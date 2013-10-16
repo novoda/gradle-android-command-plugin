@@ -1,6 +1,6 @@
 package com.novoda.gradle.command
 
-class Apk extends Command {
+public class Apk extends Command {
 
     def apkPath
     def variationName
