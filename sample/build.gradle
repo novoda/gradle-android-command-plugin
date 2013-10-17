@@ -76,23 +76,18 @@ class Hudl extends com.novoda.gradle.command.Apk {
 }
 
 variant.tasks "install", Hudl, {
+    dependsOn "${-> 'assemble' + variationName}"
     doFirst { commandLine "$adb -s $deviceId install -r $apkPath".split(" ") }
 }
 
+variant.tasks "clearPreferences", Hudl, {
+    doFirst { commandLine "$adb -s $deviceId install -r $apkPath".split(" ") }
+}
 
+variant.tasks "run", Hudl, {
+    doFirst { commandLine "$adb -s $deviceId shell am start -a android.intent.action.MAIN -c android.intent.category.LAUNCHER $packageName/$launchableActivity".split(" ") }
+}
 
-//project.android.createTasks("install", Hudl).all {
-//    doFirst { commandLine "$adb -s $deviceId install -r $apkPath".split(" ") }
-//}
-//
-//project.android.createTasks("clearPreferences", Hudl).all {
-//    doFirst { commandLine "$adb -s $deviceId shell pm clear $packageName".split(" ") }
-//}
-//
-//project.android.createTasks("run", Hudl).all {
-//    doFirst { commandLine "$adb -s $deviceId shell am start -a android.intent.action.MAIN -c android.intent.category.LAUNCHER $packageName/$launchableActivity".split(" ") }
-//}
-//
-//project.android.createTasks("monkey", Hudl).all {
-//    doFirst { commandLine "$adb -s $deviceId shell monkey -p $packageName -v 50".split(" ") }
-//}
+variant.tasks "monkey", Hudl, {
+    doFirst { commandLine "$adb -s $deviceId shell monkey -p $packageName -v 50".split(" ") }
+}

@@ -24,22 +24,14 @@ public class AndroidCommandPluginExtension {
     }
 
     def tasks(String name, Class<? extends Apk> type) {
-        String taskType = type.simpleName.capitalize()
-        String taskNamePrefix = name + taskType
+        VariantConfigurator variantConfigurator = new VariantConfigurator(project, name, type);
 
-        project.android.applicationVariants.all { variant ->
-            def buildTypeName = variant.buildType.name.capitalize()
-            def projectFlavorNames = variant.productFlavors.collect { it.name.capitalize() }
-            def projectFlavorName = projectFlavorNames.join()
-            def variationName = projectFlavorName + buildTypeName
-
-            Apk task = project.tasks.create(taskNamePrefix + variationName, type)
-            task.apkPath = variant.packageApplication.outputFile
-            task.variationName = variationName
+        project.android.applicationVariants.all {
+            variantConfigurator.configure(it)
         }
 
         project.tasks.matching {
-            it.name.startsWith taskNamePrefix
+            it.name.startsWith variantConfigurator.taskPrefix()
         }
     }
 }
