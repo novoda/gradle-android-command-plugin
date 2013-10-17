@@ -12,6 +12,23 @@ Use gradle tasks to run specific command, such as:
 
 This is particularly useful for CI servers but could be used to speed up IDE development as well
 
+Install
+=============================
+
+```
+buildscript {
+    repositories {
+        maven {
+            url "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+    }
+    dependencies {
+        classpath 'com.novoda:gradle-android-command-plugin:0.9.2-SNAPSHOT'
+    }
+}
+apply plugin: 'android-command'
+```
+
 Example
 =============================
 
