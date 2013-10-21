@@ -18,9 +18,7 @@ Install
 ```
 buildscript {
     repositories {
-        maven {
-            url "https://oss.sonatype.org/content/repositories/snapshots/"
-        }
+        mavenCentral()
     }
     dependencies {
         classpath 'com.novoda:gradle-android-command-plugin:1.0'

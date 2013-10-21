@@ -10,14 +10,12 @@ buildscript {
 apply plugin: 'groovy'
 apply from: file("deploy.gradle")
 
+repositories {
+    mavenCentral()
+}
+
 dependencies {
-    repositories {
-        mavenCentral()
-    }
-
     compile gradleApi()
-    compile 'com.android.tools.build:gradle:0.5.+'
-
     groovy "org.codehaus.groovy:groovy-all:1.8.6"
     testCompile "org.spockframework:spock-core:0.7-groovy-1.8"
 }
