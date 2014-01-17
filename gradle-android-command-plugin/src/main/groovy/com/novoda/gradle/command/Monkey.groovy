@@ -6,6 +6,6 @@ class Monkey extends Adb {
 
     @TaskAction
     void exec() {
-        runCommand(['shell', 'monkey', '-p', "$packageName", '-v', '50'])
+        runCommand(['shell', 'monkey', '-p', packageName, '-v', '50'])
     }
 }

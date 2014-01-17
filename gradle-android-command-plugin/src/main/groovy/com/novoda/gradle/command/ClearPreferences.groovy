@@ -2,10 +2,10 @@ package com.novoda.gradle.command
 
 import org.gradle.api.tasks.TaskAction
 
-class Install extends Adb {
+class ClearPreferences extends Adb {
 
     @TaskAction
     void exec() {
-        runCommand(['install', '-r', apkPath])
+        runCommand(['shell', 'pm', 'clear', packageName])
     }
 }
