@@ -1,4 +1,5 @@
 package com.novoda.gradle.command
+
 import org.gradle.api.Project
 
 public class AndroidCommandPluginExtension {
@@ -62,6 +63,14 @@ public class AndroidCommandPluginExtension {
             }
         }
         devices
+    }
+
+    def attachedDevicesWithBrand(String brand) {
+        attachedDevices().findResults { deviceId ->
+            def product = "$adb -s $deviceId shell getprop ro.product.brand".execute()
+            String brandName = product.text.trim()
+            brandName == brand ? deviceId : null
+        }
     }
 
     private def deviceIdProperty() {
