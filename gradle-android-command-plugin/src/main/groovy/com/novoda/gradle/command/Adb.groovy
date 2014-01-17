@@ -7,6 +7,7 @@ public class Adb extends org.gradle.api.DefaultTask {
 
     // set automatically by VariantConfigurator
     def apkPath
+
     // set automatically by VariantConfigurator
     def variationName
 
@@ -29,7 +30,7 @@ public class Adb extends org.gradle.api.DefaultTask {
 
     void assertDeviceConnected(def deviceId) {
         if (!pluginEx.attachedDevices().contains(deviceId))
-            throw new IllegalStateException("Device "+deviceId+" is not found!")
+            throw new IllegalStateException("Device $deviceId is not found!")
     }
 
     protected def packageName() {
