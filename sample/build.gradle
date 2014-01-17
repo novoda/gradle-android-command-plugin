@@ -6,8 +6,8 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.5.+'
-        classpath 'com.novoda:gradle-android-command-plugin:1.0'
+        classpath 'com.android.tools.build:gradle:0.7.+'
+//        classpath 'com.novoda:gradle-android-command-plugin:1.0'
     }
 }
 apply plugin: 'android'
@@ -58,14 +58,12 @@ dependencies {
     compile 'com.android.support:appcompat-v7:18.0.0'
 }
 
-
 def hudlDeviceId() {
     def hudlDevices = variant.attachedDevices().findResults { deviceId ->
         def brand = "$variant.adb -s $deviceId shell getprop ro.product.brand".execute()
         String brandName = brand.text.trim()
         brandName == "hudl" ? deviceId : null
     }
-
     if (hudlDevices.isEmpty()) {
         throw new IllegalStateException("No hudl devices found")
     }
@@ -82,10 +80,10 @@ variant {
     androidHome readLocalProperties()
 }
 
-variant.tasks "instHudl", com.novoda.gradle.command.InstallApk, {
+variant.tasks "instHudl", com.novoda.gradle.command.Install, {
     deviceId "${-> hudlDeviceId()}"
 }
 
-variant.tasks "run", com.novoda.gradle.command.RunApk
+variant.tasks "run", com.novoda.gradle.command.Run
 
-variant.tasks "monkey", com.novoda.gradle.command.MonkeyApk
+variant.tasks "monkey", com.novoda.gradle.command.Monkey

@@ -20,15 +20,15 @@ public class AndroidCommandPluginExtension {
     }
 
     def tasks(String name) {
-        tasks(name, Apk)
+        tasks(name, Adb)
     }
 
     @SuppressWarnings("GroovyUnusedDeclaration")
-    def tasks(String name, Class<? extends Apk> type, Closure configuration) {
+    def tasks(String name, Class<? extends Adb> type, Closure configuration) {
         tasks(name, type).all(configuration)
     }
 
-    def tasks(String name, Class<? extends Apk> type) {
+    def tasks(String name, Class<? extends Adb> type) {
         VariantConfigurator variantConfigurator = new VariantConfigurator(project, name, type);
 
         project.android.applicationVariants.all {
@@ -36,7 +36,7 @@ public class AndroidCommandPluginExtension {
         }
 
         project.tasks.matching {
-            it.name.startsWith variantConfigurator.taskPrefix()
+            it.name.startsWith name
         }
     }
 
