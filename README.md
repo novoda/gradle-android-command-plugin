@@ -34,12 +34,8 @@ Example
 apply plugin: 'android-command'
 
 def hudlDeviceId() {
-    def hudlDevices = variant.attachedDevices().findResults { deviceId ->
-        def brand = "$variant.adb -s $deviceId shell getprop ro.product.brand".execute()
-        String brandName = brand.text.trim()
-        brandName == "hudl" ? deviceId : null
-    }
-    if (hudlDevices.isEmpty()) {
+    def hudlDevices = variant.attachedDevicesWithBrand('hudl')
+    if (!hudlDevices) {
         throw new IllegalStateException("No hudl devices found")
     }
     hudlDevices[0]
@@ -48,7 +44,7 @@ def hudlDeviceId() {
 def readLocalProperties() {
     def properties = new Properties()
     properties.load(project.rootProject.file("local.properties").newDataInputStream())
-    properties.getProperty('sdk.dir')
+    properties.getProperty('sdk.dir') ?: variant.androidHome
 }
 
 variant {
@@ -61,5 +57,9 @@ variant.tasks "instHudl", com.novoda.gradle.command.Install, {
 
 variant.tasks "run", com.novoda.gradle.command.Run
 
-variant.tasks "monkey", com.novoda.gradle.command.Monkey
+variant.tasks "monkey", com.novoda.gradle.command.Monkey, {
+    events 200
+}
+
+variant.tasks "clearPrefs", com.novoda.gradle.command.ClearPreferences
 ```
