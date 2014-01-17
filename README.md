@@ -33,37 +33,33 @@ Example
 ```
 apply plugin: 'android-command'
 
-class Hudl extends com.novoda.gradle.command.Apk {
-
-    def defaultDeviceId() {
-        def hudlDevices = attachedDevices().findResults { deviceId ->
-            def brand = "$adb -s $deviceId shell getprop ro.product.brand".execute()
-            String brandName = brand.text.trim()
-            brandName == "hudl" ? deviceId : null
-        }
-
-        if (hudlDevices.isEmpty()) {
-            throw new IllegalStateException("No hudl devices found")
-        }
-
-        hudlDevices[0]
+def hudlDeviceId() {
+    def hudlDevices = variant.attachedDevices().findResults { deviceId ->
+        def brand = "$variant.adb -s $deviceId shell getprop ro.product.brand".execute()
+        String brandName = brand.text.trim()
+        brandName == "hudl" ? deviceId : null
     }
+    if (hudlDevices.isEmpty()) {
+        throw new IllegalStateException("No hudl devices found")
+    }
+    hudlDevices[0]
 }
 
-variant.tasks "install", Hudl, {
-    dependsOn "${-> 'assemble' + variationName}"
-    doFirst { commandLine "$adb -s $deviceId install -r $apkPath".split(" ") }
+def readLocalProperties() {
+    def properties = new Properties()
+    properties.load(project.rootProject.file("local.properties").newDataInputStream())
+    properties.getProperty('sdk.dir')
 }
 
-variant.tasks "clearPreferences", Hudl, {
-    doFirst { commandLine "$adb -s $deviceId install -r $apkPath".split(" ") }
+variant {
+    androidHome readLocalProperties()
 }
 
-variant.tasks "run", Hudl, {
-    doFirst { commandLine "$adb -s $deviceId shell am start -a android.intent.action.MAIN -c android.intent.category.LAUNCHER $packageName/$launchableActivity".split(" ") }
+variant.tasks "instHudl", com.novoda.gradle.command.Install, {
+    deviceId "${-> hudlDeviceId()}"
 }
 
-variant.tasks "monkey", Hudl, {
-    doFirst { commandLine "$adb -s $deviceId shell monkey -p $packageName -v 50".split(" ") }
-}
+variant.tasks "run", com.novoda.gradle.command.Run
+
+variant.tasks "monkey", com.novoda.gradle.command.Monkey
 ```

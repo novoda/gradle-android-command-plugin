@@ -87,3 +87,5 @@ variant.tasks "instHudl", com.novoda.gradle.command.Install, {
 variant.tasks "run", com.novoda.gradle.command.Run
 
 variant.tasks "monkey", com.novoda.gradle.command.Monkey
+
+variant.tasks "clearPrefs", com.novoda.gradle.command.ClearPreferences
