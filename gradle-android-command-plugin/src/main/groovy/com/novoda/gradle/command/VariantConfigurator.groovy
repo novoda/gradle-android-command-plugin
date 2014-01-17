@@ -14,7 +14,7 @@ class VariantConfigurator {
 
     def taskPrefix() {
         String taskType = taskType.simpleName.capitalize()
-        taskName + taskType
+        taskName //+ taskType
     }
 
     def configure(def variant) {

@@ -1,6 +1,9 @@
 package com.novoda.gradle.command
 
-public class Apk extends Command {
+
+public class Apk extends org.gradle.api.DefaultTask {
+
+    private def pluginEx = project.extensions.findByType(AndroidCommandPluginExtension)
 
     def apkPath
     def variationName
@@ -13,7 +16,7 @@ public class Apk extends Command {
             throw new IllegalStateException("No apk found for the task $name")
         }
 
-        String output = "$aapt dump badging $apkPath".execute().text.readLines().find {
+        String output = ["$pluginEx.aapt", "dump", "badging", "$apkPath"].execute().text.readLines().find {
             it.startsWith("package:")
         }
 
@@ -32,7 +35,7 @@ public class Apk extends Command {
             throw new IllegalStateException("No apk found for the task $name")
         }
 
-        String output = "$aapt dump badging $apkPath".execute().text.readLines().find {
+        String output = ["$pluginEx.aapt", "dump", "badging", "$apkPath"].execute().text.readLines().find {
             it.startsWith("launchable-activity:")
         }
 
