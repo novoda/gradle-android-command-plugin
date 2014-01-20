@@ -50,12 +50,12 @@ public class AndroidCommandPluginExtension {
 
     // prefer system property over direct setting to enable commandline arguments
     def getDeviceId() {
-        deviceIdProperty() ?: deviceId ?: defaultDeviceId()
+        System.properties['deviceId'] ?: deviceId ?: defaultDeviceId()
     }
 
     def attachedDevices() {
         def devices = []
-        [getAdb(), "devices"].execute().text.eachLine { line ->
+        [getAdb(), 'devices'].execute().text.eachLine { line ->
             def matcher = line =~ /^(.*)\tdevice/
             if (matcher) {
                 devices << matcher[0][1]
@@ -72,22 +72,18 @@ public class AndroidCommandPluginExtension {
         }
     }
 
-    private def deviceIdProperty() {
-        System.properties['deviceId']
-    }
-
     private def defaultDeviceId() {
         def devices = attachedDevices()
         if (devices.isEmpty()) {
-            throw new IllegalStateException("No attached devices found")
+            throw new IllegalStateException('No attached devices found')
         }
         devices[0]
     }
 
     private def readSdkDirFromLocalProperties() {
         try {
-            def properties = new Properties()
-            properties.load(project.rootProject.file("local.properties").newDataInputStream())
+            Properties properties = new Properties()
+            properties.load(project.rootProject.file('local.properties').newDataInputStream())
             properties.getProperty('sdk.dir')
         }
         catch (Exception e) {
