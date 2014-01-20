@@ -30,9 +30,17 @@ apply plugin: 'android-command'
 Example
 =============================
 
+The plugin makes available new tasks run<Variant>, monkey<Variant>, clearPreferences<Variant>.
+Just apply the plugin via
+
 ```
 apply plugin: 'android-command'
+```
 
+If you have special needs for your tasks you can define your own tasks or overrride
+default values as shown below.
+
+```
 def hudlDeviceId() {
     def hudlDevices = variant.attachedDevicesWithBrand('hudl')
     if (!hudlDevices) {
@@ -55,11 +63,7 @@ variant.tasks "instHudl", com.novoda.gradle.command.Install, {
     deviceId "${-> hudlDeviceId()}"
 }
 
-variant.tasks "run", com.novoda.gradle.command.Run
-
 variant.tasks "monkey", com.novoda.gradle.command.Monkey, {
     events 200
 }
-
-variant.tasks "clearPrefs", com.novoda.gradle.command.ClearPreferences
 ```

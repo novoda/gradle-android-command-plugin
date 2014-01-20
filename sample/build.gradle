@@ -57,33 +57,3 @@ android {
 dependencies {
     compile 'com.android.support:appcompat-v7:18.0.0'
 }
-
-def hudlDeviceId() {
-    def hudlDevices = variant.attachedDevicesWithBrand('hudl')
-    if (!hudlDevices) {
-        throw new IllegalStateException("No hudl devices found")
-    }
-    hudlDevices[0]
-}
-
-def readLocalProperties() {
-    def properties = new Properties()
-    properties.load(project.rootProject.file("local.properties").newDataInputStream())
-    properties.getProperty('sdk.dir') ?: variant.androidHome
-}
-
-variant {
-    androidHome readLocalProperties()
-}
-
-variant.tasks "instHudl", com.novoda.gradle.command.Install, {
-    deviceId "${-> hudlDeviceId()}"
-}
-
-variant.tasks "run", com.novoda.gradle.command.Run
-
-variant.tasks "monkey", com.novoda.gradle.command.Monkey, {
-    events 200
-}
-
-variant.tasks "clearPrefs", com.novoda.gradle.command.ClearPreferences
