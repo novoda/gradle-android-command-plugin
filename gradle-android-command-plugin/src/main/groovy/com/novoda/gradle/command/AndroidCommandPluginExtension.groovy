@@ -4,7 +4,7 @@ import org.gradle.api.Project
 
 public class AndroidCommandPluginExtension {
 
-    def androidHome = System.env.ANDROID_HOME
+    def androidHome
     def adb
     def aapt
     def deviceId
@@ -13,6 +13,7 @@ public class AndroidCommandPluginExtension {
 
     AndroidCommandPluginExtension(Project project) {
         this.project = project
+        androidHome = readSdkDirFromLocalProperties() ?: System.env.ANDROID_HOME
     }
 
     @SuppressWarnings("GroovyUnusedDeclaration")
@@ -30,12 +31,10 @@ public class AndroidCommandPluginExtension {
     }
 
     def tasks(String name, Class<? extends Adb> type) {
-        VariantConfigurator variantConfigurator = new VariantConfigurator(project, name, type);
-
+        VariantConfigurator variantConfigurator = new VariantConfigurator(project, name, type)
         project.android.applicationVariants.all {
             variantConfigurator.configure(it)
         }
-
         project.tasks.matching {
             it.name.startsWith name
         }
@@ -83,6 +82,17 @@ public class AndroidCommandPluginExtension {
             throw new IllegalStateException("No attached devices found")
         }
         devices[0]
+    }
+
+    private def readSdkDirFromLocalProperties() {
+        try {
+            def properties = new Properties()
+            properties.load(project.rootProject.file("local.properties").newDataInputStream())
+            properties.getProperty('sdk.dir')
+        }
+        catch (Exception e) {
+            null
+        }
     }
 
 }
