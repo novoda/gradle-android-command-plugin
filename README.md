@@ -15,7 +15,7 @@ This is particularly useful for CI servers but could be used to speed up IDE dev
 Install
 =============================
 
-```
+```groovy
 buildscript {
     repositories {
         mavenCentral()
@@ -33,14 +33,14 @@ Example
 The plugin makes available new tasks `run<Variant>`, `monkey<Variant>`, `clearPreferences<Variant>`.
 Just apply the plugin via
 
-```
+```groovy
 apply plugin: 'android-command'
 ```
 
-If you have special needs for your tasks you can define your own tasks or overrride
+If you have a special case for your tasks you can define your own tasks or override
 default values as shown below.
 
-```
+```groovy
 def hudlDeviceId() {
     def hudlDevices = variant.attachedDevicesWithBrand('hudl')
     if (!hudlDevices) {
