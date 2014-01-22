@@ -7,7 +7,7 @@ class Monkey extends Adb {
     def events
 
     def getEvents() {
-        System.properties['events'] ?: events ?:  50
+        System.properties['events'] ?: events ?:  10000
     }
 
     @TaskAction
