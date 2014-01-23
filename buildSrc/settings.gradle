@@ -1,3 +1,2 @@
-// create a link to the plugin source via ln -s ../gradle-android-command-plugin command
 include ':command'
 project(':command').projectDir = new File('../gradle-android-command-plugin')

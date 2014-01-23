@@ -7,6 +7,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:0.7.+'
+// To depend on the deployed version of the plugin add the following line here:
 //        classpath 'com.novoda:gradle-android-command-plugin:1.0'
     }
 }

@@ -2,15 +2,13 @@ package com.novoda.gradle.command
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.ProjectConfigurationException
 
 public class AndroidCommandPlugin implements Plugin<Project> {
 
-    @Override
     void apply(Project project) {
-        def hasAppPlugin = project.plugins.hasPlugin 'android'
-
-        if (!hasAppPlugin) {
-            throw new IllegalStateException("The 'android' plugin is required.")
+        if (!project.plugins.hasPlugin('android')) {
+            throw new ProjectConfigurationException("The 'android' plugin is required.")
         }
         def extension = project.extensions.create("variant", AndroidCommandPluginExtension, project)
         extension.tasks "run", com.novoda.gradle.command.Run

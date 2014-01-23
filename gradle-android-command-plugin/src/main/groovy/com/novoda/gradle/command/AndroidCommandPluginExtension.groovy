@@ -8,6 +8,7 @@ public class AndroidCommandPluginExtension {
     def adb
     def aapt
     def deviceId
+    def events
 
     private final Project project
 
@@ -51,6 +52,11 @@ public class AndroidCommandPluginExtension {
     // prefer system property over direct setting to enable commandline arguments
     def getDeviceId() {
         System.properties['deviceId'] ?: deviceId ?: defaultDeviceId()
+    }
+
+    // prefer system property over direct setting to enable commandline arguments
+    def getEvents() {
+        System.properties['events'] ?: events ?: 10000
     }
 
     def attachedDevices() {
