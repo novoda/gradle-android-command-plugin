@@ -41,6 +41,10 @@ If you have a special case for your tasks you can define your own tasks or overr
 default values as shown below.
 
 ```groovy
+variant {
+    events 1000
+}
+
 def hudlDeviceId() {
     def hudlDevices = variant.attachedDevicesWithBrand('hudl')
     if (!hudlDevices) {
@@ -49,21 +53,7 @@ def hudlDeviceId() {
     hudlDevices[0]
 }
 
-def readLocalProperties() {
-    def properties = new Properties()
-    properties.load(project.rootProject.file("local.properties").newDataInputStream())
-    properties.getProperty('sdk.dir') ?: variant.androidHome
-}
-
-variant {
-    androidHome readLocalProperties()
-}
-
-variant.tasks "instHudl", com.novoda.gradle.command.Install, {
-    deviceId "${-> hudlDeviceId()}"
-}
-
-variant.tasks "monkey", com.novoda.gradle.command.Monkey, {
-    events 200
+variant.tasks("instHudl", com.novoda.gradle.command.Install) {
+    deviceId {hudlDeviceId()}
 }
 ```
