@@ -6,8 +6,9 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.5.+'
-        classpath 'com.novoda:gradle-android-command-plugin:1.0'
+        classpath 'com.android.tools.build:gradle:0.7.+'
+// To depend on the deployed version of the plugin add the following line here:
+//        classpath 'com.novoda:gradle-android-command-plugin:1.0'
     }
 }
 apply plugin: 'android'
@@ -56,38 +57,4 @@ android {
 
 dependencies {
     compile 'com.android.support:appcompat-v7:18.0.0'
-}
-
-class Hudl extends com.novoda.gradle.command.Apk {
-
-    def defaultDeviceId() {
-        def hudlDevices = attachedDevices().findResults { deviceId ->
-            def brand = "$adb -s $deviceId shell getprop ro.product.brand".execute()
-            String brandName = brand.text.trim()
-            brandName == "hudl" ? deviceId : null
-        }
-
-        if (hudlDevices.isEmpty()) {
-            throw new IllegalStateException("No hudl devices found")
-        }
-
-        hudlDevices[0]
-    }
-}
-
-variant.tasks "install", Hudl, {
-    dependsOn "${-> 'assemble' + variationName}"
-    doFirst { commandLine "$adb -s $deviceId install -r $apkPath".split(" ") }
-}
-
-variant.tasks "clearPreferences", Hudl, {
-    doFirst { commandLine "$adb -s $deviceId install -r $apkPath".split(" ") }
-}
-
-variant.tasks "run", Hudl, {
-    doFirst { commandLine "$adb -s $deviceId shell am start -a android.intent.action.MAIN -c android.intent.category.LAUNCHER $packageName/$launchableActivity".split(" ") }
-}
-
-variant.tasks "monkey", Hudl, {
-    doFirst { commandLine "$adb -s $deviceId shell monkey -p $packageName -v 50".split(" ") }
 }

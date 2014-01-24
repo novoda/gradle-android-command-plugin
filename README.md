@@ -15,7 +15,7 @@ This is particularly useful for CI servers but could be used to speed up IDE dev
 Install
 =============================
 
-```
+```groovy
 buildscript {
     repositories {
         mavenCentral()
@@ -30,40 +30,30 @@ apply plugin: 'android-command'
 Example
 =============================
 
-```
+The plugin makes available new tasks `run<Variant>`, `monkey<Variant>`, `clearPreferences<Variant>`.
+Just apply the plugin via
+
+```groovy
 apply plugin: 'android-command'
+```
 
-class Hudl extends com.novoda.gradle.command.Apk {
+If you have a special case for your tasks you can define your own tasks or override
+default values as shown below.
 
-    def defaultDeviceId() {
-        def hudlDevices = attachedDevices().findResults { deviceId ->
-            def brand = "$adb -s $deviceId shell getprop ro.product.brand".execute()
-            String brandName = brand.text.trim()
-            brandName == "hudl" ? deviceId : null
-        }
+```groovy
+variant {
+    events 1000
+}
 
-        if (hudlDevices.isEmpty()) {
-            throw new IllegalStateException("No hudl devices found")
-        }
-
-        hudlDevices[0]
+def hudlDeviceId() {
+    def hudlDevices = variant.attachedDevicesWithBrand('hudl')
+    if (!hudlDevices) {
+        throw new IllegalStateException("No hudl devices found")
     }
+    hudlDevices[0]
 }
 
-variant.tasks "install", Hudl, {
-    dependsOn "${-> 'assemble' + variationName}"
-    doFirst { commandLine "$adb -s $deviceId install -r $apkPath".split(" ") }
-}
-
-variant.tasks "clearPreferences", Hudl, {
-    doFirst { commandLine "$adb -s $deviceId install -r $apkPath".split(" ") }
-}
-
-variant.tasks "run", Hudl, {
-    doFirst { commandLine "$adb -s $deviceId shell am start -a android.intent.action.MAIN -c android.intent.category.LAUNCHER $packageName/$launchableActivity".split(" ") }
-}
-
-variant.tasks "monkey", Hudl, {
-    doFirst { commandLine "$adb -s $deviceId shell monkey -p $packageName -v 50".split(" ") }
+variant.tasks("instHudl", com.novoda.gradle.command.Install) {
+    deviceId {hudlDeviceId()}
 }
 ```

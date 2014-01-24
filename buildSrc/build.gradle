@@ -1,0 +1,11 @@
+repositories {
+    mavenCentral()
+    maven {
+        url "https://oss.sonatype.org/content/repositories/snapshots"
+    }
+}
+
+rootProject.dependencies {
+    compile 'com.android.tools.build:gradle:0.7.+'
+    compile project(':command')
+}
