@@ -23,16 +23,20 @@ public class AndroidCommandPluginExtension {
     }
 
     def tasks(String name) {
-        tasks(name, Adb)
+        tasks(name, Adb, [])
     }
 
     @SuppressWarnings("GroovyUnusedDeclaration")
     def tasks(String name, Class<? extends Adb> type, Closure configuration) {
-        tasks(name, type).all(configuration)
+        tasks(name, type, []).all(configuration)
     }
 
     def tasks(String name, Class<? extends Adb> type) {
-        VariantConfigurator variantConfigurator = new VariantConfigurator(project, name, type)
+        tasks(name, type, [])
+    }
+
+    def tasks(String name, Class<? extends Adb> type, def dependencies) {
+        VariantConfigurator variantConfigurator = new VariantConfigurator(project, name, type, dependencies)
         project.android.applicationVariants.all {
             variantConfigurator.configure(it)
         }
