@@ -4,10 +4,14 @@ import org.gradle.api.tasks.TaskAction
 
 class Monkey extends Adb {
 
-    def events
-
-    def getEvents() {
+    private getEvents() {
         pluginEx.events
+    }
+
+    protected handleCommandOutput(def text) {
+        super.handleCommandOutput(text)
+        if (text.contains("Monkey aborted"))
+            throw new GroovyRuntimeException('Monkey run failed')
     }
 
     @TaskAction

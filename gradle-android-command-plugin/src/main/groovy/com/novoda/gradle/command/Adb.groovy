@@ -3,7 +3,7 @@ package com.novoda.gradle.command
 
 public class Adb extends org.gradle.api.DefaultTask {
 
-    protected def pluginEx = project.extensions.findByType(AndroidCommandPluginExtension)
+    protected pluginEx = project.extensions.findByType(AndroidCommandPluginExtension)
 
     // set automatically by VariantConfigurator
     def apkPath
@@ -20,12 +20,16 @@ public class Adb extends org.gradle.api.DefaultTask {
     def packageName = "${-> packageName()}"
     def launchableActivity = "${-> launchableActivity()}"
 
+    protected handleCommandOutput(def text)  {
+        logger.info text
+    }
+
     protected runCommand(def parameters) {
         def deviceId = getDeviceId()
         def adbCommand = ["$pluginEx.adb", '-s', deviceId] + parameters
-        println "running command: " + adbCommand
+        logger.info "running command: " + adbCommand
         assertDeviceConnected(deviceId)
-        println adbCommand.execute().text
+        handleCommandOutput(adbCommand.execute().text)
     }
 
     void assertDeviceConnected(def deviceId) {
@@ -33,14 +37,14 @@ public class Adb extends org.gradle.api.DefaultTask {
             throw new IllegalStateException("Device $deviceId is not found!")
     }
 
-    protected def packageName() {
+    protected packageName() {
         def matcher = readApkProperty('package').readLines()[0] =~ /name='(.*?)'/
         if (matcher) {
             matcher[0][1]
         }
     }
 
-    protected def launchableActivity() {
+    protected launchableActivity() {
         def matcher = readApkProperty('launchable-activity').readLines()[0] =~ /name='(.*?)'/
         if (matcher) {
             matcher[0][1]
