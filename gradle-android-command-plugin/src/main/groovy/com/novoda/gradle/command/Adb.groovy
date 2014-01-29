@@ -3,7 +3,7 @@ package com.novoda.gradle.command
 
 public class Adb extends org.gradle.api.DefaultTask {
 
-    protected pluginEx = project.extensions.findByType(AndroidCommandPluginExtension)
+    protected pluginEx = project.android.extensions.findByType(AndroidCommandPluginExtension)
 
     // set automatically by VariantConfigurator
     def apkPath

@@ -7,8 +7,8 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:0.8.+'
-// To depend on the deployed version of the plugin add the following line here:
-//        classpath 'com.novoda:gradle-android-command-plugin:1.1-SNAPSHOT'
+        // To depend on the deployed version of the plugin add the following line here:
+        classpath 'com.novoda:gradle-android-command-plugin:1.1.0-SNAPSHOT'
     }
 }
 apply plugin: 'android'
@@ -53,14 +53,19 @@ android {
             flavorGroup "pricing"
         }
     }
-}
 
-variant.tasks("instHudl", com.novoda.gradle.command.Install) {
-    deviceId {
-        def hudlDevices = variant.attachedDevicesWithBrand('hudl')
-        if (!hudlDevices) {
-            throw new IllegalStateException("No hudl devices found")
+    command {
+        events 1000
+        tasks("instHudl", com.novoda.gradle.command.Install) {
+            deviceId {
+                def hudlDevices = command.attachedDevicesWithBrand('hudl')
+                if (!hudlDevices) {
+                    throw new IllegalStateException("No hudl devices found")
+                }
+                hudlDevices[0]
+            }
         }
-        hudlDevices[0]
     }
 }
+
+

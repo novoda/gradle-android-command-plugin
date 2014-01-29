@@ -27,6 +27,25 @@ buildscript {
 apply plugin: 'android-command'
 ```
 
+To get the current snapshot version:
+
+```groovy
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+    }
+    dependencies {
+        classpath 'com.novoda:gradle-android-command-plugin:1.1.0-SNAPSHOT'
+    }
+}
+apply plugin: 'android-command'
+```
+
+
+
 Example
 =============================
 
@@ -41,19 +60,18 @@ If you have a special case for your tasks you can define your own tasks or overr
 default values as shown below.
 
 ```groovy
-variant {
-    events 1000
-}
-
-def hudlDeviceId() {
-    def hudlDevices = variant.attachedDevicesWithBrand('hudl')
-    if (!hudlDevices) {
-        throw new IllegalStateException("No hudl devices found")
+android {
+    command {
+        events 1000
+        tasks("instHudl", com.novoda.gradle.command.Install) {
+            deviceId {
+                def hudlDevices = command.attachedDevicesWithBrand('hudl')
+                if (!hudlDevices) {
+                    throw new IllegalStateException("No hudl devices found")
+                }
+                hudlDevices[0]
+            }
+        }
     }
-    hudlDevices[0]
-}
-
-variant.tasks("instHudl", com.novoda.gradle.command.Install) {
-    deviceId {hudlDeviceId()}
 }
 ```
