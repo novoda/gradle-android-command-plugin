@@ -65,7 +65,7 @@ android {
         events 1000
         tasks("instHudl", com.novoda.gradle.command.Install) {
             deviceId {
-                def hudlDevices = command.attachedDevicesWithBrand('hudl')
+                def hudlDevices = attachedDevicesWithBrand('hudl')
                 if (!hudlDevices) {
                     throw new IllegalStateException("No hudl devices found")
                 }

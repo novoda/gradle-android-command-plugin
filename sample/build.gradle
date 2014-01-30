@@ -8,7 +8,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:0.8.+'
         // To depend on the deployed version of the plugin add the following line here:
-        classpath 'com.novoda:gradle-android-command-plugin:1.1.0-SNAPSHOT'
+        // classpath 'com.novoda:gradle-android-command-plugin:1.1.0-SNAPSHOT'
     }
 }
 apply plugin: 'android'
@@ -19,12 +19,12 @@ repositories {
 }
 
 android {
-    compileSdkVersion 18
+    compileSdkVersion 19
     buildToolsVersion "19.0.1"
 
     defaultConfig {
         minSdkVersion 7
-        targetSdkVersion 16
+        targetSdkVersion 19
     }
 
     buildTypes {
@@ -55,10 +55,22 @@ android {
     }
 
     command {
+        deviceId {
+            def minSdkDevices = command.attachedDevices().findResults { deviceId ->
+                def sdkVersion = "$adb -s $deviceId shell getprop ro.build.version.sdk".execute()
+                int sdkInt = sdkVersion.text.toInteger()
+                sdkInt >= project.android.defaultConfig.minSdkVersion ? deviceId : null
+            }
+            if (minSdkDevices.isEmpty()) {
+                throw new IllegalStateException("No device found with minSdk " + project.android.defaultConfig.minSdkVersion)
+            }
+            minSdkDevices[0]
+        }
+
         events 1000
         tasks("instHudl", com.novoda.gradle.command.Install) {
             deviceId {
-                def hudlDevices = command.attachedDevicesWithBrand('hudl')
+                def hudlDevices = attachedDevicesWithBrand('hudl')
                 if (!hudlDevices) {
                     throw new IllegalStateException("No hudl devices found")
                 }

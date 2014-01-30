@@ -55,8 +55,13 @@ public class AndroidCommandPluginExtension {
 
     // prefer system property over direct setting to enable commandline arguments
     def getDeviceId() {
-        System.properties['deviceId'] ?: deviceId ?: defaultDeviceId()
+        if (System.properties['deviceId'])
+            return System.properties['deviceId']
+        if (deviceId instanceof Closure)
+            return deviceId.call()
+        deviceId ?: defaultDeviceId()
     }
+
 
     // prefer system property over direct setting to enable commandline arguments
     def getEvents() {
