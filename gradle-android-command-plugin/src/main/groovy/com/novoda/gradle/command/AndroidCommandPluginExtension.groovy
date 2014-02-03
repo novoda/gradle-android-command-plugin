@@ -17,25 +17,15 @@ public class AndroidCommandPluginExtension {
         androidHome = readSdkDirFromLocalProperties() ?: System.env.ANDROID_HOME
     }
 
-    @SuppressWarnings("GroovyUnusedDeclaration")
-    def tasks(String name, Closure configuration) {
-        tasks(name).all(configuration)
+    def task(String name, Class<? extends AdbTask> type, Closure configuration) {
+        task(name, type, []).all(configuration)
     }
 
-    def tasks(String name) {
-        tasks(name, Adb, [])
+    def task(String name, Class<? extends AdbTask> type) {
+        task(name, type, [])
     }
 
-    @SuppressWarnings("GroovyUnusedDeclaration")
-    def tasks(String name, Class<? extends Adb> type, Closure configuration) {
-        tasks(name, type, []).all(configuration)
-    }
-
-    def tasks(String name, Class<? extends Adb> type) {
-        tasks(name, type, [])
-    }
-
-    def tasks(String name, Class<? extends Adb> type, def dependencies) {
+    def task(String name, Class<? extends AdbTask> type, def dependencies) {
         VariantConfigurator variantConfigurator = new VariantConfigurator(project, name, type, dependencies)
         project.android.applicationVariants.all {
             variantConfigurator.configure(it)
@@ -68,7 +58,7 @@ public class AndroidCommandPluginExtension {
         System.properties['events'] ?: events ?: 10000
     }
 
-    def attachedDevices() {
+    def devices() {
         def devices = []
         [getAdb(), 'devices'].execute().text.eachLine { line ->
             def matcher = line =~ /^(.*)\tdevice/
@@ -79,16 +69,22 @@ public class AndroidCommandPluginExtension {
         devices
     }
 
-    def attachedDevicesWithBrand(String brand) {
-        attachedDevices().findResults { deviceId ->
-            def product = "$adb -s $deviceId shell getprop ro.product.brand".execute()
-            String brandName = product.text.trim()
-            brandName == brand ? deviceId : null
-        }
+    Integer sdkVersion(String devId = getDeviceId()) {
+        deviceProperty('ro.build.version.sdk', devId).toInteger()
+    }
+
+    String brand(String devId = getDeviceId()) {
+        deviceProperty('ro.product.brand', devId)
+    }
+
+    String deviceProperty(String key, String devId = getDeviceId()) {
+        def command = new AdbCommand(adb: getAdb(), deviceId: devId, parameters: ['shell', 'getprop', key])
+        project.getLogger().info("about to exec: $command")
+        command.execute().text.trim()
     }
 
     private def defaultDeviceId() {
-        def devices = attachedDevices()
+        def devices = devices()
         if (devices.isEmpty()) {
             throw new IllegalStateException('No attached devices found')
         }
@@ -99,10 +95,10 @@ public class AndroidCommandPluginExtension {
         try {
             Properties properties = new Properties()
             properties.load(project.rootProject.file('local.properties').newDataInputStream())
-            properties.getProperty('sdk.dir')
+            properties.getProperty('sdk.dir').trim()
         }
         catch (Exception e) {
-            null
+            project.getLogger().debug("could not read local.properties", e)
         }
     }
 

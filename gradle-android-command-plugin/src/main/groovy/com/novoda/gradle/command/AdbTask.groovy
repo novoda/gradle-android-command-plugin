@@ -1,7 +1,7 @@
 package com.novoda.gradle.command
 
 
-public class Adb extends org.gradle.api.DefaultTask {
+public class AdbTask extends org.gradle.api.DefaultTask {
 
     protected pluginEx = project.android.extensions.findByType(AndroidCommandPluginExtension)
 
@@ -14,6 +14,8 @@ public class Adb extends org.gradle.api.DefaultTask {
     def deviceId
 
     def getDeviceId() {
+        if (deviceId instanceof Closure)
+            deviceId = deviceId.call()
         deviceId ?: pluginEx.deviceId
     }
 
@@ -25,16 +27,17 @@ public class Adb extends org.gradle.api.DefaultTask {
     }
 
     protected runCommand(def parameters) {
-        def deviceId = getDeviceId()
-        def adbCommand = ["$pluginEx.adb", '-s', deviceId] + parameters
-        logger.info "running command: " + adbCommand
-        assertDeviceConnected(deviceId)
-        handleCommandOutput(adbCommand.execute().text)
+        assertDeviceConnected()
+
+        AdbCommand command = [adb: pluginEx.getAdb(), deviceId: getDeviceId(), parameters: parameters]
+        logger.info "running command: $command"
+        handleCommandOutput(command.execute().text)
     }
 
-    void assertDeviceConnected(def deviceId) {
-        if (!pluginEx.attachedDevices().contains(deviceId))
-            throw new IllegalStateException("Device $deviceId is not found!")
+    void assertDeviceConnected() {
+        def id = getDeviceId()
+        if (!pluginEx.devices().contains(id))
+            throw new IllegalStateException("Device $id is not found!")
     }
 
     protected packageName() {
@@ -55,11 +58,11 @@ public class Adb extends org.gradle.api.DefaultTask {
         if (apkPath == null) {
             throw new IllegalStateException("No apk found for the task $name")
         }
-        String output = ["$pluginEx.aapt", "dump", "badging", "$apkPath"].execute().text.readLines().find {
+        String output = [pluginEx.aapt, 'dump', 'badging', apkPath].execute().text.readLines().find {
             it.startsWith("$propertyKey:")
         }
         if (output == null) {
-            throw new IllegalStateException("Could not read property '$propertyKey' for apk $apkPath")
+            throw new IllegalStateException("Could not read property '$propertyKey' of $apkPath")
         }
         output
     }

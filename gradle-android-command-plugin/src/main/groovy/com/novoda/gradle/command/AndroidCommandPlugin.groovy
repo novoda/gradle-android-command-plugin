@@ -11,8 +11,8 @@ public class AndroidCommandPlugin implements Plugin<Project> {
             throw new ProjectConfigurationException("The 'android' plugin is required.")
         }
         def extension = project.android.extensions.create("command", AndroidCommandPluginExtension, project)
-        extension.tasks "run", com.novoda.gradle.command.Run, ["install"]
-        extension.tasks "monkey", com.novoda.gradle.command.Monkey, ["install"]
-        extension.tasks "clearPrefs", com.novoda.gradle.command.ClearPreferences
+        extension.task "run", com.novoda.gradle.command.Run, ["install"]
+        extension.task "monkey", com.novoda.gradle.command.Monkey, ["install"]
+        extension.task "clearPrefs", com.novoda.gradle.command.ClearPreferences
     }
 }

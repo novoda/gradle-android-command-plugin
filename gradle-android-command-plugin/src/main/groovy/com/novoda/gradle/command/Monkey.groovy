@@ -2,7 +2,7 @@ package com.novoda.gradle.command
 
 import org.gradle.api.tasks.TaskAction
 
-class Monkey extends Adb {
+class Monkey extends AdbTask {
 
     private getEvents() {
         pluginEx.events

@@ -61,17 +61,15 @@ default values as shown below.
 
 ```groovy
 android {
-    command {
         events 1000
-        tasks("instHudl", com.novoda.gradle.command.Install) {
+        task('instHudl', com.novoda.gradle.command.Install) {
             deviceId {
-                def hudlDevices = attachedDevicesWithBrand('hudl')
+                def hudlDevices = devices().grep({ brand(it) == 'hudl' })
                 if (!hudlDevices) {
-                    throw new IllegalStateException("No hudl devices found")
+                    throw new GroovyRuntimeException("No hudl device found")
                 }
                 hudlDevices[0]
             }
         }
-    }
 }
 ```

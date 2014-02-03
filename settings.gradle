@@ -1,2 +1,3 @@
 rootProject.name = 'gradle-android-command-plugin-parent'
-include ':gradle-android-command-plugin', ':sample'
+include ':gradle-android-command-plugin'
+include ':sample'
