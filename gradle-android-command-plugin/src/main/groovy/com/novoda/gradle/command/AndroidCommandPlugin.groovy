@@ -11,9 +11,9 @@ public class AndroidCommandPlugin implements Plugin<Project> {
             throw new ProjectConfigurationException("The 'android' plugin is required.")
         }
         def extension = project.android.extensions.create("command", AndroidCommandPluginExtension, project)
-        extension.tasks "push", Install
-        extension.tasks "run", Run, ["push"]
-        extension.tasks "monkey", Monkey, ["push"]
-        extension.tasks "clearPrefs", ClearPreferences
+        extension.tasks 'installDevice', Install, ['assemble']
+        extension.tasks 'run', Run, ['installDevice']
+        extension.tasks 'monkey', Monkey, ['installDevice']
+        extension.tasks 'clearPrefs', ClearPreferences
     }
 }
