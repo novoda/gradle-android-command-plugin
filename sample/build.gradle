@@ -56,13 +56,13 @@ android {
 
     command {
         deviceId {
-            def minSdkDevices = command.attachedDevices().findResults { deviceId ->
+            def minSdkDevices = attachedDevices().findResults { deviceId ->
                 def sdkVersion = "$adb -s $deviceId shell getprop ro.build.version.sdk".execute()
                 int sdkInt = sdkVersion.text.toInteger()
-                sdkInt >= project.android.defaultConfig.minSdkVersion ? deviceId : null
+                sdkInt >= defaultConfig.minSdkVersion ? deviceId : null
             }
             if (minSdkDevices.isEmpty()) {
-                throw new IllegalStateException("No device found with minSdk " + project.android.defaultConfig.minSdkVersion)
+                throw new IllegalStateException("No device found with minSdk " + defaultConfig.minSdkVersion)
             }
             minSdkDevices[0]
         }
