@@ -6,7 +6,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.8.+'
+        classpath 'com.android.tools.build:gradle:0.9.+'
         // To depend on the deployed version of the plugin add the following line here:
         // classpath 'com.novoda:gradle-android-command-plugin:1.1.0-SNAPSHOT'
     }
@@ -35,22 +35,22 @@ android {
 
     productFlavors {
 
-        flavorGroups "pricing", "releaseType"
+        flavorDimensions "pricing", "releaseType"
 
         beta {
-            flavorGroup "releaseType"
+            flavorDimension "releaseType"
         }
 
         normal {
-            flavorGroup "releaseType"
+            flavorDimension "releaseType"
         }
 
         free {
-            flavorGroup "pricing"
+            flavorDimension "pricing"
         }
 
         paid {
-            flavorGroup "pricing"
+            flavorDimension "pricing"
         }
     }
 
