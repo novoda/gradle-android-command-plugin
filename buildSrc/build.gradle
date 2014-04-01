@@ -6,6 +6,6 @@ repositories {
 }
 
 rootProject.dependencies {
-    compile 'com.android.tools.build:gradle:0.8.+'
+    compile 'com.android.tools.build:gradle:0.9.+'
     compile project(':command')
 }

@@ -49,7 +49,7 @@ apply plugin: 'android-command'
 Example
 =============================
 
-The plugin makes available new tasks `run<Variant>`, `monkey<Variant>`, `clearPreferences<Variant>`.
+The plugin makes available new tasks `installDevice<Variant>`, `uninstallDevice<Variant>`, `run<Variant>`, `monkey<Variant>`, `clearPreferences<Variant>`.
 Just apply the plugin via
 
 ```groovy
