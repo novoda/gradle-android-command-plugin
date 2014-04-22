@@ -1,4 +1,5 @@
 package com.novoda.gradle.command
+
 import org.gradle.api.Project
 
 class VariantConfigurator {
@@ -24,12 +25,12 @@ class VariantConfigurator {
         task.apkPath = variant.packageApplication.outputFile
         task.variationName = variationName
 
-        if (dependencies.size() > 0){
-            task.dependsOn << formatDependencies(dependencies, variationName)
+        if (dependencies.size() > 0) {
+            task.dependsOn << dependenciesForVariation(variationName)
         }
     }
 
-    private Set<String> formatDependencies(def dependencies, def variationName){
-        dependencies.collect{  "$it$variationName" }
+    private Set<String> dependenciesForVariation(def variationName) {
+        dependencies.collect { "$it$variationName" }
     }
 }
