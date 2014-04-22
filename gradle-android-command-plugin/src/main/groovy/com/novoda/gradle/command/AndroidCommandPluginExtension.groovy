@@ -78,7 +78,7 @@ public class AndroidCommandPluginExtension {
     }
 
     String deviceProperty(String key, String devId = getDeviceId()) {
-        def command = new AdbCommand(adb: getAdb(), deviceId: devId, parameters: ['shell', 'getprop', key])
+        AdbCommand command = [adb: getAdb(), deviceId: devId, parameters: ['shell', 'getprop', key]]
         project.getLogger().info("about to exec: $command")
         command.execute().text.trim()
     }
