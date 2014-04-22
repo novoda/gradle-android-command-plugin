@@ -56,23 +56,40 @@ android {
 
     command {
         deviceId {
-            def minSdkDevices = devices().grep({ sdkVersion(it) >= defaultConfig.minSdkVersion }).sort()
+            def minSdkDevices = devices().grep({ it.sdkVersion() >= defaultConfig.minSdkVersion }).sort()
             if (!minSdkDevices) {
                 throw new IllegalStateException('No device found running android version >= ' + defaultConfig.minSdkVersion)
             }
-            minSdkDevices[0]
+            minSdkDevices[0].id
         }
 
         events 1000
         task('instHudl', com.novoda.gradle.command.Install) {
             deviceId {
-                def hudlDevices = devices().grep({ brand(it) == 'hudl' })
+                def hudlDevices = devices().grep({ it.brand() == 'hudl' })
                 if (!hudlDevices) {
                     throw new GroovyRuntimeException('No hudl device found')
                 }
-                hudlDevices[0]
+                hudlDevices[0].id
             }
         }
+
+    }
+}
+
+task('deviceInfo') << {
+    android.command.devices().each {
+        println "Device ID: $it.id"
+        println "SDK version: ${it.sdkVersion()}"
+        println "Android version: ${it.androidVersion()}"
+        println "Brand: ${it.brand()}"
+        println "Model: ${it.model()}"
+        println "Manufacturer: ${it.manufacturer()}"
+        println "Screen density: ${it.screenDensity()}"
+        println "Country: ${it.country()}"
+        println "Language: ${it.language()}"
+        println "Timezone: ${it.timezone()}"
+        println()
     }
 }
 

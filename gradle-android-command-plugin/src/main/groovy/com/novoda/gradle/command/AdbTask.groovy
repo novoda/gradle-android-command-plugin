@@ -36,7 +36,7 @@ public class AdbTask extends org.gradle.api.DefaultTask {
 
     void assertDeviceConnected() {
         def id = getDeviceId()
-        if (!pluginEx.devices().contains(id))
+        if (!pluginEx.deviceIds().contains(id))
             throw new IllegalStateException("Device $id is not found!")
     }
 

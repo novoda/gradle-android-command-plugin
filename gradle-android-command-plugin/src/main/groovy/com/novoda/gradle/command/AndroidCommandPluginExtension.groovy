@@ -59,36 +59,28 @@ public class AndroidCommandPluginExtension {
     }
 
     def devices() {
-        def devices = []
+        deviceIds().collect { deviceId ->
+            new Device(getAdb(), deviceId)
+        }
+    }
+
+    def deviceIds() {
+        def deviceIds = []
         [getAdb(), 'devices'].execute().text.eachLine { line ->
             def matcher = line =~ /^(.*)\tdevice/
             if (matcher) {
-                devices << matcher[0][1]
+                deviceIds << matcher[0][1]
             }
         }
-        devices
-    }
-
-    Integer sdkVersion(String devId = getDeviceId()) {
-        deviceProperty('ro.build.version.sdk', devId).toInteger()
-    }
-
-    String brand(String devId = getDeviceId()) {
-        deviceProperty('ro.product.brand', devId)
-    }
-
-    String deviceProperty(String key, String devId = getDeviceId()) {
-        AdbCommand command = [adb: getAdb(), deviceId: devId, parameters: ['shell', 'getprop', key]]
-        project.getLogger().info("about to exec: $command")
-        command.execute().text.trim()
+        deviceIds
     }
 
     private def defaultDeviceId() {
-        def devices = devices()
-        if (devices.isEmpty()) {
+        def deviceIds = deviceIds()
+        if (deviceIds.isEmpty()) {
             throw new IllegalStateException('No attached devices found')
         }
-        devices[0]
+        deviceIds[0]
     }
 
     private def readSdkDirFromLocalProperties() {
