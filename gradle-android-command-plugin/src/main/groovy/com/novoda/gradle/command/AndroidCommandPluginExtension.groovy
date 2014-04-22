@@ -18,11 +18,15 @@ public class AndroidCommandPluginExtension {
     }
 
     def task(String name, Class<? extends AdbTask> type, Closure configuration) {
-        task(name, type, []).all(configuration)
+        task(name, type).all(configuration)
     }
 
     def task(String name, Class<? extends AdbTask> type) {
         task(name, type, [])
+    }
+
+    def task(String name, Class<? extends AdbTask> type, def dependencies, Closure configuration) {
+        task(name, type, dependencies).all(configuration)
     }
 
     def task(String name, Class<? extends AdbTask> type, def dependencies) {
