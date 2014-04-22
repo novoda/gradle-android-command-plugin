@@ -69,7 +69,7 @@ uploadArchives {
 
                 name 'Gradle Android Command Plugin'
                 packaging 'jar'
-                description 'Useful tasks for gradle android builds'
+                description 'Useful task for gradle android builds'
                 url 'https://github.com/novoda/gradle-android-command-plugin'
 
                 scm {

@@ -17,25 +17,15 @@ public class AndroidCommandPluginExtension {
         androidHome = readSdkDirFromLocalProperties() ?: System.env.ANDROID_HOME
     }
 
-    @SuppressWarnings("GroovyUnusedDeclaration")
-    def tasks(String name, Closure configuration) {
-        tasks(name).all(configuration)
+    def task(String name, Class<? extends AdbTask> type, Closure configuration) {
+        task(name, type, []).all(configuration)
     }
 
-    def tasks(String name) {
-        tasks(name, Adb, [])
+    def task(String name, Class<? extends AdbTask> type) {
+        task(name, type, [])
     }
 
-    @SuppressWarnings("GroovyUnusedDeclaration")
-    def tasks(String name, Class<? extends Adb> type, Closure configuration) {
-        tasks(name, type, []).all(configuration)
-    }
-
-    def tasks(String name, Class<? extends Adb> type) {
-        tasks(name, type, [])
-    }
-
-    def tasks(String name, Class<? extends Adb> type, def dependencies) {
+    def task(String name, Class<? extends AdbTask> type, def dependencies) {
         VariantConfigurator variantConfigurator = new VariantConfigurator(project, name, type, dependencies)
         project.android.applicationVariants.all {
             variantConfigurator.configure(it)
@@ -68,41 +58,39 @@ public class AndroidCommandPluginExtension {
         System.properties['events'] ?: events ?: 10000
     }
 
-    def attachedDevices() {
-        def devices = []
+    def devices() {
+        deviceIds().collect { deviceId ->
+            new Device(getAdb(), deviceId)
+        }
+    }
+
+    def deviceIds() {
+        def deviceIds = []
         [getAdb(), 'devices'].execute().text.eachLine { line ->
             def matcher = line =~ /^(.*)\tdevice/
             if (matcher) {
-                devices << matcher[0][1]
+                deviceIds << matcher[0][1]
             }
         }
-        devices
-    }
-
-    def attachedDevicesWithBrand(String brand) {
-        attachedDevices().findResults { deviceId ->
-            def product = "$adb -s $deviceId shell getprop ro.product.brand".execute()
-            String brandName = product.text.trim()
-            brandName == brand ? deviceId : null
-        }
+        deviceIds
     }
 
     private def defaultDeviceId() {
-        def devices = attachedDevices()
-        if (devices.isEmpty()) {
+        def deviceIds = deviceIds()
+        if (deviceIds.isEmpty()) {
             throw new IllegalStateException('No attached devices found')
         }
-        devices[0]
+        deviceIds[0]
     }
 
     private def readSdkDirFromLocalProperties() {
         try {
             Properties properties = new Properties()
             properties.load(project.rootProject.file('local.properties').newDataInputStream())
-            properties.getProperty('sdk.dir')
+            properties.getProperty('sdk.dir').trim()
         }
         catch (Exception e) {
-            null
+            project.getLogger().debug("could not read local.properties", e)
         }
     }
 

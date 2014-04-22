@@ -6,9 +6,9 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.9.+'
+        classpath 'com.android.tools.build:gradle:0.8.+'
         // To depend on the deployed version of the plugin add the following line here:
-        // classpath 'com.novoda:gradle-android-command-plugin:1.1.0-SNAPSHOT'
+//        classpath 'com.novoda:gradle-android-command-plugin:1.1.0-SNAPSHOT'
     }
 }
 apply plugin: 'android'
@@ -20,11 +20,11 @@ repositories {
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "19.0.1"
+    buildToolsVersion '19.0.1'
 
     defaultConfig {
-        minSdkVersion 7
-        targetSdkVersion 19
+        minSdkVersion 14
+        targetSdkVersion 18
     }
 
     buildTypes {
@@ -56,27 +56,40 @@ android {
 
     command {
         deviceId {
-            def minSdkDevices = attachedDevices().findResults { deviceId ->
-                def sdkVersion = "$adb -s $deviceId shell getprop ro.build.version.sdk".execute()
-                int sdkInt = sdkVersion.text.toInteger()
-                sdkInt >= defaultConfig.minSdkVersion ? deviceId : null
+            def minSdkDevices = devices().grep({ it.sdkVersion() >= defaultConfig.minSdkVersion }).sort()
+            if (!minSdkDevices) {
+                throw new IllegalStateException('No device found running android version >= ' + defaultConfig.minSdkVersion)
             }
-            if (minSdkDevices.isEmpty()) {
-                throw new IllegalStateException("No device found with minSdk " + defaultConfig.minSdkVersion)
-            }
-            minSdkDevices[0]
+            minSdkDevices[0].id
         }
 
         events 1000
-        tasks("instHudl", com.novoda.gradle.command.Install) {
+        task('instHudl', com.novoda.gradle.command.Install) {
             deviceId {
-                def hudlDevices = attachedDevicesWithBrand('hudl')
+                def hudlDevices = devices().grep({ it.brand() == 'hudl' })
                 if (!hudlDevices) {
-                    throw new IllegalStateException("No hudl devices found")
+                    throw new GroovyRuntimeException('No hudl device found')
                 }
-                hudlDevices[0]
+                hudlDevices[0].id
             }
         }
+
+    }
+}
+
+task('deviceInfo') << {
+    android.command.devices().each {
+        println "Device ID: $it.id"
+        println "SDK version: ${it.sdkVersion()}"
+        println "Android version: ${it.androidVersion()}"
+        println "Brand: ${it.brand()}"
+        println "Model: ${it.model()}"
+        println "Manufacturer: ${it.manufacturer()}"
+        println "Screen density: ${it.screenDensity()}"
+        println "Country: ${it.country()}"
+        println "Language: ${it.language()}"
+        println "Timezone: ${it.timezone()}"
+        println()
     }
 }
 

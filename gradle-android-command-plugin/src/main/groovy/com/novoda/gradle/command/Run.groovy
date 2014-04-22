@@ -2,7 +2,7 @@ package com.novoda.gradle.command
 
 import org.gradle.api.tasks.TaskAction
 
-class Run extends Adb {
+class Run extends AdbTask {
 
     @TaskAction
     void exec() {
