@@ -78,7 +78,7 @@ android {
             deviceId {
                 def device = devices().max({ it.sdkVersion() })
                 if (!device) {
-                    throw new GroovyRuntimeException('No hudl device found')
+                    throw new GroovyRuntimeException('No device found')
                 }
                 device.id
             }
