@@ -6,9 +6,9 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.8.+'
+        classpath 'com.android.tools.build:gradle:0.9.+'
         // To depend on the deployed version of the plugin add the following line here:
-//        classpath 'com.novoda:gradle-android-command-plugin:1.1.0-SNAPSHOT'
+//        classpath 'com.novoda:gradle-android-command-plugin:1.2.0-SNAPSHOT'
     }
 }
 apply plugin: 'android'
@@ -20,9 +20,12 @@ repositories {
 
 android {
     compileSdkVersion 19
-    buildToolsVersion '19.0.1'
+    buildToolsVersion '19.0.3'
 
     defaultConfig {
+        versionCode 1
+        versionName 'v0.0.1'
+
         minSdkVersion 14
         targetSdkVersion 18
     }
@@ -52,6 +55,12 @@ android {
         paid {
             flavorDimension "pricing"
         }
+    }
+
+    // change APK name to include the version name
+    applicationVariants.all { variant ->
+        def file = variant.packageApplication.outputFile
+        variant.packageApplication.outputFile = new File(file.parent, file.name.replace(".apk", "-" + defaultConfig.versionName + ".apk"))
     }
 
     command {
@@ -103,4 +112,9 @@ task('deviceInfo') << {
     }
 }
 
-
+// print device info before running the monkey(s)
+tasks.whenTaskAdded { task ->
+    if (task.name.startsWith('monkey')) {
+        task.dependsOn deviceInfo
+    }
+}
