@@ -74,6 +74,16 @@ android {
             }
         }
 
+        task('runNewest', com.novoda.gradle.command.Run, ['installDevice']) {
+            deviceId {
+                def device = devices().max({ it.sdkVersion() })
+                if (!device) {
+                    throw new GroovyRuntimeException('No device found')
+                }
+                device.id
+            }
+        }
+
     }
 }
 

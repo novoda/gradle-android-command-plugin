@@ -62,13 +62,15 @@ default values as shown below.
 ```groovy
 android {
         events 1000
-        task('instHudl', com.novoda.gradle.command.Install) {
+
+        // run on device with highest SDK version
+        task('runNewest', com.novoda.gradle.command.Run, ['installDevice']) {
             deviceId {
-                def hudlDevices = devices().grep({ brand(it) == 'hudl' })
-                if (!hudlDevices) {
-                    throw new GroovyRuntimeException("No hudl device found")
+                def device = devices().max({ it.sdkVersion() })
+                if (!device) {
+                    throw new GroovyRuntimeException('No device found!')
                 }
-                hudlDevices[0]
+                device.id
             }
         }
 }
