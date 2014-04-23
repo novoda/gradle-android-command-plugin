@@ -22,7 +22,7 @@ class VariantConfigurator {
         def variationName = projectFlavorName + buildTypeName
 
         AdbTask task = project.tasks.create(taskName + variationName, taskType)
-        task.apkPath = "${variant.packageApplication.outputFile}"
+        task.apkPath = "${-> variant.packageApplication.outputFile}"
         task.variationName = variationName
 
         if (dependencies.size() > 0) {
