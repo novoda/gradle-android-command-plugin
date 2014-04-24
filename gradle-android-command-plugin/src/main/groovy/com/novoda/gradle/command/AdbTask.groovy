@@ -29,12 +29,18 @@ public class AdbTask extends org.gradle.api.DefaultTask {
     protected runCommand(def parameters) {
         assertDeviceConnected()
 
-        Device device = pluginEx.devices().find { device -> device.id == getDeviceId() }
-        println device.toString()
+        printDeviceInfo()
 
         AdbCommand command = [adb: pluginEx.getAdb(), deviceId: getDeviceId(), parameters: parameters]
         logger.info "running command: $command"
         handleCommandOutput(command.execute().text)
+    }
+
+    private void printDeviceInfo() {
+        Device device = pluginEx.devices().find { device -> device.id == getDeviceId() }
+        println '=========================='
+        println device.toString()
+        println '=========================='
     }
 
     void assertDeviceConnected() {
