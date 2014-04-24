@@ -96,25 +96,3 @@ android {
     }
 }
 
-task('deviceInfo') << {
-    android.command.devices().each {
-        println "Device ID: $it.id"
-        println "SDK version: ${it.sdkVersion()}"
-        println "Android version: ${it.androidVersion()}"
-        println "Brand: ${it.brand()}"
-        println "Model: ${it.model()}"
-        println "Manufacturer: ${it.manufacturer()}"
-        println "Screen density: ${it.screenDensity()}"
-        println "Country: ${it.country()}"
-        println "Language: ${it.language()}"
-        println "Timezone: ${it.timezone()}"
-        println()
-    }
-}
-
-// print device info before running the monkey(s)
-tasks.whenTaskAdded { task ->
-    if (task.name.startsWith('monkey')) {
-        task.dependsOn deviceInfo
-    }
-}

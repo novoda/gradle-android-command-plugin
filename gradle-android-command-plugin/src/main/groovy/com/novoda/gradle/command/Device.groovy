@@ -52,4 +52,20 @@ public class Device {
         command.execute().text.trim()
     }
 
+    String toString() {
+        def builder = new StringBuilder();
+        builder.append("Device ID: $id").append("\n")
+        builder.append("SDK version: ${sdkVersion()}").append("\n")
+        builder.append("Android version: ${androidVersion()}").append("\n")
+        builder.append("Brand: ${brand()}").append("\n")
+        builder.append("Model: ${model()}").append("\n")
+        builder.append("Manufacturer: ${manufacturer()}").append("\n")
+        builder.append("Screen density: ${screenDensity()}").append("\n")
+        builder.append("Country: ${country()}").append("\n")
+        builder.append("Language: ${language()}").append("\n")
+        builder.append("Timezone: ${timezone()}")
+
+        builder.toString()
+    }
+
 }
