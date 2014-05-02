@@ -3,16 +3,17 @@ gradle-android-command-plugin
 
 Use gradle tasks to run specific command, such as:
 
-- find all devices attached
+- find all devices attached and get basic info about them
 - select the first one that complies with a custom rule
-- install a specific Apk from the available build types + flavors
-- clear preferences or do something related to the apk to prepare for tests
-- run monkey runner for that specific apk on that specific device
+- install a specific APK from the available build types + flavours
+- clear preferences or do something related to the APK to prepare for tests
+- run monkeyrunner for that specific APK on that specific device
+- uninstall the APK
 
 
-This is particularly useful for CI servers but could be used to speed up IDE development as well
+This is particularly useful for CI servers but could be used to speed up IDE development as well.
 
-Install
+Usage
 =============================
 
 ```groovy
@@ -38,7 +39,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.novoda:gradle-android-command-plugin:1.1.0-SNAPSHOT'
+        classpath 'com.novoda:gradle-android-command-plugin:1.2.0-SNAPSHOT'
     }
 }
 apply plugin: 'android-command'
