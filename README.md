@@ -16,19 +16,21 @@ This is particularly useful for CI servers but could be used to speed up IDE dev
 Usage
 =============================
 
+
+
 ```groovy
 buildscript {
     repositories {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.novoda:gradle-android-command-plugin:1.0'
+        classpath 'com.novoda:gradle-android-command-plugin:1.2.0'
     }
 }
 apply plugin: 'android-command'
 ```
 
-To get the current snapshot version:
+It's recommended to use the release version, but if you want to have the current development state you can use the snapshot version like this:
 
 ```groovy
 buildscript {
@@ -39,7 +41,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.novoda:gradle-android-command-plugin:1.2.0'
+        classpath 'com.novoda:gradle-android-command-plugin:1.3.0-SNAPSHOT'
     }
 }
 apply plugin: 'android-command'
