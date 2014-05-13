@@ -24,7 +24,7 @@ android {
         versionName 'v0.0.1'
 
         minSdkVersion 14
-        targetSdkVersion 18
+        targetSdkVersion 19
     }
 
     buildTypes {
