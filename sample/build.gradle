@@ -1,14 +1,11 @@
 buildscript {
     repositories {
         mavenCentral()
-        maven {
-            url "https://oss.sonatype.org/content/repositories/snapshots/"
-        }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.9.+'
+        classpath 'com.android.tools.build:gradle:0.10.+'
         // To depend on the deployed version of the plugin add the following line here:
-//        classpath 'com.novoda:gradle-android-command-plugin:1.2.0-SNAPSHOT'
+//        classpath 'com.novoda:gradle-android-command-plugin:1.2.0'
     }
 }
 apply plugin: 'android'
@@ -27,7 +24,7 @@ android {
         versionName 'v0.0.1'
 
         minSdkVersion 14
-        targetSdkVersion 18
+        targetSdkVersion 19
     }
 
     buildTypes {
