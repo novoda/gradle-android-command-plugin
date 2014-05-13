@@ -12,7 +12,12 @@ public class Device {
     }
 
     Integer sdkVersion() {
-        deviceProperty('ro.build.version.sdk').toInteger()
+        try {
+            deviceProperty('ro.build.version.sdk').toInteger()
+        } catch (NumberFormatException nfe) {
+            0
+        }
+
     }
 
     String androidVersion() {
