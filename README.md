@@ -39,7 +39,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.novoda:gradle-android-command-plugin:1.2.0-SNAPSHOT'
+        classpath 'com.novoda:gradle-android-command-plugin:1.2.0'
     }
 }
 apply plugin: 'android-command'
