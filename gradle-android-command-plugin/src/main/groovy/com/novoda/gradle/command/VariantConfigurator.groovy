@@ -13,7 +13,7 @@ class VariantConfigurator {
 
         this.taskType = taskType
         this.taskName = taskName
-        this.description =  description;
+        this.description = description
         this.project = project
         this.dependencies = dependencies
     }
@@ -27,7 +27,7 @@ class VariantConfigurator {
         AdbTask task = project.tasks.create(taskName + variationName, taskType)
         task.group = AndroidCommandPlugin.TASK_GROUP
         task.apkPath = "${-> variant.packageApplication.outputFile}"
-        if(this.description){
+        if (this.description) {
             task.description = this.description+" for variant ${variationName}"
         }
         task.variationName = variationName
