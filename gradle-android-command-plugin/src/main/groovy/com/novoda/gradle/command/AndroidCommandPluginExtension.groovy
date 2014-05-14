@@ -21,16 +21,24 @@ public class AndroidCommandPluginExtension {
         task(name, type).all(configuration)
     }
 
-    def task(String name, Class<? extends AdbTask> type) {
-        task(name, type, [])
+    def task(String name, String description, Class<? extends AdbTask> type) {
+        task(name, description, type, [])
     }
 
     def task(String name, Class<? extends AdbTask> type, def dependencies, Closure configuration) {
         task(name, type, dependencies).all(configuration)
     }
 
+    def task(String name, Class<? extends AdbTask> type) {
+        task(name, "", type, [])
+    }
+
     def task(String name, Class<? extends AdbTask> type, def dependencies) {
-        VariantConfigurator variantConfigurator = new VariantConfigurator(project, name, type, dependencies)
+        task(name, "", type, dependencies)
+    }
+
+    def task(String name, String description, Class<? extends AdbTask> type, def dependencies) {
+        VariantConfigurator variantConfigurator = new VariantConfigurator(project, name, description, type, dependencies)
         project.android.applicationVariants.all {
             variantConfigurator.configure(it)
         }
