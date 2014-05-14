@@ -5,12 +5,15 @@ import org.gradle.api.Project
 class VariantConfigurator {
     private final Project project
     private final String taskName
+    private final String description
     private final Class<? extends AdbTask> taskType
     private final def dependencies
 
-    VariantConfigurator(Project project, String taskName, Class<? extends AdbTask> taskType, def dependencies) {
+    VariantConfigurator(Project project, String taskName, String description, Class<? extends AdbTask> taskType, def dependencies) {
+
         this.taskType = taskType
         this.taskName = taskName
+        this.description = description
         this.project = project
         this.dependencies = dependencies
     }
@@ -22,7 +25,11 @@ class VariantConfigurator {
         def variationName = projectFlavorName + buildTypeName
 
         AdbTask task = project.tasks.create(taskName + variationName, taskType)
+        task.group = AndroidCommandPlugin.TASK_GROUP
         task.apkPath = "${-> variant.packageApplication.outputFile}"
+        if (this.description) {
+            task.description = this.description+" for variant ${variationName}"
+        }
         task.variationName = variationName
 
         if (dependencies.size() > 0) {
