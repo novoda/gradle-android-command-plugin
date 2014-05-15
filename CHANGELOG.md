@@ -1,5 +1,6 @@
 # 1.2.1
 
+- added fallback if there is no SDK version available from the device properties
 - add descriptions to tasks and group them together (instead of "Other Tasks")
 
 # 1.2.0
