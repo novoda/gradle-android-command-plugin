@@ -24,7 +24,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.novoda:gradle-android-command-plugin:1.2.0'
+        classpath 'com.novoda:gradle-android-command-plugin:1.2.1'
     }
 }
 apply plugin: 'android-command'
