@@ -27,8 +27,20 @@ class Shell extends AdbTask {
         key 4
     }
 
+    void up() {
+        key 19
+    }
+
     void down() {
         key 20
+    }
+
+    void left() {
+        key 21
+    }
+
+    void right() {
+        key 22
     }
 
     void power() {
@@ -37,6 +49,10 @@ class Shell extends AdbTask {
 
     void unlock() {
         key 82
+    }
+
+    void clear() {
+        key 28
     }
 
     private input(... values) {
