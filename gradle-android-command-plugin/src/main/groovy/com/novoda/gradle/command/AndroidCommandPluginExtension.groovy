@@ -56,6 +56,7 @@ public class AndroidCommandPluginExtension {
         aapt ?: "$androidHome/build-tools/$project.android.buildToolsRevision/aapt"
     }
 
+    // prefer system property over direct setting to enable commandline arguments
     def getDeviceId() {
         if (System.properties['deviceId'])
             return System.properties['deviceId']
