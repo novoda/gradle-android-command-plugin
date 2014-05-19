@@ -9,6 +9,7 @@ public class AndroidCommandPluginExtension {
     def aapt
     def deviceId
     def events
+    def sortBySubtasks
 
     private final Project project
 
@@ -55,7 +56,6 @@ public class AndroidCommandPluginExtension {
         aapt ?: "$androidHome/build-tools/$project.android.buildToolsRevision/aapt"
     }
 
-    // prefer system property over direct setting to enable commandline arguments
     def getDeviceId() {
         if (System.properties['deviceId'])
             return System.properties['deviceId']
@@ -63,7 +63,6 @@ public class AndroidCommandPluginExtension {
             return deviceId.call()
         deviceId ?: defaultDeviceId()
     }
-
 
     // prefer system property over direct setting to enable commandline arguments
     def getEvents() {
@@ -104,6 +103,14 @@ public class AndroidCommandPluginExtension {
         catch (Exception e) {
             project.getLogger().debug("could not read local.properties", e)
         }
+    }
+
+    def getSortBySubtasks() {
+        return sortBySubtasks
+    }
+
+    void setSortBySubtasks(sortBySubtasks) {
+        this.sortBySubtasks = sortBySubtasks
     }
 
 }

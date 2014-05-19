@@ -25,7 +25,13 @@ class VariantConfigurator {
         def variationName = projectFlavorName + buildTypeName
 
         AdbTask task = project.tasks.create(taskName + variationName, taskType)
-        task.group = AndroidCommandPlugin.TASK_GROUP
+
+        if(task.pluginEx && task.pluginEx.sortBySubtasks && task.pluginEx.sortBySubtasks == true){
+            task.group = AndroidCommandPlugin.TASK_GROUP + " " + taskName;
+        } else {
+            task.group = AndroidCommandPlugin.TASK_GROUP + " for variant " + variationName;
+        }
+
         task.apkPath = "${-> variant.packageApplication.outputFile}"
         if (this.description) {
             task.description = this.description+" for variant ${variationName}"

@@ -90,6 +90,7 @@ android {
             }
         }
 
+        sortBySubtasks false
     }
 }
 
