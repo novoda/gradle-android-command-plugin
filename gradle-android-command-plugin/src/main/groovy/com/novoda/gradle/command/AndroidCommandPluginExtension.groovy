@@ -9,6 +9,7 @@ public class AndroidCommandPluginExtension {
     def aapt
     def deviceId
     def events
+    def sortBySubtasks
 
     private final Project project
 
@@ -64,7 +65,6 @@ public class AndroidCommandPluginExtension {
         deviceId ?: defaultDeviceId()
     }
 
-
     // prefer system property over direct setting to enable commandline arguments
     def getEvents() {
         System.properties['events'] ?: events ?: 10000
@@ -105,5 +105,4 @@ public class AndroidCommandPluginExtension {
             project.getLogger().debug("could not read local.properties", e)
         }
     }
-
 }
