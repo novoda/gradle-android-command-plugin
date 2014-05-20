@@ -89,8 +89,17 @@ android {
                 device.id
             }
         }
-
         sortBySubtasks false
+    }
+}
+
+task('autoLogin', type: com.novoda.gradle.command.Input) {
+    script {
+        2.times {
+            text 'bob'
+            enter()
+        }
+        enter()
     }
 }
 
