@@ -27,7 +27,7 @@ class VariantConfigurator {
 
         AdbTask task = project.tasks.create(taskName + variationName, taskType)
 
-        if (task.pluginEx && task.pluginEx.sortBySubtasks && task.pluginEx.sortBySubtasks == true) {
+        if (task.pluginEx && task.pluginEx.sortBySubtasks) {
             task.group = AndroidCommandPlugin.TASK_GROUP + " " + taskName;
         } else {
             task.group = AndroidCommandPlugin.TASK_GROUP + " for variant " + variationName;
