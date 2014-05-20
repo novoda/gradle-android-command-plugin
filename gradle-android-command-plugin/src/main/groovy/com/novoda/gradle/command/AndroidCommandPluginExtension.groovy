@@ -105,13 +105,4 @@ public class AndroidCommandPluginExtension {
             project.getLogger().debug("could not read local.properties", e)
         }
     }
-
-    def getSortBySubtasks() {
-        return sortBySubtasks
-    }
-
-    void setSortBySubtasks(sortBySubtasks) {
-        this.sortBySubtasks = sortBySubtasks
-    }
-
 }
