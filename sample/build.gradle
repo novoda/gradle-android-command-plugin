@@ -93,7 +93,7 @@ android {
     }
 }
 
-task('autoLogin', type: com.novoda.gradle.command.Shell) {
+task('autoLogin', type: com.novoda.gradle.command.Input) {
     script {
         2.times {
             text 'bob'

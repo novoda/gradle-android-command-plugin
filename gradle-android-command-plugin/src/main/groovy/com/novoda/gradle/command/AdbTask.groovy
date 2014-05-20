@@ -26,11 +26,12 @@ public class AdbTask extends org.gradle.api.DefaultTask {
         logger.info text
     }
 
-    protected runCommand(def parameters) {
+    protected assertDeviceAndRunCommand(def parameters) {
         assertDeviceConnected()
+        runCommand(parameters)
+    }
 
-        printDeviceInfo()
-
+    protected void runCommand(def parameters) {
         AdbCommand command = [adb: pluginEx.getAdb(), deviceId: getDeviceId(), parameters: parameters]
         logger.info "running command: $command"
         handleCommandOutput(command.execute().text)
@@ -43,10 +44,11 @@ public class AdbTask extends org.gradle.api.DefaultTask {
         println '=========================='
     }
 
-    void assertDeviceConnected() {
+    protected void assertDeviceConnected() {
         def id = getDeviceId()
         if (!pluginEx.deviceIds().contains(id))
             throw new IllegalStateException("Device $id is not found!")
+        printDeviceInfo()
     }
 
     protected packageName() {

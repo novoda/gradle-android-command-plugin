@@ -2,7 +2,7 @@ package com.novoda.gradle.command
 
 import org.gradle.api.tasks.TaskAction
 
-class Shell extends AdbTask {
+class Input extends AdbTask {
 
     Closure script
 
@@ -63,7 +63,7 @@ class Shell extends AdbTask {
 
     @TaskAction
     void exec() {
-        print "exec shell task"
+        assertDeviceConnected()
         script.call()
     }
 }
