@@ -1,3 +1,7 @@
+# 1.2.2
+
+- add subgrouping of plugin tasks either by variant name or sub task based on a new setting "sortBySubtasks" (defaults to false)
+
 # 1.2.1
 
 - added fallback if there is no SDK version available from the device properties

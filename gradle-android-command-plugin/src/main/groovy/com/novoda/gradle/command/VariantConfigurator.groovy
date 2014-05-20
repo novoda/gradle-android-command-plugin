@@ -9,7 +9,8 @@ class VariantConfigurator {
     private final Class<? extends AdbTask> taskType
     private final def dependencies
 
-    VariantConfigurator(Project project, String taskName, String description, Class<? extends AdbTask> taskType, def dependencies) {
+    VariantConfigurator(Project project, String taskName, String description, Class<? extends AdbTask> taskType,
+                        def dependencies) {
 
         this.taskType = taskType
         this.taskName = taskName
@@ -25,10 +26,16 @@ class VariantConfigurator {
         def variationName = projectFlavorName + buildTypeName
 
         AdbTask task = project.tasks.create(taskName + variationName, taskType)
-        task.group = AndroidCommandPlugin.TASK_GROUP
+
+        if (task.pluginEx && task.pluginEx.sortBySubtasks) {
+            task.group = AndroidCommandPlugin.TASK_GROUP + " " + taskName;
+        } else {
+            task.group = AndroidCommandPlugin.TASK_GROUP + " for variant " + variationName;
+        }
+
         task.apkPath = "${-> variant.packageApplication.outputFile}"
         if (this.description) {
-            task.description = this.description+" for variant ${variationName}"
+            task.description = this.description + " for variant ${variationName}"
         }
         task.variationName = variationName
 
