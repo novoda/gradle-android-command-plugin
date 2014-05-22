@@ -1,9 +1,6 @@
 # 1.3.0
 
 - add an Input task to support basic adb scripting
-
-# 1.2.2
-
 - add subgrouping of plugin tasks either by variant name or sub task based on a new setting "sortBySubtasks" (defaults to false)
 
 # 1.2.1
