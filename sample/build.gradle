@@ -90,7 +90,23 @@ android {
             }
         }
 
+        task('autoLogin', type: com.novoda.gradle.command.Input) {
+            script {
+                2.times {
+                    text 'bob'
+                    enter()
+                }
+                enter()
+            }
+        }
+
+        task('listDevices') << {
+            println()
+            println "Attached devices:"
+            android.command.devices().grep { it.sdkVersion() >= 14 }.each {
+                println(it.manufacturer() + " " + it.model())
+            }
+        }
         sortBySubtasks false
     }
 }
-
