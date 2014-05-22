@@ -14,6 +14,14 @@ class Input extends AdbTask {
         input('keyevent', code)
     }
 
+    void tap(int x, int y) {
+        input('touchscreen', 'tap', x, y)
+    }
+
+    void swipe(int startX, int startY, int endX, int endY) {
+        input('touchscreen', 'swipe', startX, startY, endX, endY)
+    }
+
     void enter() {
         key 66
     }
