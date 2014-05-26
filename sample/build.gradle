@@ -70,6 +70,7 @@ android {
         }
 
         events 1000
+
         task('instHudl', com.novoda.gradle.command.Install) {
             deviceId {
                 def hudlDevices = devices().grep({ it.brand() == 'hudl' })
@@ -87,6 +88,14 @@ android {
                     throw new GroovyRuntimeException('No device found')
                 }
                 device.id
+            }
+        }
+
+        task('bigMonkey', com.novoda.gradle.command.Monkey, ['installDevice']) {
+            events {
+                if (devices().grep { it.id == deviceId }[0].brand() != 'Amazon')
+                    return 2222
+                return 5000
             }
         }
 
