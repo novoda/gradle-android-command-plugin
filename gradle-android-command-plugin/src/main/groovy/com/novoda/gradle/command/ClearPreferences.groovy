@@ -6,6 +6,6 @@ class ClearPreferences extends AdbTask {
 
     @TaskAction
     void exec() {
-        assertDeviceAndRunCommand(['shell', 'pm', 'clear', packageName])
+        assertDevicesAndRunCommand(['shell', 'pm', 'clear', packageName])
     }
 }
