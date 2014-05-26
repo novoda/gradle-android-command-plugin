@@ -19,8 +19,19 @@ public class AdbTask extends org.gradle.api.DefaultTask {
         deviceId ?: pluginEx.deviceId
     }
 
-    def packageName = "${-> packageName()}"
-    def launchableActivity = "${-> launchableActivity()}"
+    def getPackageName() {
+        def matcher = readApkProperty('package').readLines()[0] =~ /name='(.*?)'/
+        if (matcher) {
+            matcher[0][1]
+        }
+    }
+
+    def getLaunchableActivity() {
+        def matcher = readApkProperty('launchable-activity').readLines()[0] =~ /name='(.*?)'/
+        if (matcher) {
+            matcher[0][1]
+        }
+    }
 
     protected handleCommandOutput(def text)  {
         logger.info text
@@ -49,20 +60,6 @@ public class AdbTask extends org.gradle.api.DefaultTask {
         if (!pluginEx.deviceIds().contains(id))
             throw new IllegalStateException("Device $id is not found!")
         printDeviceInfo()
-    }
-
-    protected packageName() {
-        def matcher = readApkProperty('package').readLines()[0] =~ /name='(.*?)'/
-        if (matcher) {
-            matcher[0][1]
-        }
-    }
-
-    protected launchableActivity() {
-        def matcher = readApkProperty('launchable-activity').readLines()[0] =~ /name='(.*?)'/
-        if (matcher) {
-            matcher[0][1]
-        }
     }
 
     private String readApkProperty(String propertyKey) {
