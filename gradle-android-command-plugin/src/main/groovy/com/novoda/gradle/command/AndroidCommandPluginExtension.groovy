@@ -57,20 +57,15 @@ public class AndroidCommandPluginExtension {
     }
 
     // prefer system property over direct setting to enable commandline arguments
-    def getDeviceId() {
-        if (System.properties['deviceId'])
-            return System.properties['deviceId']
-        if (deviceId instanceof Closure)
-            return deviceId.call()
-        deviceId ?: defaultDeviceId()
-    }
-
-    // prefer system property over direct setting to enable commandline arguments
     def getEvents() {
         System.properties['events'] ?: events ?: 10000
     }
 
+    // prefer system property over direct setting to enable commandline arguments
     def devices() {
+        if (System.properties['deviceId']){
+            return [new Device(getAdb(), System.properties['deviceId'])]
+        }
         deviceIds().collect { deviceId ->
             new Device(getAdb(), deviceId)
         }
@@ -85,14 +80,6 @@ public class AndroidCommandPluginExtension {
             }
         }
         deviceIds
-    }
-
-    private def defaultDeviceId() {
-        def deviceIds = deviceIds()
-        if (deviceIds.isEmpty()) {
-            throw new IllegalStateException('No attached devices found')
-        }
-        deviceIds[0]
     }
 
     private def readSdkDirFromLocalProperties() {

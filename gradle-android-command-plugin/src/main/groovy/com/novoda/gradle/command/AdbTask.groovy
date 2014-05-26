@@ -1,6 +1,5 @@
 package com.novoda.gradle.command
 
-
 public class AdbTask extends org.gradle.api.DefaultTask {
 
     protected pluginEx = project.android.extensions.findByType(AndroidCommandPluginExtension)
@@ -11,44 +10,36 @@ public class AdbTask extends org.gradle.api.DefaultTask {
     // set automatically by VariantConfigurator
     def variationName
 
-    def deviceId
-
-    def getDeviceId() {
-        if (deviceId instanceof Closure)
-            deviceId = deviceId.call()
-        deviceId ?: pluginEx.deviceId
-    }
-
     def packageName = "${-> packageName()}"
     def launchableActivity = "${-> launchableActivity()}"
 
-    protected handleCommandOutput(def text)  {
+    protected handleCommandOutput(def text) {
         logger.info text
     }
 
-    protected assertDeviceAndRunCommand(def parameters) {
-        assertDeviceConnected()
-        runCommand(parameters)
+    protected assertDevicesAndRunCommand(def parameters) {
+        for (Device device : pluginEx.devices()) {
+            assertDeviceConnected(device)
+            runCommand(device.id, parameters)
+        }
     }
 
-    protected void runCommand(def parameters) {
-        AdbCommand command = [adb: pluginEx.getAdb(), deviceId: getDeviceId(), parameters: parameters]
+    protected void runCommand(def id, def parameters) {
+        AdbCommand command = [adb: pluginEx.getAdb(), deviceId: id, parameters: parameters]
         logger.info "running command: $command"
         handleCommandOutput(command.execute().text)
     }
 
-    private void printDeviceInfo() {
-        Device device = pluginEx.devices().find { device -> device.id == getDeviceId() }
+    private void printDeviceInfo(def device) {
         println '=========================='
         println device.toString()
         println '=========================='
     }
 
-    protected void assertDeviceConnected() {
-        def id = getDeviceId()
-        if (!pluginEx.deviceIds().contains(id))
-            throw new IllegalStateException("Device $id is not found!")
-        printDeviceInfo()
+    protected void assertDeviceConnected(def device) {
+        if (!pluginEx.deviceIds().contains(device.id))
+            throw new IllegalStateException("Device $device.id is not found!")
+        printDeviceInfo(device)
     }
 
     protected packageName() {

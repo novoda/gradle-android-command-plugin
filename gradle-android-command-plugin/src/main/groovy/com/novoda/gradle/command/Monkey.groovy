@@ -16,6 +16,6 @@ class Monkey extends AdbTask {
 
     @TaskAction
     void exec() {
-        assertDeviceAndRunCommand(['shell', 'monkey', '-p', packageName, '-v', getEvents()])
+        assertDevicesAndRunCommand(['shell', 'monkey', '-p', packageName, '-v', getEvents()])
     }
 }
