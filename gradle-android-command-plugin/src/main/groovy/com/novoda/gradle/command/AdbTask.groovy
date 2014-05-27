@@ -10,6 +10,7 @@ public class AdbTask extends org.gradle.api.DefaultTask {
     // set automatically by VariantConfigurator
     def variationName
 
+    def device
     def packageName = "${-> packageName()}"
     def launchableActivity = "${-> launchableActivity()}"
 
@@ -17,8 +18,14 @@ public class AdbTask extends org.gradle.api.DefaultTask {
         logger.info text
     }
 
+    protected getDevices(){
+        if (device instanceof Closure)
+            return [device.call()]
+        return pluginEx.devices()
+    }
+
     protected assertDevicesAndRunCommand(def parameters) {
-        for (Device device : pluginEx.devices()) {
+        for (Device device : getDevices()) {
             assertDeviceConnected(device)
             runCommand(device.id, parameters)
         }

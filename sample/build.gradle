@@ -71,7 +71,7 @@ android {
 
         events 1000
         task('instHudl', com.novoda.gradle.command.Install) {
-            deviceId {
+            device {
                 def hudlDevices = devices().grep({ it.brand() == 'hudl' })
                 if (!hudlDevices) {
                     throw new GroovyRuntimeException('No hudl device found')
@@ -79,14 +79,24 @@ android {
                 hudlDevices[0].id
             }
         }
-
-        task('runNewest', com.novoda.gradle.command.Run, ['installDevice']) {
-            deviceId {
+        task('installNewest', com.novoda.gradle.command.Run) {
+            device {
                 def device = devices().max({ it.sdkVersion() })
                 if (!device) {
                     throw new GroovyRuntimeException('No device found')
                 }
-                device.id
+                device
+            }
+
+        }
+
+        task('runNewest', com.novoda.gradle.command.Run, ['installDevices']) {
+            device {
+                def device = devices().max({ it.sdkVersion() })
+                if (!device) {
+                    throw new GroovyRuntimeException('No device found')
+                }
+                device
             }
         }
 
