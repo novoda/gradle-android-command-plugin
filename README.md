@@ -64,7 +64,17 @@ default values as shown below.
 
 ```groovy
 android {
+    command {
         events 1000
+        
+        // set number of monkeyrunner events depending on the brand of the device
+        task('bigMonkey', com.novoda.gradle.command.Monkey, ['installDevice']) {
+                    events {
+                        if (devices().grep { it.id == deviceId }[0].brand() != 'Amazon')
+                            return 2222
+                        return 5000
+                    }
+                }
 
         // run on device with highest SDK version
         task('runNewest', com.novoda.gradle.command.Run, ['installDevice']) {
@@ -76,6 +86,28 @@ android {
                 device.id
             }
         }
+        
+        // run script that enters the username and password
+        task('autoLogin', type: com.novoda.gradle.command.Input) {
+            script {
+                text 'username'
+                enter()
+                text 'password'
+                enter()
+                enter()
+            }
+        }
+        
+        // list manufacturer and model for all attached devices
+        task('listDevices') << {
+            println()
+            println "Attached devices:"
+            android.command.devices().grep { it.sdkVersion() >= 14 }.each {
+                println(it.manufacturer() + " " + it.model())
+            }
+        }
+        
+    }
 }
 ```
 
