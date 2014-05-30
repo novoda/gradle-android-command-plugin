@@ -52,7 +52,15 @@ apply plugin: 'android-command'
 Example
 =============================
 
-The plugin makes available new tasks `installDevice<Variant>`, `uninstallDevice<Variant>`, `run<Variant>`, `monkey<Variant>`, `clearPreferences<Variant>`.
+The plugin makes available new tasks:
+
+`com.novoda.gradle.command.InstallDevice` - installs the app on a specific device.
+`com.novoda.gradle.command.UninstallDevice` - uninstalls the app from a specific device.
+`com.novoda.gradle.command.Run` - installs and launches the app on a specific device.
+`com.novoda.gradle.command.Monkey` - installs and runs monkeyrunner on a specific device.
+`com.novoda.gradle.command.ClearPreferences` - clears app preferences on a specific device.
+`com.novoda.gradle.command.Input` - runs adb scripts.
+
 Just apply the plugin via
 
 ```groovy
