@@ -16,8 +16,6 @@ This is particularly useful for CI servers but could be used to speed up IDE dev
 Usage
 =============================
 
-
-
 ```groovy
 buildscript {
     repositories {
