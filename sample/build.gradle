@@ -62,7 +62,7 @@ android {
 
     command {
         deviceId {
-            def minSdkDevices = devices().grep({ it.sdkVersion() >= defaultConfig.minSdkVersion }).sort()
+            def minSdkDevices = devices().grep({ it.sdkVersion() >= defaultConfig.minSdkVersion.getApiLevel() }).sort()
             if (!minSdkDevices) {
                 throw new IllegalStateException('No device found running android version >= ' + defaultConfig.minSdkVersion)
             }
