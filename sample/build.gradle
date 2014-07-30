@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.11.+'
+        classpath 'com.android.tools.build:gradle:0.12.2'
         // To depend on the deployed version of the plugin add the following line here:
 //        classpath 'com.novoda:gradle-android-command-plugin:1.2.1'
     }
