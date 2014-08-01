@@ -1,6 +1,5 @@
 package com.novoda.gradle.command
 
-
 public class Device {
 
     final String adb
@@ -57,6 +56,16 @@ public class Device {
         command.execute().text.trim()
     }
 
+    String screenSize() {
+        AdbCommand command = [adb: adb, deviceId: id, parameters: ['shell', 'dumpsys', 'window']]
+        String size = "unknown"
+        command.execute().text.eachLine {  line ->
+            if (line.trim().startsWith("mUnrestrictedScreen"))
+               size = line.substring(line.lastIndexOf(' '))
+        }
+        size
+    }
+
     String toString() {
         def builder = new StringBuilder();
         builder.append("Device ID: $id").append("\n")
@@ -65,10 +74,11 @@ public class Device {
         builder.append("Brand: ${brand()}").append("\n")
         builder.append("Model: ${model()}").append("\n")
         builder.append("Manufacturer: ${manufacturer()}").append("\n")
-        builder.append("Screen density: ${screenDensity()}").append("\n")
         builder.append("Country: ${country()}").append("\n")
         builder.append("Language: ${language()}").append("\n")
-        builder.append("Timezone: ${timezone()}")
+        builder.append("Timezone: ${timezone()}").append("\n")
+        builder.append("Screen density: ${screenDensity()}").append("\n")
+        builder.append("ScreenSize: ${screenSize()}")
 
         builder.toString()
     }
