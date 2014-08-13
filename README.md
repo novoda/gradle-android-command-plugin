@@ -27,6 +27,8 @@ buildscript {
         classpath 'com.novoda:gradle-android-command-plugin:1.2.1'
     }
 }
+// Ensure the command plugin is applied after the Android plugin
+apply plugin: 'com.android.application'
 apply plugin: 'android-command'
 ```
 
@@ -44,6 +46,7 @@ buildscript {
         classpath 'com.novoda:gradle-android-command-plugin:1.3.0-SNAPSHOT'
     }
 }
+apply plugin: 'com.android.application'
 apply plugin: 'android-command'
 ```
 
