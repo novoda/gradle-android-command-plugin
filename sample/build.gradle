@@ -8,7 +8,7 @@ buildscript {
 //        classpath 'com.novoda:gradle-android-command-plugin:1.2.1'
     }
 }
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 apply plugin: 'android-command'
 
 repositories {
@@ -62,18 +62,21 @@ android {
 
     command {
         deviceId {
-            def minSdkDevices = devices().grep({ it.sdkVersion() >= defaultConfig.minSdkVersion.getApiLevel() }).sort()
+            def apiLevel = defaultConfig.minSdkVersion.getApiLevel()
+            def minSdkDevices = devices().grep { it.sdkVersion() >= apiLevel }
             if (!minSdkDevices) {
-                throw new IllegalStateException('No device found running android version >= ' + defaultConfig.minSdkVersion)
+                throw new IllegalStateException('No device found running android version >= ' + apiLevel)
             }
             minSdkDevices[0].id
         }
 
         events 1000
+        sortBySubtasks false
+
 
         task('instHudl', com.novoda.gradle.command.Install) {
             deviceId {
-                def hudlDevices = devices().grep({ it.brand() == 'hudl' })
+                def hudlDevices = devices().grep { it.brand() == 'hudl' }
                 if (!hudlDevices) {
                     throw new GroovyRuntimeException('No hudl device found')
                 }
@@ -83,7 +86,7 @@ android {
 
         task('runNewest', com.novoda.gradle.command.Run, ['installDevice']) {
             deviceId {
-                def device = devices().max({ it.sdkVersion() })
+                def device = devices().max { it.sdkVersion() }
                 if (!device) {
                     throw new GroovyRuntimeException('No device found')
                 }
@@ -99,7 +102,8 @@ android {
             }
         }
 
-        task('autoLogin', type: com.novoda.gradle.command.Input) {
+
+        task autoLogin(type: com.novoda.gradle.command.Input) {
             script {
                 2.times {
                     text 'bob'
@@ -109,13 +113,12 @@ android {
             }
         }
 
-        task('listDevices') << {
+        task listDevices << {
             println()
             println "Attached devices:"
-            android.command.devices().grep { it.sdkVersion() >= 14 }.each {
-                println(it.manufacturer() + " " + it.model())
+            devices().each {
+                println it
             }
         }
-        sortBySubtasks false
     }
 }
