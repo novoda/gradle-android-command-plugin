@@ -8,7 +8,8 @@ buildscript {
 //        classpath 'com.novoda:gradle-android-command-plugin:1.2.1'
     }
 }
-apply plugin: 'android'
+apply plugin: 'com.android.application'
+// apply android-command AFTER android plugin
 apply plugin: 'android-command'
 
 repositories {
@@ -24,7 +25,7 @@ android {
         versionName 'v0.0.1'
 
         minSdkVersion 14
-        targetSdkVersion 19
+        targetSdkVersion 20
     }
 
     buildTypes {
@@ -54,68 +55,99 @@ android {
         }
     }
 
-    // change APK name to include the version name
-    applicationVariants.all { variant ->
-        def file = variant.packageApplication.outputFile
-        variant.packageApplication.outputFile = new File(file.parent, file.name.replace(".apk", "-" + defaultConfig.versionName + ".apk"))
+    command {
+//        deviceId = devices().max{it.sdkVersion()}.id
+        deviceId {
+            devices().grep { it.brand() == 'motorola' }?.head().id
+        }
+//        deviceId = devices().grep { it.brand() == 'hudl' }.head().id
+
+//        events 1000
+
+        task('runAmazon', com.novoda.gradle.command.Run) {
+            deviceId {
+                def kindles = devices().grep({ it.brand() == 'Amazon' })
+                if (!kindles) {
+                    throw new GroovyRuntimeException('No Amazon device found')
+                }
+                kindles[0].id
+            }
+        }
+
+//        task('runNewest', com.novoda.gradle.command.Run, ['installDevice']) {
+//            deviceId = devices().max({ it.sdkVersion() })?.id
+//        }
+//
+//        task('bigMonkey', com.novoda.gradle.command.Monkey, ['installDevice']) {
+//            events {
+//                if (devices().grep { it.id == deviceId }[0].brand() != 'Amazon')
+//                    return 2222
+//                return 5000
+//            }
+//        }
+
+        sortBySubtasks false
+
     }
 
-    command {
-        deviceId {
-            def minSdkDevices = devices().grep({ it.sdkVersion() >= defaultConfig.minSdkVersion.getApiLevel() }).sort()
-            if (!minSdkDevices) {
-                throw new IllegalStateException('No device found running android version >= ' + defaultConfig.minSdkVersion)
-            }
-            minSdkDevices[0].id
+}
+
+
+task autoLogin(type: com.novoda.gradle.command.Input) {
+    script {
+        2.times {
+            text 'bob'
+            enter()
         }
+        enter()
+    }
+}
 
-        events 1000
 
-        task('instHudl', com.novoda.gradle.command.Install) {
-            deviceId {
-                def hudlDevices = devices().grep({ it.brand() == 'hudl' })
-                if (!hudlDevices) {
-                    throw new GroovyRuntimeException('No hudl device found')
+task syncPhotos(type: com.novoda.gradle.command.Files) {
+    script {
+        def dir = '/sdcard/DCIM/Camera/'
+        def imageDir = new File('urlaub')
+        imageDir.mkdir()
+        def newestTimestamp = imageDir.listFiles()?.sort({-it.lastModified()})?.head()?.lastModified()
+        def startDate = new Date(newestTimestamp)
+        list(dir).each { com.novoda.gradle.command.FileInfo item ->
+            if (item.timestamp.after(startDate)) {
+                if (item.name.endsWith('jpg') && !item.name.contains(':nopm:'))  {
+                    println item
+                    pull item.path + item.name, 'urlaub'
                 }
-                hudlDevices[0].id
             }
         }
+    }
+}
 
-        task('runNewest', com.novoda.gradle.command.Run, ['installDevice']) {
-            deviceId {
-                def device = devices().max({ it.sdkVersion() })
-                if (!device) {
-                    throw new GroovyRuntimeException('No device found')
-                }
-                device.id
-            }
-        }
+task listDevices << {
+    println()
+    println "Attached devices:"
+    android.command.devices().grep { it.sdkVersion() >= 14 }.each {
+        println(it.manufacturer() + " " + it.brand() + " " + it.model() + " " + it.id)
+    }
+}
 
-        task('bigMonkey', com.novoda.gradle.command.Monkey, ['installDevice']) {
-            events {
-                if (devices().grep { it.id == deviceId }[0].brand() != 'Amazon')
-                    return 2222
-                return 5000
-            }
-        }
+task runAndLogin(dependsOn: [autoLogin])
 
-        task('autoLogin', type: com.novoda.gradle.command.Input) {
-            script {
-                2.times {
-                    text 'bob'
-                    enter()
-                }
-                enter()
-            }
-        }
+afterEvaluate {
+    runAndLogin.dependsOn 'runFreeBetaDebug'
+    autoLogin.mustRunAfter 'runFreeBetaDebug'
+}
 
-        task('listDevices') << {
-            println()
-            println "Attached devices:"
-            android.command.devices().grep { it.sdkVersion() >= 14 }.each {
-                println(it.manufacturer() + " " + it.model())
-            }
+tasks.addRule('login') { String taskname ->
+    if (taskname.startsWith("loginrun")) {
+        task(taskname, dependsOn: [autoLogin, taskname - "login"])
+        autoLogin.mustRunAfter taskname - "login"
+    }
+}
+
+tasks.addRule("Pattern: ping<ID>") { String taskName ->
+    if (taskName.startsWith("ping")) {
+        task(taskName) << {
+            println "Pinging: " + (taskName - 'ping')
         }
-        sortBySubtasks false
     }
 }
