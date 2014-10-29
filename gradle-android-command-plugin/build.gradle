@@ -4,7 +4,7 @@ apply plugin: 'signing'
 
 dependencies {
     compile gradleApi()
-    groovy localGroovy()
+    compile localGroovy()
 }
 
 group = 'com.novoda'
