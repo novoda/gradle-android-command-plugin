@@ -51,7 +51,6 @@ apply plugin: 'android-command'
 ```
 
 
-
 Example
 =============================
 
@@ -121,6 +120,13 @@ android {
     }
 }
 ```
+
+Importing the project
+=====================
+
+If you have any errors while importing the project such as not finding the envirnoment variables please run Android Studio from the command line.
+
+OSX eg: `2>/dev/null 1>/dev/null /Applications/Android\ Studio.app/Contents/MacOS/studio &`
 
 License
 =======
