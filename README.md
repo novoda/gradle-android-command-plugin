@@ -79,6 +79,17 @@ android {
 }
 ```
 
+
+Development
+=====================
+
+The development branch of this project is `develop`. Make sure you use `develop` if you want to import the project properly and work on this project.
+
+If you have any errors while importing the project such as not finding the envirnoment variables please run Android Studio from the command line.
+
+OSX eg: `2>/dev/null 1>/dev/null /Applications/Android\ Studio.app/Contents/MacOS/studio &`
+
+
 License
 =======
 
@@ -95,4 +106,3 @@ License
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
-
