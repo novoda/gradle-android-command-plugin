@@ -16,7 +16,7 @@ public class AndroidCommandPluginExtension {
         this.project = project
         androidHome = readSdkDirFromLocalProperties() ?: System.env.ANDROID_HOME
         if (androidHome == null) {
-            throw new IllegalStateException("${System.env.ANDROID_HOME} -- ${System.env} - Couldn't read the SDK directory. If you're running the tests, " +
+            throw new IllegalStateException("Couldn't read the SDK directory. If you're running the tests, " +
                     "make sure you set the ANDROID_HOME env. variable and it points to your Android SDK home. Otherwise, " +
                     "make sure there's a local.properties in the root of your project with the property sdk.dir pointing to the Android SDK")
         }
