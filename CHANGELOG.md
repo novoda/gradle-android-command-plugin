@@ -2,8 +2,8 @@
 
 - add an Input task to support basic adb scripting
 - add subgrouping of plugin tasks either by variant name or sub task based on a new setting "sortBySubtasks" (defaults to false)
-- updated Gradle 1.12 (via wrapper)
-- sample app: android-gradle 0.11, making it compatible with Android Studio 0.6+
+- updated Gradle 2.1 (via wrapper)
+- sample app: android-gradle 0.14, making it compatible with Android Studio 0.9+
 
 # 1.2.1
 
