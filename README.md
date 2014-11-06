@@ -1,6 +1,8 @@
 gradle-android-command-plugin
 =============================
 
+![](http://ci.novoda.com/buildStatus/icon?job=Gradle%20Android%20Command%20Plugin%20(develop))
+
 Use gradle tasks to run specific command, such as:
 
 - find all devices attached and get basic info about them
