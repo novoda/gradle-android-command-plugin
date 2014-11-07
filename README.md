@@ -1,7 +1,6 @@
 gradle-android-command-plugin
 =============================
-
-![](http://ci.novoda.com/buildStatus/icon?job=Gradle%20Android%20Command%20Plugin%20(develop))
+[![](http://ci.novoda.com/buildStatus/icon?job=Gradle%20Android%20Command%20Plugin%20(develop))](http://ci.novoda.com/job/Gradle%20Android%20Command%20Plugin%20(develop)/lastSuccessfulBuild/console)
 
 Use gradle tasks to run specific command, such as:
 
