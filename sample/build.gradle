@@ -1,14 +1,14 @@
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.10.+'
+        classpath 'com.android.tools.build:gradle:0.14.1'
         // To depend on the deployed version of the plugin add the following line here:
 //        classpath 'com.novoda:gradle-android-command-plugin:1.2.1'
     }
 }
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 apply plugin: 'android-command'
 
 repositories {
@@ -17,7 +17,7 @@ repositories {
 
 android {
     compileSdkVersion 19
-    buildToolsVersion '19.0.3'
+    buildToolsVersion '21.1.0'
 
     defaultConfig {
         versionCode 1
