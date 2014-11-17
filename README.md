@@ -1,5 +1,6 @@
 gradle-android-command-plugin
 =============================
+[![](http://ci.novoda.com/buildStatus/icon?job=Gradle%20Android%20Command%20Plugin%20(develop))](http://ci.novoda.com/job/Gradle%20Android%20Command%20Plugin%20(develop)/lastSuccessfulBuild/console)
 
 Use gradle tasks to run specific command, such as:
 
@@ -76,7 +77,7 @@ default values as shown below.
 android {
     command {
         events 1000
-        
+
         // set number of monkeyrunner events depending on the brand of the device
         task('bigMonkey', com.novoda.gradle.command.Monkey, ['installDevice']) {
                     events {
@@ -96,7 +97,7 @@ android {
                 device.id
             }
         }
-        
+
         // run script that enters the username and password
         task('autoLogin', type: com.novoda.gradle.command.Input) {
             script {
@@ -107,7 +108,7 @@ android {
                 enter()
             }
         }
-        
+
         // list manufacturer and model for all attached devices
         task('listDevices') << {
             println()
@@ -116,13 +117,15 @@ android {
                 println(it.manufacturer() + " " + it.model())
             }
         }
-        
+
     }
 }
 ```
 
-Importing the project
+Development
 =====================
+
+The development branch of this project is `develop`. Make sure you use `develop` if you want to import the project properly and work on this project.
 
 If you have any errors while importing the project such as not finding the envirnoment variables please run Android Studio from the command line.
 
@@ -144,4 +147,3 @@ License
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
-
