@@ -1,4 +1,4 @@
-# gradle-android-command-plugin [![](http://ci.novoda.com/buildStatus/icon?job=gradle-android-command-plugin-develop)](http://ci.novoda.com/job/gradle-android-command-plugin-develop/lastSuccessfulBuild/console) [![](https://raw.githubusercontent.com/novoda/novoda/master/assets/btn_apache_lisence.png)](LICENSE.txt)
+# gradle-android-command-plugin [![](http://ci.novoda.com/buildStatus/icon?job=gradle-android-command-plugin)](http://ci.novoda.com/job/gradle-android-command-plugin/lastSuccessfulBuild/console) [![](https://raw.githubusercontent.com/novoda/novoda/master/assets/btn_apache_lisence.png)](LICENSE.txt)
 
 Use gradle tasks to run specific `adb` commands.
 
