@@ -7,7 +7,7 @@ class Input extends AdbTask {
     Closure script
 
     void text(String value) {
-        input('text', '"' + value + '"')
+        input('text', "$value")
     }
 
     void key(int code) {
