@@ -33,7 +33,7 @@ class VariantConfigurator {
             task.group = AndroidCommandPlugin.TASK_GROUP + " for variant " + variationName;
         }
 
-        task.apkPath = "${-> variant.packageApplication.outputFile}"
+        task.apkPath = "${-> variant.outputs[0].packageApplication.outputFile}"
         if (this.description) {
             task.description = this.description + " for variant ${variationName}"
         }

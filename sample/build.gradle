@@ -56,8 +56,8 @@ android {
 
     // change APK name to include the version name
     applicationVariants.all { variant ->
-        def file = variant.packageApplication.outputFile
-        variant.packageApplication.outputFile = new File(file.parent, file.name.replace(".apk", "-" + defaultConfig.versionName + ".apk"))
+        def file = variant.outputs[0].packageApplication.outputFile
+        variant.outputs[0].packageApplication.outputFile = new File(file.parent, file.name.replace(".apk", "-" + defaultConfig.versionName + ".apk"))
     }
 
     command {
