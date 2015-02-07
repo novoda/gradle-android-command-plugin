@@ -1,11 +1,11 @@
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.12.2'
+        classpath 'com.android.tools.build:gradle:0.14.1'
         // To depend on the deployed version of the plugin add the following line here:
-//        classpath 'com.novoda:gradle-android-command-plugin:1.2.1'
+//        classpath 'com.novoda:gradle-android-command-plugin:1.3.0'
     }
 }
 apply plugin: 'com.android.application'
@@ -18,14 +18,14 @@ repositories {
 
 android {
     compileSdkVersion 19
-    buildToolsVersion '19.1.0'
+    buildToolsVersion '21.1.0'
 
     defaultConfig {
         versionCode 1
         versionName 'v0.0.1'
 
         minSdkVersion 14
-        targetSdkVersion 20
+        targetSdkVersion 19
     }
 
     buildTypes {
@@ -55,14 +55,31 @@ android {
         }
     }
 
-    command {
-//        deviceId = devices().max{it.sdkVersion()}.id
-        deviceId {
-            devices().grep { it.brand() == 'motorola' }?.head().id
-        }
-//        deviceId = devices().grep { it.brand() == 'hudl' }.head().id
+    // change APK name to include the version name
+    applicationVariants.all { variant ->
+        def file = variant.packageApplication.outputFile
+        variant.packageApplication.outputFile = new File(file.parent, file.name.replace(".apk", "-" + defaultConfig.versionName + ".apk"))
+    }
 
-//        events 1000
+    // change APK name to include the version name
+    applicationVariants.all { variant ->
+        def file = variant.outputs[0].packageApplication.outputFile
+        variant.outputs[0].packageApplication.outputFile = new File(file.parent, file.name.replace(".apk", "-" + defaultConfig.versionName + ".apk"))
+    }
+
+    command {
+        deviceId {
+            def apiLevel = defaultConfig.minSdkVersion.getApiLevel()
+            def minSdkDevices = devices().grep { it.sdkVersion() >= apiLevel }
+            if (!minSdkDevices) {
+                throw new IllegalStateException('No device found running android version >= ' + apiLevel)
+            }
+            minSdkDevices[0].id
+        }
+
+        events 1000
+        sortBySubtasks false
+
 
         task('runAmazon', com.novoda.gradle.command.Run) {
             deviceId {
@@ -74,35 +91,31 @@ android {
             }
         }
 
-//        task('runNewest', com.novoda.gradle.command.Run, ['installDevice']) {
-//            deviceId = devices().max({ it.sdkVersion() })?.id
-//        }
-//
-//        task('bigMonkey', com.novoda.gradle.command.Monkey, ['installDevice']) {
-//            events {
-//                if (devices().grep { it.id == deviceId }[0].brand() != 'Amazon')
-//                    return 2222
-//                return 5000
-//            }
-//        }
-
-        sortBySubtasks false
-
-    }
-
-}
-
-
-task autoLogin(type: com.novoda.gradle.command.Input) {
-    script {
-        2.times {
-            text 'bob'
-            enter()
+        task('runNewest', com.novoda.gradle.command.Run, ['installDevice']) {
+            deviceId {
+                def device = devices().max { it.sdkVersion() }
+	    }
         }
-        enter()
+
+        task autoLogin(type: com.novoda.gradle.command.Input) {
+            script {
+                2.times {
+                    text 'bob'
+                    enter()
+		}
+		enter()
+	    }
+        }
+
+        task listDevices << {
+            println()
+            println "Attached devices:"
+            devices().each {
+                println it
+            }
+        }
     }
 }
-
 
 task syncPhotos(type: com.novoda.gradle.command.Files) {
     script {
@@ -122,32 +135,4 @@ task syncPhotos(type: com.novoda.gradle.command.Files) {
     }
 }
 
-task listDevices << {
-    println()
-    println "Attached devices:"
-    android.command.devices().grep { it.sdkVersion() >= 14 }.each {
-        println(it.manufacturer() + " " + it.brand() + " " + it.model() + " " + it.id)
-    }
-}
 
-task runAndLogin(dependsOn: [autoLogin])
-
-afterEvaluate {
-    runAndLogin.dependsOn 'runFreeBetaDebug'
-    autoLogin.mustRunAfter 'runFreeBetaDebug'
-}
-
-tasks.addRule('login') { String taskname ->
-    if (taskname.startsWith("loginrun")) {
-        task(taskname, dependsOn: [autoLogin, taskname - "login"])
-        autoLogin.mustRunAfter taskname - "login"
-    }
-}
-
-tasks.addRule("Pattern: ping<ID>") { String taskName ->
-    if (taskName.startsWith("ping")) {
-        task(taskName) << {
-            println "Pinging: " + (taskName - 'ping')
-        }
-    }
-}

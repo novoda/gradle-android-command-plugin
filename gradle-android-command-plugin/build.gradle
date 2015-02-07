@@ -1,14 +1,21 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.novoda:bintray-release:0.2.4'
+    }
+}
+
 apply plugin: 'groovy'
-apply plugin: 'maven'
-apply plugin: 'signing'
+apply plugin: 'bintray-release' 
 
 dependencies {
     compile gradleApi()
-    groovy localGroovy()
 }
 
 group = 'com.novoda'
-version = "1.3.0-SNAPSHOT"
+version = "1.3.1-SNAPSHOT"
 
 ext {
     sourceCompatibility = 1.6
@@ -16,91 +23,11 @@ ext {
     artifactId = 'gradle-android-command-plugin'
 }
 
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from groovydoc
-}
-
-task sourcesJar(type: Jar) {
-    from sourceSets.main.allSource
-    classifier = 'sources'
-}
-
-artifacts {
-    archives jar
-    archives javadocJar
-    archives sourcesJar
-}
-
-if (project.hasProperty("signing.keyId")) {
-    signing {
-        sign configurations.archives
-    }
-}
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-
-            // don't sign snapshots for now
-            if (!version.endsWith('SNAPSHOT')) {
-                beforeDeployment { deployment -> signing.signPom(deployment) }
-            }
-
-            if (project.hasProperty('nexusUsername')) {
-                snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots") {
-                    authentication(userName: nexusUsername, password: nexusPassword)
-                }
-
-                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2") {
-                    authentication(userName: nexusUsername, password: nexusPassword)
-                }
-            }
-            uniqueVersion = false
-
-            pom.project {
-
-                parent {
-                    groupId 'org.sonatype.oss'
-                    artifactId 'oss-parent'
-                    version '7'
-                }
-
-                name 'Gradle Android Command Plugin'
-                packaging 'jar'
-                description 'Useful tasks for gradle android builds'
-                url 'https://github.com/novoda/gradle-android-command-plugin'
-
-                scm {
-                    url 'https://github.com/novoda/gradle-android-command-plugin'
-                    connection 'scm:https://novoda@github.com/novoda/gradle-android-command-plugin.git'
-                    developerConnection 'scm:git@github.com:novoda/gradle-android-command-plugin.git'
-                }
-
-                licenses {
-                    license {
-                        name 'The Apache Software License, Version 2.0'
-                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                        distribution 'repo'
-                    }
-                }
-
-                developers {
-                    developer {
-                        id 'frankiesardo'
-                        name 'Frankie Sardo'
-                    }
-                    developer {
-                        id 'devisnik'
-                        name 'Volker Leck'
-                    }
-                    developer {
-                        id 'grujo'
-                        name 'Zvonko Grujic'
-                    }
-                }
-            }
-        }
-    }
+publish {
+    userOrg = 'novoda'
+    groupId = 'com.novoda'
+    artifactId = project.ext.artifactId
+    version = project.version
+    description = 'Useful tasks for gradle android builds'
+    website = 'https://github.com/novoda/gradle-android-command-plugin'
 }

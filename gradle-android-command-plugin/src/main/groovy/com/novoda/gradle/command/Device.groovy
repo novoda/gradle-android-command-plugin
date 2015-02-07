@@ -14,7 +14,7 @@ public class Device {
     Integer sdkVersion() {
         try {
             deviceProperty('ro.build.version.sdk').toInteger()
-        } catch (NumberFormatException nfe) {
+        } catch (NumberFormatException ignored) {
             0
         }
 
@@ -57,7 +57,7 @@ public class Device {
         command.execute().text.trim()
     }
 
-    String toString() {
+    String fullInfo() {
         def builder = new StringBuilder();
         builder.append("Device ID: $id").append("\n")
         builder.append("SDK version: ${sdkVersion()}").append("\n")
@@ -73,4 +73,7 @@ public class Device {
         builder.toString()
     }
 
+    String toString() {
+        getClass().name + [id: id, sdk: sdkVersion(), version: androidVersion(), brand: brand(), manufacturer: manufacturer(), model: model(), country: country(), language: language(), timezone: timezone()]
+    }
 }
