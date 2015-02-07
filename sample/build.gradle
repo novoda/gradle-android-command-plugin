@@ -136,7 +136,7 @@ task syncPhotos(type: com.novoda.gradle.command.Files) {
             if (item.timestamp.after(startDate)) {
                 if (item.name.endsWith('jpg') && !item.name.contains(':nopm:'))  {
                     println item
-                    pull item.path + item.name, 'urlaub'
+                    pull item.path + item.name, 'motoPhoto'
                 }
             }
         }
