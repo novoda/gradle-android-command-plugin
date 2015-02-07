@@ -94,7 +94,7 @@ android {
         task('runNewest', com.novoda.gradle.command.Run, ['installDevice']) {
             deviceId {
                 def device = devices().max { it.sdkVersion() }
-	    }
+            }
         }
 
         task autoLogin(type: com.novoda.gradle.command.Input) {
@@ -102,9 +102,9 @@ android {
                 2.times {
                     text 'bob'
                     enter()
-		}
-		enter()
-	    }
+                }
+                enter()
+            }
         }
 
         task listDevices << {
@@ -118,11 +118,19 @@ android {
 }
 
 task syncPhotos(type: com.novoda.gradle.command.Files) {
+    deviceId {
+        def moto = android.command.devices().grep({ it.brand() == 'motorola' })
+        if (!moto) {
+            throw new GroovyRuntimeException('No Motorola device found')
+        }
+        moto[0].id
+    }
     script {
         def dir = '/sdcard/DCIM/Camera/'
-        def imageDir = new File('urlaub')
+        def imageDir = new File('motoPhoto')
         imageDir.mkdir()
-        def newestTimestamp = imageDir.listFiles()?.sort({-it.lastModified()})?.head()?.lastModified()
+        def archivedImageFiles = imageDir.listFiles()
+        def newestTimestamp = archivedImageFiles ? archivedImageFiles?.sort({-it.lastModified()})?.head()?.lastModified() : 0
         def startDate = new Date(newestTimestamp)
         list(dir).each { com.novoda.gradle.command.FileInfo item ->
             if (item.timestamp.after(startDate)) {
