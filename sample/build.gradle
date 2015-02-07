@@ -121,7 +121,7 @@ task syncPhotos(type: com.novoda.gradle.command.Files) {
     }
     script {
         def dir = '/sdcard/DCIM/Camera/'
-        def imageDir = new File('motoPhoto')
+        def imageDir = file('motoPhoto')
         imageDir.mkdir()
         def archivedImageFiles = imageDir.listFiles()
         def newestTimestamp = archivedImageFiles ? archivedImageFiles?.sort({-it.lastModified()})?.head()?.lastModified() : 0
@@ -130,7 +130,7 @@ task syncPhotos(type: com.novoda.gradle.command.Files) {
             if (item.timestamp.after(startDate)) {
                 if (item.name.endsWith('jpg') && !item.name.contains(':nopm:'))  {
                     println item
-                    pull item.path + item.name, 'motoPhoto'
+                    pull item.path + item.name, imageDir.path
                 }
             }
         }
