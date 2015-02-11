@@ -15,8 +15,10 @@ class AndroidCommandPluginExtensionTest extends GroovyTestCase {
     }
 
     private AndroidCommandPluginExtension createExtension() {
-        def project = ProjectBuilder.builder().build()
+	def projectDir = new File('..')
+        def project = ProjectBuilder.builder().withProjectDir(projectDir).build()
         def extension = new AndroidCommandPluginExtension(project)
         extension
     }
 }
+
