@@ -1,8 +1,8 @@
 package com.novoda.gradle.command
 
-import groovy.transform.ToString
+import groovy.transform.Immutable
 
-@ToString
+@Immutable
 public class FileInfo {
     static enum Type {
         FILE, DIRECTORY, LINK
