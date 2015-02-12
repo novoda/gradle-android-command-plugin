@@ -1,7 +1,6 @@
 package com.novoda.gradle.command
 
-
-public class AdbCommand {
+class AdbCommand {
 
     def adb
     def deviceId
