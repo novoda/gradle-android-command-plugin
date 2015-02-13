@@ -133,11 +133,12 @@ task syncPhotos(type: com.novoda.gradle.command.Files) {
         list(deviceImageDir).findAll { image ->
             image.name.endsWith('jpg') && !image.name.contains(':nopm:') 
         }
+        .findAll { image -> 
+            !new File(backupDir.path, image.name).exists() 
+        }
         .each { image ->
-            if (!new File(backupDir.path, image.name).exists()) {
-                println image
-                pull image.path + image.name, backupDir.path
-            }
+            println image
+            pull image.path + image.name, backupDir.path
         }
     }
 }
