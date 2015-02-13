@@ -64,11 +64,11 @@ android {
     command {
         deviceId {
             def apiLevel = defaultConfig.minSdkVersion.getApiLevel()
-            def minSdkDevices = devices().grep { it.sdkVersion() >= apiLevel }
-            if (!minSdkDevices) {
+            def minSdkDevice = devices().find { it.sdkVersion() >= apiLevel }
+            if (!minSdkDevice) {
                 throw new IllegalStateException('No device found running android version >= ' + apiLevel)
             }
-            minSdkDevices[0].id
+            minSdkDevice.id
         }
 
         events 1000
@@ -77,11 +77,11 @@ android {
 
         task('runAmazon', com.novoda.gradle.command.Run) {
             deviceId {
-                def kindles = devices().grep({ it.brand() == 'Amazon' })
-                if (!kindles) {
+                def kindle = devices().find({ it.brand() == 'Amazon' })
+                if (!kindle) {
                     throw new GroovyRuntimeException('No Amazon device found')
                 }
-                kindles[0].id
+                kindle.id
             }
         }
 
