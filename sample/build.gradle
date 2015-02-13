@@ -77,7 +77,7 @@ android {
 
         task('runAmazon', com.novoda.gradle.command.Run) {
             deviceId {
-                def kindle = devices().find({ it.brand() == 'Amazon' })
+                def kindle = devices().find { it.brand() == 'Amazon' }
                 if (!kindle) {
                     throw new GroovyRuntimeException('No Amazon device found')
                 }
@@ -119,7 +119,7 @@ android {
 */
 task syncPhotos(type: com.novoda.gradle.command.Files) {
     deviceId {
-        def moto = android.command.devices().find ({ it.brand() == 'motorola' })
+        def moto = android.command.devices().find { it.brand() == 'motorola' }
         if (!moto) {
             throw new GroovyRuntimeException('No Motorola device found')
         }
