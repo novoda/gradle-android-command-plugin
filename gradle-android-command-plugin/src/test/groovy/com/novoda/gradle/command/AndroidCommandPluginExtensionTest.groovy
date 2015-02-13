@@ -14,7 +14,17 @@ class AndroidCommandPluginExtensionTest extends GroovyTestCase {
         assert extension.androidHome != null
     }
 
-    private AndroidCommandPluginExtension createExtension() {
+    void testDefaultEvents() {
+        def extension = createExtension()
+        assert extension.getEvents() == 10000
+    }
+
+    void testDefaultSeed() {
+        def extension = createExtension()
+        assert extension.getSeed() == null
+    }
+
+    private static AndroidCommandPluginExtension createExtension() {
 	def projectDir = new File('..')
         def project = ProjectBuilder.builder().withProjectDir(projectDir).build()
         def extension = new AndroidCommandPluginExtension(project)
