@@ -112,28 +112,36 @@ android {
     }
 }
 
+/**
+* Uses the Files task type to backup sync photos an the device to
+* some local directory.
+* Only pulls files that are newer than the ones already backed up.
+*/
 task syncPhotos(type: com.novoda.gradle.command.Files) {
     deviceId {
-        def moto = android.command.devices().grep({ it.brand() == 'motorola' })
+        def moto = android.command.devices().find ({ it.brand() == 'motorola' })
         if (!moto) {
             throw new GroovyRuntimeException('No Motorola device found')
         }
-        moto[0].id
+        moto.id
     }
     script {
-        def dir = '/sdcard/DCIM/Camera/'
-        def imageDir = file('motoPhoto')
-        imageDir.mkdir()
-        def archivedImageFiles = imageDir.listFiles()
+        def deviceImageDir = '/sdcard/DCIM/Camera/'
+        def backupDir = file('motoPhoto')
+        backupDir.mkdir()
+        def archivedImageFiles = backupDir.listFiles()
         def newestTimestamp = archivedImageFiles ? archivedImageFiles?.sort({-it.lastModified()})?.head()?.lastModified() : 0
         def startDate = new Date(newestTimestamp)
-        list(dir).each { com.novoda.gradle.command.FileInfo item ->
-            if (item.timestamp.after(startDate)) {
-                if (item.name.endsWith('jpg') && !item.name.contains(':nopm:'))  {
-                    println item
-                    pull item.path + item.name, imageDir.path
-                }
-            }
+        println startDate
+        list(deviceImageDir).findAll { item ->
+            item.timestamp.after(startDate)
+        }
+        .findAll { item ->
+            item.name.endsWith('jpg') && !item.name.contains(':nopm:') 
+        }
+        .each { item ->
+            println item
+            pull item.path + item.name, backupDir.path
         }
     }
 }
