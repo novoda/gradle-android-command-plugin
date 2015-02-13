@@ -3,7 +3,7 @@ package com.novoda.gradle.command
 import groovy.transform.Immutable
 
 @Immutable
-public class FileInfo {
+class FileInfo {
     static enum Type {
         FILE, DIRECTORY, LINK
     }
