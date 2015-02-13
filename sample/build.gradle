@@ -113,9 +113,9 @@ android {
 }
 
 /**
-* Uses the Files task type to backup sync photos an the device to
+* Uses the Files task type to backup photos on the device to
 * some local directory.
-* Only pulls files that are newer than the ones already backed up.
+* Only pulls files that are not yet backed up.
 */
 task syncPhotos(type: com.novoda.gradle.command.Files) {
     deviceId {
