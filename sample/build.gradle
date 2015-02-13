@@ -128,7 +128,6 @@ task syncPhotos(type: com.novoda.gradle.command.Files) {
     script {
         def deviceImageDir = '/sdcard/DCIM/Camera/'
         def backupDir = mkdir('motoPhoto')
-        def archivedImageFiles = backupDir.listFiles()
 
         list(deviceImageDir).findAll { image ->
             image.name.endsWith('jpg') && !image.name.contains(':nopm:') 
