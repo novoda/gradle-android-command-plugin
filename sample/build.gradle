@@ -127,8 +127,7 @@ task syncPhotos(type: com.novoda.gradle.command.Files) {
     }
     script {
         def deviceImageDir = '/sdcard/DCIM/Camera/'
-        def backupDir = file('motoPhoto')
-        backupDir.mkdir()
+        def backupDir = mkdir('motoPhoto')
         def archivedImageFiles = backupDir.listFiles()
 
         list(deviceImageDir).findAll { item ->
