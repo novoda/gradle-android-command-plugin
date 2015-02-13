@@ -30,6 +30,6 @@ class Monkey extends AdbTask {
     private getSeed() {
         if (seed instanceof Closure)
             seed = seed.call()
-        seed ?: pluginEx.getSeed()
+        seed ?: pluginEx.seed
     }
 }
