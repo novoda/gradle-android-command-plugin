@@ -130,13 +130,13 @@ task syncPhotos(type: com.novoda.gradle.command.Files) {
         def backupDir = mkdir('motoPhoto')
         def archivedImageFiles = backupDir.listFiles()
 
-        list(deviceImageDir).findAll { item ->
-            item.name.endsWith('jpg') && !item.name.contains(':nopm:') 
+        list(deviceImageDir).findAll { image ->
+            image.name.endsWith('jpg') && !image.name.contains(':nopm:') 
         }
-        .each { item ->
-            if (!new File(backupDir.path, item.name).exists()) {
-                println item
-                pull item.path + item.name, backupDir.path
+        .each { image ->
+            if (!new File(backupDir.path, image.name).exists()) {
+                println image
+                pull image.path + image.name, backupDir.path
             }
         }
     }
