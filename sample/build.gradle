@@ -9,6 +9,7 @@ buildscript {
     }
 }
 apply plugin: 'com.android.application'
+// apply android-command AFTER android plugin
 apply plugin: 'android-command'
 
 repositories {
@@ -63,45 +64,33 @@ android {
     command {
         deviceId {
             def apiLevel = defaultConfig.minSdkVersion.getApiLevel()
-            def minSdkDevices = devices().grep { it.sdkVersion() >= apiLevel }
-            if (!minSdkDevices) {
+            def minSdkDevice = devices().find { it.sdkVersion() >= apiLevel }
+            if (!minSdkDevice) {
                 throw new IllegalStateException('No device found running android version >= ' + apiLevel)
             }
-            minSdkDevices[0].id
+            minSdkDevice.id
         }
 
         events 1000
         sortBySubtasks false
 
 
-        task('instHudl', com.novoda.gradle.command.Install) {
+        task('runAmazon', com.novoda.gradle.command.Run) {
             deviceId {
-                def hudlDevices = devices().grep { it.brand() == 'hudl' }
-                if (!hudlDevices) {
-                    throw new GroovyRuntimeException('No hudl device found')
+                def kindle = devices().find { it.brand() == 'Amazon' }
+                if (!kindle) {
+                    throw new GroovyRuntimeException('No Amazon device found')
                 }
-                hudlDevices[0].id
+                kindle.id
             }
         }
 
         task('runNewest', com.novoda.gradle.command.Run, ['installDevice']) {
             deviceId {
                 def device = devices().max { it.sdkVersion() }
-                if (!device) {
-                    throw new GroovyRuntimeException('No device found')
-                }
                 device.id
             }
         }
-
-        task('bigMonkey', com.novoda.gradle.command.Monkey, ['installDevice']) {
-            events {
-                if (devices().grep { it.id == deviceId }[0].brand() != 'Amazon')
-                    return 2222
-                return 5000
-            }
-        }
-
 
         task autoLogin(type: com.novoda.gradle.command.Input) {
             script {
@@ -122,3 +111,35 @@ android {
         }
     }
 }
+
+/**
+* Uses the Files task type to backup photos on the device to
+* some local directory.
+* Only pulls files that are not yet backed up.
+*/
+task syncPhotos(type: com.novoda.gradle.command.Files) {
+    deviceId {
+        def moto = android.command.devices().find { it.brand() == 'motorola' }
+        if (!moto) {
+            throw new GroovyRuntimeException('No Motorola device found')
+        }
+        moto.id
+    }
+    script {
+        def deviceImageDir = '/sdcard/DCIM/Camera/'
+        def backupDir = mkdir('motoPhoto')
+
+        list(deviceImageDir).findAll { image ->
+            image.name.endsWith('jpg') && !image.name.contains(':nopm:') 
+        }
+        .findAll { image -> 
+            !new File(backupDir.path, image.name).exists() 
+        }
+        .each { image ->
+            println image
+            pull image.path + image.name, backupDir.path
+        }
+    }
+}
+
+

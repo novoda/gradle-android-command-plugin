@@ -1,15 +1,12 @@
 package com.novoda.gradle.command
 
+import groovy.transform.Immutable
 
-public class Device {
+@Immutable
+class Device {
 
-    final String adb
-    final String id
-
-    Device(String adb, String id) {
-        this.adb = adb
-        this.id = id
-    }
+    String adb
+    String id
 
     Integer sdkVersion() {
         try {
@@ -17,7 +14,6 @@ public class Device {
         } catch (NumberFormatException ignored) {
             0
         }
-
     }
 
     String androidVersion() {
