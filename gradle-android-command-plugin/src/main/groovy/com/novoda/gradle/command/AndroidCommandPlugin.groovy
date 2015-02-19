@@ -13,12 +13,7 @@ public class AndroidCommandPlugin implements Plugin<Project> {
         }
 
         def androidExtension = project.android
-        def androidHome
-        if (androidExtension.hasProperty('sdkHandler')) {
-            androidHome = "${androidExtension.sdkHandler.sdkFolder}"
-        } else {
-            androidHome = "${androidExtension.sdkDirectory}"
-        }
+        String androidHome = getAndroidHome(androidExtension)
 
         def extension = androidExtension.extensions.create("command", AndroidCommandPluginExtension, project, androidHome)
         extension.task 'installDevice', 'installs the APK on the specified device', Install, ['assemble']
@@ -26,5 +21,15 @@ public class AndroidCommandPlugin implements Plugin<Project> {
         extension.task 'monkey', 'calls the monkey command on the specified device', Monkey, ['installDevice']
         extension.task 'clearPrefs', 'clears the shared preferences on the specified device', ClearPreferences
         extension.task 'uninstallDevice', 'uninstalls the APK from the specific device', Uninstall
+    }
+
+    private static String getAndroidHome(androidExtension) {
+        def androidHome
+        if (androidExtension.hasProperty('sdkHandler')) {
+            androidHome = "${androidExtension.sdkHandler.sdkFolder}"
+        } else {
+            androidHome = "${androidExtension.sdkDirectory}"
+        }
+        androidHome
     }
 }
