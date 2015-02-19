@@ -12,15 +12,15 @@ public class AndroidCommandPlugin implements Plugin<Project> {
             throw new StopExecutionException("The 'android' plugin is required.")
         }
 
-        def android = project.android
+        def androidExtension = project.android
         def androidHome
-        if (android.hasProperty('sdkHandler')) {
-            androidHome = "${android.sdkHandler.sdkFolder}"
+        if (androidExtension.hasProperty('sdkHandler')) {
+            androidHome = "${androidExtension.sdkHandler.sdkFolder}"
         } else {
-            androidHome = "${android.sdkDirectory}"
+            androidHome = "${androidExtension.sdkDirectory}"
         }
 
-        def extension = android.extensions.create("command", AndroidCommandPluginExtension, project, androidHome)
+        def extension = androidExtension.extensions.create("command", AndroidCommandPluginExtension, project, androidHome)
         extension.task 'installDevice', 'installs the APK on the specified device', Install, ['assemble']
         extension.task 'run', 'installs and runs a APK on the specified device', Run, ['installDevice']
         extension.task 'monkey', 'calls the monkey command on the specified device', Monkey, ['installDevice']
