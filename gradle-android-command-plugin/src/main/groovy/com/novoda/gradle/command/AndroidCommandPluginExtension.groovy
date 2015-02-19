@@ -3,7 +3,7 @@ import org.gradle.api.Project
 
 public class AndroidCommandPluginExtension {
 
-    def androidHome
+    String androidHome
     def adb
     def aapt
     def deviceId
@@ -13,7 +13,7 @@ public class AndroidCommandPluginExtension {
 
     private final Project project
 
-    AndroidCommandPluginExtension(Project project, def androidHome) {
+    AndroidCommandPluginExtension(Project project, String androidHome) {
         this.project = project
         this.androidHome = androidHome
     }
