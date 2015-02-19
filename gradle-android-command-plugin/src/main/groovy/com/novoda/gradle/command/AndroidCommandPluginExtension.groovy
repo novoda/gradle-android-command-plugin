@@ -13,14 +13,9 @@ public class AndroidCommandPluginExtension {
 
     private final Project project
 
-    AndroidCommandPluginExtension(Project project) {
+    AndroidCommandPluginExtension(Project project, def androidHome) {
         this.project = project
-        androidHome = readSdkDirFromLocalProperties() ?: System.env.ANDROID_HOME
-        if (androidHome == null) {
-            throw new IllegalStateException("Couldn't read the SDK directory. If you're running the tests, " +
-                    "make sure you set the ANDROID_HOME env. variable and it points to your Android SDK home. Otherwise, " +
-                    "make sure there's a local.properties in the root of your project with the property sdk.dir pointing to the Android SDK")
-        }
+        this.androidHome = androidHome
     }
 
     def task(String name, Class<? extends AdbTask> type, Closure configuration) {
@@ -102,16 +97,5 @@ public class AndroidCommandPluginExtension {
             throw new IllegalStateException('No attached devices found')
         }
         deviceIds[0]
-    }
-
-    private def readSdkDirFromLocalProperties() {
-        try {
-            Properties properties = new Properties()
-            properties.load(project.rootProject.file('local.properties').newDataInputStream())
-            properties.getProperty('sdk.dir').trim()
-        }
-        catch (Exception e) {
-            project.getLogger().debug("could not read local.properties", e)
-        }
     }
 }

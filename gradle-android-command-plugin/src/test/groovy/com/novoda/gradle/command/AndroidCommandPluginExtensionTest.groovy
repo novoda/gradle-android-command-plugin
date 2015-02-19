@@ -9,11 +9,6 @@ class AndroidCommandPluginExtensionTest extends GroovyTestCase {
         assert extension.getAdb().contains('adb')
     }
 
-    void testDefaultAndroidHomePath() {
-        def extension = createExtension()
-        assert extension.androidHome != null
-    }
-
     void testDefaultEvents() {
         def extension = createExtension()
         assert extension.getEvents() == 10000
@@ -27,7 +22,7 @@ class AndroidCommandPluginExtensionTest extends GroovyTestCase {
     private static AndroidCommandPluginExtension createExtension() {
 	def projectDir = new File('..')
         def project = ProjectBuilder.builder().withProjectDir(projectDir).build()
-        def extension = new AndroidCommandPluginExtension(project)
+        def extension = new AndroidCommandPluginExtension(project, null)
         extension
     }
 }
