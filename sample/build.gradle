@@ -92,15 +92,7 @@ android {
             }
         }
 
-        task('bigMonkey', com.novoda.gradle.command.Monkey, ['installDevice']) {
-            events {
-                if (devices().find { it.id == deviceId }.brand() != 'Amazon')
-                    return 2222
-                return 5000
-            }
-        }
-
-        task autoLogin(type: com.novoda.gradle.command.Input) {
+       task autoLogin(type: com.novoda.gradle.command.Input) {
             script {
                 2.times {
                     text 'bob'
