@@ -11,11 +11,27 @@ public class AndroidCommandPlugin implements Plugin<Project> {
         if (!project.plugins.hasPlugin('android')) {
             throw new StopExecutionException("The 'android' plugin is required.")
         }
-        def extension = project.android.extensions.create("command", AndroidCommandPluginExtension, project)
+
+        def androidExtension = project.android
+        String androidHome = getAndroidHome(androidExtension)
+
+        def extension = androidExtension.extensions.create("command", AndroidCommandPluginExtension, project, androidHome)
         extension.task 'installDevice', 'installs the APK on the specified device', Install, ['assemble']
         extension.task 'run', 'installs and runs a APK on the specified device', Run, ['installDevice']
         extension.task 'monkey', 'calls the monkey command on the specified device', Monkey, ['installDevice']
         extension.task 'clearPrefs', 'clears the shared preferences on the specified device', ClearPreferences
         extension.task 'uninstallDevice', 'uninstalls the APK from the specific device', Uninstall
+    }
+
+    private static String getAndroidHome(androidExtension) {
+        def androidHome
+        if (androidExtension.hasProperty('sdkHandler')) {
+            androidHome = "${androidExtension.sdkHandler.sdkFolder}"
+        } else if(androidExtension.hasProperty('sdkDirectory')) {
+            androidHome = "${androidExtension.sdkDirectory}"
+        } else {
+            throw new IllegalStateException('The android plugin is not exposing the SDK folder in an expected way.')
+        }
+        androidHome
     }
 }
