@@ -2,7 +2,7 @@ package com.novoda.gradle.command
 import org.gradle.testfixtures.ProjectBuilder
 
 class AndroidCommandPluginExtensionTest extends GroovyTestCase {
-    static private final String SDK_PATH = '/some/path'
+    private static final String SDK_PATH = '/some/path'
 
     void testDefaultAdbPath() {
         def extension = createExtension()
