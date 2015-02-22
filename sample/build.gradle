@@ -29,36 +29,36 @@ android {
     }
 
     buildTypes {
-        debug {}
-        release {}
-        QA {}
+        debug 
+        release
+        QA
     }
 
     productFlavors {
 
-        flavorDimensions "pricing", "releaseType"
+        flavorDimensions 'pricing', 'releaseType'
 
         beta {
-            flavorDimension "releaseType"
+            flavorDimension 'releaseType'
         }
 
         normal {
-            flavorDimension "releaseType"
+            flavorDimension 'releaseType'
         }
 
         free {
-            flavorDimension "pricing"
+            flavorDimension 'pricing'
         }
 
         paid {
-            flavorDimension "pricing"
+            flavorDimension 'pricing'
         }
     }
 
     // change APK name to include the version name
     applicationVariants.all { variant ->
         def file = variant.outputs[0].packageApplication.outputFile
-        variant.outputs[0].packageApplication.outputFile = new File(file.parent, file.name.replace(".apk", "-" + defaultConfig.versionName + ".apk"))
+        variant.outputs[0].packageApplication.outputFile = new File(file.parent, file.name.replace('.apk', "-${defaultConfig.versionName}.apk"))
     }
 
     command {
@@ -66,7 +66,7 @@ android {
             def apiLevel = defaultConfig.minSdkVersion.getApiLevel()
             def minSdkDevice = devices().find { it.sdkVersion() >= apiLevel }
             if (!minSdkDevice) {
-                throw new IllegalStateException('No device found running android version >= ' + apiLevel)
+                throw new IllegalStateException("No device found running android version >= ${apiLevel}")
             }
             minSdkDevice.id
         }
@@ -104,7 +104,7 @@ android {
 
         task listDevices << {
             println()
-            println "Attached devices:"
+            println 'Attached devices:'
             devices().each {
                 println it
             }
