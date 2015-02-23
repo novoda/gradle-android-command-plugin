@@ -1,21 +1,21 @@
 package com.novoda.gradle.command
-
 import org.gradle.api.Project
 
 public class AndroidCommandPluginExtension {
 
-    def androidHome
+    String androidHome
     def adb
     def aapt
     def deviceId
     def events
+    def seed
     def sortBySubtasks
 
     private final Project project
 
-    AndroidCommandPluginExtension(Project project) {
+    AndroidCommandPluginExtension(Project project, String androidHome) {
         this.project = project
-        androidHome = readSdkDirFromLocalProperties() ?: System.env.ANDROID_HOME
+        this.androidHome = androidHome
     }
 
     def task(String name, Class<? extends AdbTask> type, Closure configuration) {
@@ -70,6 +70,10 @@ public class AndroidCommandPluginExtension {
         System.properties['events'] ?: events ?: 10000
     }
 
+    def getSeed() {
+        System.properties['seed'] ?: seed
+    }
+
     def devices() {
         deviceIds().collect { deviceId ->
             new Device(getAdb(), deviceId)
@@ -93,16 +97,5 @@ public class AndroidCommandPluginExtension {
             throw new IllegalStateException('No attached devices found')
         }
         deviceIds[0]
-    }
-
-    private def readSdkDirFromLocalProperties() {
-        try {
-            Properties properties = new Properties()
-            properties.load(project.rootProject.file('local.properties').newDataInputStream())
-            properties.getProperty('sdk.dir').trim()
-        }
-        catch (Exception e) {
-            project.getLogger().debug("could not read local.properties", e)
-        }
     }
 }

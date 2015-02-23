@@ -4,9 +4,8 @@ import org.gradle.api.tasks.TaskAction
 
 class Monkey extends AdbTask {
 
-    private getEvents() {
-        pluginEx.events
-    }
+    def events
+    def seed
 
     protected handleCommandOutput(def text) {
         super.handleCommandOutput(text)
@@ -16,6 +15,21 @@ class Monkey extends AdbTask {
 
     @TaskAction
     void exec() {
-        runCommand(['shell', 'monkey', '-p', packageName, '-v', getEvents()])
+        def arguments = ['shell', 'monkey', '-p', packageName, '-v', getEvents()]
+        if (getSeed())
+            arguments += ['-s', getSeed()]
+        assertDeviceAndRunCommand(arguments)
+    }
+
+    private getEvents() {
+        if (events instanceof Closure)
+            events = events.call()
+        events ?: pluginEx.events
+    }
+
+    private getSeed() {
+        if (seed instanceof Closure)
+            seed = seed.call()
+        seed ?: pluginEx.seed
     }
 }

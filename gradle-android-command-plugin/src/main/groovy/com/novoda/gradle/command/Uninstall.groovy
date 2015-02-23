@@ -6,6 +6,6 @@ class Uninstall extends AdbTask {
 
     @TaskAction
     void exec() {
-        runCommand(['uninstall', packageName])
+        assertDeviceAndRunCommand(['uninstall', packageName])
     }
 }

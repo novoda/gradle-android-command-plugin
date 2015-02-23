@@ -3,12 +3,13 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.14.1'
+        classpath 'com.android.tools.build:gradle:1.0.1'
         // To depend on the deployed version of the plugin add the following line here:
-//        classpath 'com.novoda:gradle-android-command-plugin:1.2.1'
+//        classpath 'com.novoda:gradle-android-command-plugin:1.3.0'
     }
 }
 apply plugin: 'com.android.application'
+// apply android-command AFTER android plugin
 apply plugin: 'android-command'
 
 repositories {
@@ -17,7 +18,7 @@ repositories {
 
 android {
     compileSdkVersion 19
-    buildToolsVersion '21.1.0'
+    buildToolsVersion '21.1.2'
 
     defaultConfig {
         versionCode 1
@@ -28,69 +29,117 @@ android {
     }
 
     buildTypes {
-        debug {}
-        release {}
-        QA {}
+        debug 
+        release
+        QA
     }
 
     productFlavors {
 
-        flavorDimensions "pricing", "releaseType"
+        flavorDimensions 'pricing', 'releaseType'
 
         beta {
-            flavorDimension "releaseType"
+            flavorDimension 'releaseType'
         }
 
         normal {
-            flavorDimension "releaseType"
+            flavorDimension 'releaseType'
         }
 
         free {
-            flavorDimension "pricing"
+            flavorDimension 'pricing'
         }
 
         paid {
-            flavorDimension "pricing"
+            flavorDimension 'pricing'
         }
     }
 
     // change APK name to include the version name
     applicationVariants.all { variant ->
-        def file = variant.packageApplication.outputFile
-        variant.packageApplication.outputFile = new File(file.parent, file.name.replace(".apk", "-" + defaultConfig.versionName + ".apk"))
+        def file = variant.outputs[0].packageApplication.outputFile
+        variant.outputs[0].packageApplication.outputFile = new File(file.parent, file.name.replace('.apk', "-${defaultConfig.versionName}.apk"))
     }
 
     command {
         deviceId {
-            def minSdkDevices = devices().grep({ it.sdkVersion() >= defaultConfig.minSdkVersion }).sort()
-            if (!minSdkDevices) {
-                throw new IllegalStateException('No device found running android version >= ' + defaultConfig.minSdkVersion)
+            def apiLevel = defaultConfig.minSdkVersion.getApiLevel()
+            def minSdkDevice = devices().find { it.sdkVersion() >= apiLevel }
+            if (!minSdkDevice) {
+                throw new IllegalStateException("No device found running android version >= ${apiLevel}")
             }
-            minSdkDevices[0].id
+            minSdkDevice.id
         }
 
         events 1000
-        task('instHudl', com.novoda.gradle.command.Install) {
+        sortBySubtasks false
+
+
+        task('runAmazon', com.novoda.gradle.command.Run) {
             deviceId {
-                def hudlDevices = devices().grep({ it.brand() == 'hudl' })
-                if (!hudlDevices) {
-                    throw new GroovyRuntimeException('No hudl device found')
+                def kindle = devices().find { it.brand() == 'Amazon' }
+                if (!kindle) {
+                    throw new GroovyRuntimeException('No Amazon device found')
                 }
-                hudlDevices[0].id
+                kindle.id
             }
         }
 
         task('runNewest', com.novoda.gradle.command.Run, ['installDevice']) {
             deviceId {
-                def device = devices().max({ it.sdkVersion() })
-                if (!device) {
-                    throw new GroovyRuntimeException('No device found')
-                }
+                def device = devices().max { it.sdkVersion() }
                 device.id
             }
         }
 
-        sortBySubtasks false
+        task autoLogin(type: com.novoda.gradle.command.Input) {
+            script {
+                2.times {
+                    text 'bob'
+                    enter()
+                }
+                enter()
+            }
+        }
+
+        task listDevices << {
+            println()
+            println 'Attached devices:'
+            devices().each {
+                println it
+            }
+        }
     }
 }
+
+/**
+* Uses the Files task type to backup photos on the device to
+* some local directory.
+* Only pulls files that are not yet backed up.
+*/
+task syncPhotos(type: com.novoda.gradle.command.Files) {
+    deviceId {
+        def moto = android.command.devices().find { it.brand() == 'motorola' }
+        if (!moto) {
+            throw new GroovyRuntimeException('No Motorola device found')
+        }
+        moto.id
+    }
+    script {
+        def deviceImageDir = '/sdcard/DCIM/Camera/'
+        def backupDir = mkdir('motoPhoto')
+
+        list(deviceImageDir).findAll { image ->
+            image.name.endsWith('jpg') && !image.name.contains(':nopm:') 
+        }
+        .findAll { image -> 
+            !new File(backupDir.path, image.name).exists() 
+        }
+        .each { image ->
+            println image
+            pull image.path + image.name, backupDir.path
+        }
+    }
+}
+
 

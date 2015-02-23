@@ -1,23 +1,19 @@
 package com.novoda.gradle.command
 
+import groovy.transform.Immutable
 
-public class Device {
+@Immutable
+class Device {
 
-    final String adb
-    final String id
-
-    Device(String adb, String id) {
-        this.adb = adb
-        this.id = id
-    }
+    String adb
+    String id
 
     Integer sdkVersion() {
         try {
             deviceProperty('ro.build.version.sdk').toInteger()
-        } catch (NumberFormatException nfe) {
+        } catch (NumberFormatException ignored) {
             0
         }
-
     }
 
     String androidVersion() {
@@ -57,7 +53,7 @@ public class Device {
         command.execute().text.trim()
     }
 
-    String toString() {
+    String fullInfo() {
         def builder = new StringBuilder();
         builder.append("Device ID: $id").append("\n")
         builder.append("SDK version: ${sdkVersion()}").append("\n")
@@ -73,4 +69,7 @@ public class Device {
         builder.toString()
     }
 
+    String toString() {
+        getClass().name + [id: id, sdk: sdkVersion(), version: androidVersion(), brand: brand(), manufacturer: manufacturer(), model: model(), country: country(), language: language(), timezone: timezone()]
+    }
 }
