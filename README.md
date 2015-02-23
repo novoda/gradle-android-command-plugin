@@ -11,7 +11,7 @@ You can use this plugin to do things such as:
   - Select the first one that complies with a custom rule
   - Install a specific APK from the available build types + flavours
   - Clear preferences or do something related to the APK to prepare for tests
-  - Run monkeyrunner for that specific APK on that specific device
+  - Run monkey for that specific APK on that specific device
   - Uninstall the APK
 
 This is particularly useful for CI servers but could be used to speed up IDE development as well.
@@ -30,7 +30,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.novoda:gradle-android-command-plugin:1.3.0'
+        classpath 'com.novoda:gradle-android-command-plugin:1.4.0'
     }
 }
 
@@ -44,10 +44,10 @@ The plugin creates new tasks that you can use:
   * `installDevice<Variant>` [`com.novoda.gradle.command.InstallDevice`] - installs the app on a specific device.
   * `uninstallDevice<Variant>` [`com.novoda.gradle.command.UninstallDevice`] - uninstalls the app from a specific device.
   * `run<Variant>` [`com.novoda.gradle.command.Run`] - installs and launches the app on a specific device.
-  * `monkey<Variant>` [`com.novoda.gradle.command.Monkey`] - installs and runs monkeyrunner on a specific device.
+  * `monkey<Variant>` [`com.novoda.gradle.command.Monkey`] - installs and runs monkey on a specific device.
   * `clearPreferences<Variant>` [`com.novoda.gradle.command.ClearPreferences`] - clears app preferences on a specific device.
-  * `com.novoda.gradle.command.Input` - runs `adb shell input` scripts.
-
+  * `com.novoda.gradle.command.Input` - runs `input` scripts, wrapping `adb shell input`.
+  * `com.novoda.gradle.command.Files` - enables basic file copy via `push` and `pull`, wrapping the respecitve adb calls.
 
 ## Links
 
