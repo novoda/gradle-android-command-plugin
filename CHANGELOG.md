@@ -1,10 +1,10 @@
 # 1.4.0
 
 - add Files task to support adb push / pull functionality (see sample project for an example)
-- derive adb location from android plugin (contribution by Emanuele Zattin)
-- better exception on missing android plugin (contribution by Emanuele Zattin)
-- allow to specify seed in monkey task (contribution by Emanuele Zattin)
-- fix broken script task on GenyMotion (contribution by Eugen Martynov) 
+- derive adb location from android plugin (contribution by Emanuele Zattin, #70)
+- better exception on missing android plugin (contribution by Emanuele Zattin, #68)
+- allow to specify seed in monkey task (contribution by Emanuele Zattin, #67)
+- fix broken script task on GenyMotion (contribution by Eugen Martynov, #59)
 - update to Gradle 2.2 (via wrapper)
 
 # 1.3.0
