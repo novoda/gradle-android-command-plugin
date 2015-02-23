@@ -30,7 +30,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.novoda:gradle-android-command-plugin:1.3.0'
+        classpath 'com.novoda:gradle-android-command-plugin:1.4.0'
     }
 }
 
@@ -46,8 +46,8 @@ The plugin creates new tasks that you can use:
   * `run<Variant>` [`com.novoda.gradle.command.Run`] - installs and launches the app on a specific device.
   * `monkey<Variant>` [`com.novoda.gradle.command.Monkey`] - installs and runs monkeyrunner on a specific device.
   * `clearPreferences<Variant>` [`com.novoda.gradle.command.ClearPreferences`] - clears app preferences on a specific device.
-  * `com.novoda.gradle.command.Input` - runs `adb shell input` scripts.
-
+  * `com.novoda.gradle.command.Input` - runs `input` scripts, wrapping `adb shell input`.
+  * `com.novoda.gradle.command.Files` - enables basic file copy via `push` and `pull`, wrapping the respecitve adb calls.
 
 ## Links
 
