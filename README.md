@@ -24,7 +24,7 @@ To start using this library, add these lines to the `build.gradle` of your proje
 
 ```groovy
 apply plugin: 'com.android.application'
-apply plugin: 'android-command'
+apply plugin: 'com.novoda.android-command'
 
 buildscript {
     repositories {
