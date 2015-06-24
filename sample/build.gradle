@@ -109,6 +109,12 @@ android {
                 println it
             }
         }
+
+        task dumpActivityStack(type: com.novoda.gradle.command.ActivityStack) << {
+            getActivityRecords().each {
+                logger.info it.toString()
+            }
+        }
     }
 }
 
