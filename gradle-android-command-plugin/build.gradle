@@ -6,7 +6,7 @@ apply plugin: 'groovy'
 
 
 group = 'com.novoda'
-version = '1.4.1'
+version = '1.4.0'
 
 plugindev {
     pluginId 'com.novoda.android-command'
