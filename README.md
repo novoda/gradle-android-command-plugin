@@ -45,6 +45,7 @@ The plugin creates new tasks that you can use:
   * `installDevice<Variant>` [`com.novoda.gradle.command.InstallDevice`] - installs the app on a specific device.
   * `uninstallDevice<Variant>` [`com.novoda.gradle.command.UninstallDevice`] - uninstalls the app from a specific device.
   * `run<Variant>` [`com.novoda.gradle.command.Run`] - installs and launches the app on a specific device.
+  * `stop<Variant>` [`com.novoda.gradle.command.Stop`] - Forcibly stops the app on a specific device.
   * `monkey<Variant>` [`com.novoda.gradle.command.Monkey`] - installs and runs monkey on a specific device.
   * `clearPreferences<Variant>` [`com.novoda.gradle.command.ClearPreferences`] - clears app preferences on a specific device.
   * `com.novoda.gradle.command.Input` - runs `input` scripts, wrapping `adb shell input`.
