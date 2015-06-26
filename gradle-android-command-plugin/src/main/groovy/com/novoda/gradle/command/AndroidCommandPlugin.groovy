@@ -18,6 +18,8 @@ public class AndroidCommandPlugin implements Plugin<Project> {
         def extension = androidExtension.extensions.create("command", AndroidCommandPluginExtension, project, androidHome)
         extension.task 'installDevice', 'installs the APK on the specified device', Install, ['assemble']
         extension.task 'run', 'installs and runs a APK on the specified device', Run, ['installDevice']
+        extension.task 'start', 'installs and runs a APK on the specified device (alias for "run")', Run, ['installDevice']
+        extension.task 'stop', 'forcibly stops the app on the specified device', Stop
         extension.task 'monkey', 'calls the monkey command on the specified device', Monkey, ['installDevice']
         extension.task 'clearPrefs', 'clears the shared preferences on the specified device', ClearPreferences
         extension.task 'uninstallDevice', 'uninstalls the APK from the specific device', Uninstall
