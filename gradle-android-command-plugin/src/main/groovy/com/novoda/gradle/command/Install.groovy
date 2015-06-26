@@ -6,6 +6,6 @@ class Install extends AdbTask {
 
     @TaskAction
     void exec() {
-        assertDeviceAndRunCommand(['install', '-r', apkPath])
+        assertDeviceAndRunCommand(['install', '-rd', apkPath])
     }
 }
