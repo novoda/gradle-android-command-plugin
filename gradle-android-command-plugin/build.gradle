@@ -1,24 +1,33 @@
-plugins {
-    id 'nu.studer.plugindev' version '1.0.3'
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.novoda:bintray-release:0.2.4'
+    }
 }
 
 apply plugin: 'groovy'
+apply plugin: 'bintray-release' 
 
+dependencies {
+    compile gradleApi()
+}
 
 group = 'com.novoda'
 version = '1.4.0'
 
-plugindev {
-    pluginId 'com.novoda.android-command'
-    pluginName 'gradle-andorid-command-plugin'
-    pluginImplementationClass 'com.novoda.gradle.command.AndroidCommandPlugin'
-    pluginDescription 'Useful tasks for gradle android builds'
-    pluginLicenses 'Apache-2.0'
-    pluginTags 'gradle', 'plugin', 'android', 'adb'
-    authorId 'novoda'
-    authorName 'Novoda'
-    authorEmail 'nos@novoda.com'
-    projectUrl 'https://github.com/novoda/gradle-android-command-plugin'
-    projectInceptionYear '2013'
-    done()
+ext {
+    sourceCompatibility = 1.6
+    targetCompatibility = 1.6
+    artifactId = 'gradle-android-command-plugin'
+}
+
+publish {
+    userOrg = 'novoda'
+    groupId = 'com.novoda'
+    artifactId = project.ext.artifactId
+    version = project.version
+    description = 'Useful tasks for gradle android builds'
+    website = 'https://github.com/novoda/gradle-android-command-plugin'
 }
