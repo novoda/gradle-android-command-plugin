@@ -15,7 +15,7 @@ dependencies {
 }
 
 group = 'com.novoda'
-version = '1.4.1'
+version = '1.5.0'
 
 ext {
     sourceCompatibility = 1.6
