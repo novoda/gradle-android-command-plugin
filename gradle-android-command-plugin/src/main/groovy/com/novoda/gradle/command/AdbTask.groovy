@@ -57,7 +57,7 @@ public class AdbTask extends org.gradle.api.DefaultTask {
                 if (matcher) {
                     def intentation = matcher[0][1] + '  '
                     def name = null, main = false, launcher = false, disabled = false
-                    
+
                     // Parse the indented block for the current activity alias.
                     while (it.hasNext() && (nextLine = it.next()).startsWith(intentation)) {
                         matcher = nextLine =~ /A: android:name.*="([^"]+)"/
@@ -66,7 +66,7 @@ public class AdbTask extends org.gradle.api.DefaultTask {
                         }
                         main = main || nextLine.contains('android.intent.action.MAIN')
                         launcher = launcher || nextLine.contains('android.intent.category.LAUNCHER')
-                        
+
                         // Exclude disabled entries.
                         disabled = disabled || nextLine ==~ /^(\s+)A: android:enabled.*=.*0x0$/
                     }
