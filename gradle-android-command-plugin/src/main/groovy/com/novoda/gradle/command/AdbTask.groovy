@@ -57,7 +57,7 @@ public class AdbTask extends org.gradle.api.DefaultTask {
                 if (matcher) {
                     def intentation = matcher[0][1] + '  '
                     def name = null, main = false, launcher = false, disabled = false
-                    
+
                     // Parse the indented block for the current activity alias.
                     while (it.hasNext() && (nextLine = it.next()).startsWith(intentation)) {
                         matcher = nextLine =~ /A: android:name.*="([^"]+)"/
@@ -66,7 +66,7 @@ public class AdbTask extends org.gradle.api.DefaultTask {
                         }
                         main = main || nextLine.contains('android.intent.action.MAIN')
                         launcher = launcher || nextLine.contains('android.intent.category.LAUNCHER')
-                        
+
                         // Exclude disabled entries.
                         disabled = disabled || nextLine ==~ /^(\s+)A: android:enabled.*=.*0x0$/
                     }
@@ -105,13 +105,13 @@ public class AdbTask extends org.gradle.api.DefaultTask {
     protected void assertDeviceConnected() {
         def id = getDeviceId()
         if (!pluginEx.deviceIds().contains(id))
-            throw new IllegalStateException("Device $id is not found!")
+            throw new IllegalStateException("Device with ID $id not found")
         printDeviceInfo()
     }
 
     private String readApkProperty(String propertyKey) {
         if (apkPath == null) {
-            throw new IllegalStateException("No apk found for the task $name")
+            throw new IllegalStateException("No APK found for the '$name' task")
         }
         String output = [pluginEx.aapt, 'dump', 'badging', apkPath].execute().text.readLines().find {
             it.startsWith("$propertyKey:")
