@@ -105,13 +105,13 @@ public class AdbTask extends org.gradle.api.DefaultTask {
     protected void assertDeviceConnected() {
         def id = getDeviceId()
         if (!pluginEx.deviceIds().contains(id))
-            throw new IllegalStateException("Device $id is not found!")
+            throw new IllegalStateException("Device with ID $id not found")
         printDeviceInfo()
     }
 
     private String readApkProperty(String propertyKey) {
         if (apkPath == null) {
-            throw new IllegalStateException("No apk found for the task $name")
+            throw new IllegalStateException("No APK found for the '$name' task")
         }
         String output = [pluginEx.aapt, 'dump', 'badging', apkPath].execute().text.readLines().find {
             it.startsWith("$propertyKey:")
