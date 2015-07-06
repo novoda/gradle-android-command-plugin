@@ -1,4 +1,5 @@
 package com.novoda.gradle.command
+
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.StopExecutionException
@@ -29,7 +30,7 @@ public class AndroidCommandPlugin implements Plugin<Project> {
         def androidHome
         if (androidExtension.hasProperty('sdkHandler')) {
             androidHome = "${androidExtension.sdkHandler.sdkFolder}"
-        } else if(androidExtension.hasProperty('sdkDirectory')) {
+        } else if (androidExtension.hasProperty('sdkDirectory')) {
             androidHome = "${androidExtension.sdkDirectory}"
         } else {
             throw new IllegalStateException('The android plugin is not exposing the SDK folder in an expected way.')
