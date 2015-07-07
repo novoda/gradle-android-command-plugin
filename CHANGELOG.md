@@ -1,4 +1,4 @@
-# 1.4.1
+# 1.5.0
 - add support for launching via alias (`activity-alias`) (contribution by [Sebastian Schuberth](https://github.com/sschuberth) [#79](https://github.com/novoda/gradle-android-command-plugin/pull/79))
 - add Stop and Start task (contribution by [Sebastian Schuberth](https://github.com/sschuberth) [#78](https://github.com/novoda/gradle-android-command-plugin/pull/78))
 
