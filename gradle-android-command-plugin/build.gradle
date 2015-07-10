@@ -3,19 +3,19 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.novoda:bintray-release:0.2.4'
+        classpath 'com.novoda:bintray-release:0.3.2'
     }
 }
 
 apply plugin: 'groovy'
-apply plugin: 'bintray-release' 
+apply plugin: 'com.novoda.bintray-release'
 
 dependencies {
     compile gradleApi()
 }
 
 group = 'com.novoda'
-version = '1.4.0'
+version = '1.5.0'
 
 ext {
     sourceCompatibility = 1.6
