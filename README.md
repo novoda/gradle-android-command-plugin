@@ -24,14 +24,14 @@ To start using this library, add these lines to the `build.gradle` of your proje
 
 ```groovy
 apply plugin: 'com.android.application'
-apply plugin: 'android-command'
+apply plugin: 'com.novoda.android-command'
 
 buildscript {
     repositories {
         jcenter()
     }
     dependencies {
-        classpath 'com.novoda:gradle-android-command-plugin:1.4.0'
+        classpath 'com.novoda:gradle-android-command-plugin:1.5.0'
     }
 }
 
