@@ -1,6 +1,15 @@
 package com.novoda.gradle.command
 
+import org.gradle.api.tasks.TaskAction
+
 class ActivityStack extends AdbTask {
+
+    @TaskAction
+    void exec() {
+        getActivityRecords().each {
+            println it.toString()
+        }
+    }
 
     def getActivityRecords() {
         def commandLine = ['shell', 'dumpsys', 'activity', '|', 'grep', '-i', 'run']

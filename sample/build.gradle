@@ -110,10 +110,7 @@ android {
             }
         }
 
-        task dumpActivityStack(type: com.novoda.gradle.command.ActivityStack) << {
-            getActivityRecords().each {
-                logger.info it.toString()
-            }
+        task dumpActivityStack(type: com.novoda.gradle.command.ActivityStack) {
         }
     }
 }
