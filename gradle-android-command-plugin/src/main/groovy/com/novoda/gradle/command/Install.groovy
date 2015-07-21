@@ -8,9 +8,11 @@ class Install extends AdbTask {
 
     @TaskAction
     void exec() {
-        def arguments = ['install', '-rd', apkPath]
+        def arguments = ['install']
         if (getCustomFlags())
             arguments += getCustomFlags()
+
+        arguments += ['-rd', apkPath]
 
         assertDeviceAndRunCommand(arguments)
     }
