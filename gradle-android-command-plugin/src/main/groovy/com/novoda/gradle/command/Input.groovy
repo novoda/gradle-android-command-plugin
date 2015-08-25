@@ -30,7 +30,6 @@ class Input extends AdbTask {
         key 61
     }
 
-
     void back() {
         key 4
     }
@@ -61,6 +60,10 @@ class Input extends AdbTask {
 
     void clear() {
         key 28
+    }
+    
+    void home() {
+        key 3
     }
 
     private input(... values) {
