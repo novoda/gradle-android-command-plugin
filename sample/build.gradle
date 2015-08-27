@@ -110,6 +110,12 @@ android {
             }
         }
 
+        task('installFromGooglePlay', com.novoda.gradle.command.Install) {
+            customFlags {
+                return ['-i', 'com.android.vending']
+            }
+        }
+        
         task dumpActivityStack(type: com.novoda.gradle.command.ActivityStack) {
         }
     }

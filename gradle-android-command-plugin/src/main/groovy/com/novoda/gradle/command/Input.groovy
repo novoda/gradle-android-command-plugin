@@ -10,10 +10,6 @@ class Input extends AdbTask {
         input('text', "$value")
     }
 
-    void key(int code) {
-        input('keyevent', code)
-    }
-
     void tap(int x, int y) {
         input('touchscreen', 'tap', x, y)
     }
@@ -22,15 +18,14 @@ class Input extends AdbTask {
         input('touchscreen', 'swipe', startX, startY, endX, endY)
     }
 
-    void enter() {
-        key 66
+    void key(int code) {
+        input('keyevent', code)
     }
-
-    void tab() {
-        key 61
+    
+    void home() {
+        key 3
     }
-
-
+    
     void back() {
         key 4
     }
@@ -42,7 +37,7 @@ class Input extends AdbTask {
     void down() {
         key 20
     }
-
+    
     void left() {
         key 21
     }
@@ -54,13 +49,21 @@ class Input extends AdbTask {
     void power() {
         key 26
     }
+    
+    void clear() {
+        key 28
+    }
+
+    void tab() {
+        key 61
+    }
+    
+    void enter() {
+        key 66
+    }
 
     void unlock() {
         key 82
-    }
-
-    void clear() {
-        key 28
     }
 
     private input(... values) {
