@@ -1,4 +1,6 @@
 package com.novoda.gradle.command
+
+import groovy.transform.Memoized
 import org.gradle.api.Project
 
 public class AndroidCommandPluginExtension {
@@ -57,6 +59,7 @@ public class AndroidCommandPluginExtension {
     }
 
     // prefer system property over direct setting to enable commandline arguments
+    @Memoized
     def getDeviceId() {
         if (System.properties['deviceId'])
             return System.properties['deviceId']
