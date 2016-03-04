@@ -11,6 +11,7 @@ public class AndroidCommandPluginExtension {
     def deviceId
     def events
     def seed
+    def categories
     def sortBySubtasks
 
     private final Project project
@@ -75,6 +76,10 @@ public class AndroidCommandPluginExtension {
 
     def getSeed() {
         System.properties['seed'] ?: seed
+    }
+
+    def getCategories() {
+        System.properties['categories'] ?: categories ?: ''
     }
 
     def devices() {

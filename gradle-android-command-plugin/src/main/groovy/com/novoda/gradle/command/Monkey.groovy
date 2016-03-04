@@ -6,6 +6,7 @@ class Monkey extends AdbTask {
 
     def events
     def seed
+    def categories
 
     protected handleCommandOutput(def text) {
         super.handleCommandOutput(text)
@@ -15,10 +16,27 @@ class Monkey extends AdbTask {
 
     @TaskAction
     void exec() {
-        def arguments = ['shell', 'monkey', '-p', packageName, '-v', getEvents()]
+        def arguments = ['shell', 'monkey', '-p', packageName]
+        arguments += getFormattedCategories()
+        arguments += ['-v', getEvents()]
         if (getSeed())
             arguments += ['-s', getSeed()]
         assertDeviceAndRunCommand(arguments)
+    }
+
+    def getFormattedCategories() {
+        def formattedCategories = []
+        def categories = getCategories()
+        categories.each {
+            formattedCategories.add("-c " + it)
+        }
+        formattedCategories
+    }
+
+    private getCategories() {
+        if (categories instanceof Closure)
+            categories = categories.call()
+        categories ?: pluginEx.categories
     }
 
     private getEvents() {
