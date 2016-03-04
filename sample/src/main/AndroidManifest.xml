@@ -16,7 +16,17 @@
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
+
     <activity android:name="com.novoda.gradle.command.HelloActivity" />
+
+    <activity android:name="com.novoda.gradle.command.MonkeyActivity">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+
+        <category android:name="android.intent.category.ONLY_ME" />
+      </intent-filter>
+    </activity>
+
   </application>
 
 </manifest>
