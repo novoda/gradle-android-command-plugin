@@ -65,24 +65,34 @@ public class AndroidCommandPluginExtension {
     // prefer system property over direct setting to enable commandline arguments
     @Memoized
     def getDeviceId() {
-        if (System.properties['deviceId'])
+        if (System.properties['deviceId']) {
             return System.properties['deviceId']
-        if (deviceId instanceof Closure)
+        } else if (deviceId instanceof Closure) {
             return deviceId.call()
+        }
         deviceId ?: defaultDeviceId()
     }
 
-    // prefer system property over direct setting to enable commandline arguments
     def getEvents() {
-        System.properties['events'] ?: events ?: EVENTS_DEFAULT
+        if (System.properties['events']) {
+            return System.properties['events']
+        } else if (events) {
+            return events
+        }
+        EVENTS_DEFAULT
+    }
+
+    def getCategories() {
+        if (System.properties['categories']) {
+            return System.properties['categories']
+        } else if (categories) {
+            return categories
+        }
+        CATEGORIES_DEFAULT
     }
 
     def getSeed() {
         System.properties['seed'] ?: seed
-    }
-
-    def getCategories() {
-        System.properties['categories'] ?: categories ?: CATEGORIES_DEFAULT
     }
 
     def devices() {
