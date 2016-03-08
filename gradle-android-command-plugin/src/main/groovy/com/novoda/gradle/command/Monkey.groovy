@@ -16,11 +16,13 @@ class Monkey extends AdbTask {
 
     @TaskAction
     void exec() {
-        def arguments = ['shell', 'monkey', '-p', packageName]
+        def arguments = ['shell', 'monkey']
+        arguments += ['-p', packageName]
         arguments += getFormattedCategories()
         arguments += ['-v', getEvents()]
         if (getSeed())
             arguments += ['-s', getSeed()]
+
         assertDeviceAndRunCommand(arguments)
     }
 
