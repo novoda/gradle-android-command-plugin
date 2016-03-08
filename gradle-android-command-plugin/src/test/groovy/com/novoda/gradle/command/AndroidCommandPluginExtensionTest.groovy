@@ -17,12 +17,17 @@ class AndroidCommandPluginExtensionTest extends GroovyTestCase {
 
     void testDefaultEvents() {
         def extension = createExtension()
-        assert extension.getEvents() == 10000
+        assert extension.getEvents() == AndroidCommandPluginExtension.EVENTS_DEFAULT
     }
 
     void testDefaultSeed() {
         def extension = createExtension()
         assert extension.getSeed() == null
+    }
+
+    void testDefaultCategories() {
+        def extension = createExtension()
+        assert extension.getCategories() == AndroidCommandPluginExtension.CATEGORIES_DEFAULT
     }
 
     private static AndroidCommandPluginExtension createExtension() {

@@ -5,12 +5,16 @@ import org.gradle.api.Project
 
 public class AndroidCommandPluginExtension {
 
+    static final String CATEGORIES_DEFAULT = ''
+    static final int EVENTS_DEFAULT = 10000
+
     String androidHome
     def adb
     def aapt
     def deviceId
     def events
     def seed
+    def categories
     def sortBySubtasks
 
     private final Project project
@@ -61,16 +65,30 @@ public class AndroidCommandPluginExtension {
     // prefer system property over direct setting to enable commandline arguments
     @Memoized
     def getDeviceId() {
-        if (System.properties['deviceId'])
+        if (System.properties['deviceId']) {
             return System.properties['deviceId']
-        if (deviceId instanceof Closure)
+        } else if (deviceId instanceof Closure) {
             return deviceId.call()
+        }
         deviceId ?: defaultDeviceId()
     }
 
-    // prefer system property over direct setting to enable commandline arguments
     def getEvents() {
-        System.properties['events'] ?: events ?: 10000
+        if (System.properties['events']) {
+            return System.properties['events']
+        } else if (events) {
+            return events
+        }
+        EVENTS_DEFAULT
+    }
+
+    def getCategories() {
+        if (System.properties['categories']) {
+            return System.properties['categories']
+        } else if (categories) {
+            return categories
+        }
+        CATEGORIES_DEFAULT
     }
 
     def getSeed() {
