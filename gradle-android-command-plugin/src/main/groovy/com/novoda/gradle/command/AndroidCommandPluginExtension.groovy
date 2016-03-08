@@ -5,8 +5,8 @@ import org.gradle.api.Project
 
 public class AndroidCommandPluginExtension {
 
-    private static final String CATEGORIES_DEFAULT = ''
-    private static final int EVENTS_DEFAULT = 10000
+    static final String CATEGORIES_DEFAULT = ''
+    static final int EVENTS_DEFAULT = 10000
 
     String androidHome
     def adb
