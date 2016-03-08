@@ -5,6 +5,9 @@ import org.gradle.api.Project
 
 public class AndroidCommandPluginExtension {
 
+    private static final String CATEGORIES_DEFAULT = ''
+    private static final int EVENTS_DEFAULT = 10000
+
     String androidHome
     def adb
     def aapt
@@ -71,7 +74,7 @@ public class AndroidCommandPluginExtension {
 
     // prefer system property over direct setting to enable commandline arguments
     def getEvents() {
-        System.properties['events'] ?: events ?: 10000
+        System.properties['events'] ?: events ?: EVENTS_DEFAULT
     }
 
     def getSeed() {
@@ -79,7 +82,7 @@ public class AndroidCommandPluginExtension {
     }
 
     def getCategories() {
-        System.properties['categories'] ?: categories ?: ''
+        System.properties['categories'] ?: categories ?: CATEGORIES_DEFAULT
     }
 
     def devices() {
