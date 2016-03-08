@@ -27,12 +27,7 @@ class Monkey extends AdbTask {
     }
 
     def getFormattedCategories() {
-        def formattedCategories = []
-        def categories = getCategories()
-        categories.each {
-            formattedCategories.add("-c " + it)
-        }
-        formattedCategories
+        getCategories().collect { "-c " + it }
     }
 
     private getCategories() {
