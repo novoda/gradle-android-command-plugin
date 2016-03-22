@@ -5,7 +5,6 @@ import org.gradle.api.Project
 
 public class AndroidCommandPluginExtension {
 
-    static final String CATEGORIES_DEFAULT = ''
     static final int EVENTS_DEFAULT = 10000
 
     String androidHome
@@ -88,7 +87,7 @@ public class AndroidCommandPluginExtension {
         } else if (categories) {
             return categories
         }
-        CATEGORIES_DEFAULT
+        return null
     }
 
     def getSeed() {

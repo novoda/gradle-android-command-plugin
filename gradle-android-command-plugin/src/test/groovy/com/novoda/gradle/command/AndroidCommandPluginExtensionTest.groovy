@@ -27,7 +27,7 @@ class AndroidCommandPluginExtensionTest extends GroovyTestCase {
 
     void testDefaultCategories() {
         def extension = createExtension()
-        assert extension.getCategories() == AndroidCommandPluginExtension.CATEGORIES_DEFAULT
+        assert extension.getCategories() == null
     }
 
     private static AndroidCommandPluginExtension createExtension() {
