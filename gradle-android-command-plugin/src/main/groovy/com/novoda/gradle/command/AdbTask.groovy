@@ -34,25 +34,9 @@ public class AdbTask extends org.gradle.api.DefaultTask {
         }
     }
 
-    protected handleCommandOutput(def text)  {
-        logger.info text
-    }
-
     protected assertDeviceAndRunCommand(def parameters) {
         assertDeviceConnected()
         runCommand(parameters)
-    }
-
-    protected void runCommand(def parameters) {
-        AdbCommand command = [adb: pluginEx.getAdb(), deviceId: getDeviceId(), parameters: parameters]
-        logger.info "running command: $command"
-        handleCommandOutput(command.execute().text)
-    }
-
-    private printDeviceInfo(device) {
-        println '=========================='
-        println device.toString()
-        println '=========================='
     }
 
     protected void assertDeviceConnected() {
@@ -61,6 +45,22 @@ public class AdbTask extends org.gradle.api.DefaultTask {
         if (!device)
             throw new IllegalStateException("No device with ID $id found.")
         printDeviceInfo(device)
+    }
+
+    private printDeviceInfo(device) {
+        println '=========================='
+        println device.toString()
+        println '=========================='
+    }
+
+    protected void runCommand(def parameters) {
+        AdbCommand command = [adb: pluginEx.getAdb(), deviceId: getDeviceId(), parameters: parameters]
+        logger.info "running command: $command"
+        handleCommandOutput(command.execute().text)
+    }
+
+    protected handleCommandOutput(def text)  {
+        logger.info text
     }
 
     protected final readApkProperty(String propertyKey) {
