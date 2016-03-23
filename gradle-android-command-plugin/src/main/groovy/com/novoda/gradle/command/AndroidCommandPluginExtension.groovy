@@ -78,7 +78,7 @@ public class AndroidCommandPluginExtension {
 
     // prefer system property over direct setting to enable commandline arguments
     def getCategories() {
-        System.properties['categories'] ?: categories ?: null
+        System.properties['categories'] ?: categories
     }
 
     def getSeed() {
