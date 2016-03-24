@@ -27,8 +27,8 @@ class Monkey extends AdbTask {
         assertDeviceAndRunCommand(arguments)
     }
 
-    def getFormattedCategories() {
-        getCategories().collect { "-c " + it }
+    private getFormattedCategories() {
+        getCategories().collect { ['-c', it] }.flatten()
     }
 
     private getCategories() {
