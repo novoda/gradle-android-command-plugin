@@ -64,10 +64,12 @@ public class AndroidCommandPluginExtension {
     // prefer system property over direct setting to enable commandline arguments
     @Memoized
     def getDeviceId() {
-        if (System.properties['deviceId'])
+        if (System.properties['deviceId']) {
             return System.properties['deviceId']
-        if (deviceId instanceof Closure)
+        }
+        if (deviceId instanceof Closure) {
             return deviceId.call()
+        }
         deviceId ?: defaultDeviceId()
     }
 
