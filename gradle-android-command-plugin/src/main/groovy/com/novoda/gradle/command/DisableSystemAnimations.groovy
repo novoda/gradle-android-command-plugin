@@ -7,9 +7,9 @@ class DisableSystemAnimations extends AdbTask {
   @TaskAction
   void exec() {
     assertDeviceConnected()
-    disableAnimatorDuration()
-    disableTransitionAnimations()
     disableWindowAnimations()
+    disableTransitionAnimations()
+    disableAnimatorDuration()
   }
 
   private disableWindowAnimations() {
