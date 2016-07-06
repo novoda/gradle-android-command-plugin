@@ -1,3 +1,13 @@
+# 1.6.0
+- Make the "start" task not depend on "install" [#83 by Sebastian Schuberth](https://github.com/novoda/gradle-android-command-plugin/pull/83)
+- Minor formatting / wording improvements [#84 by Sebastian Schuberth](https://github.com/novoda/gradle-android-command-plugin/pull/84) 
+- Feature/add task for Activity Stack [#85 by Friedger Müffke](https://github.com/novoda/gradle-android-command-plugin/pull/85)
+- Added support to custom flags in install task. [#86 by Sergey Chuvashev](https://github.com/novoda/gradle-android-command-plugin/pull/86)
+- Add keyevent for "home" key [#87 by Stefan Hoth](https://github.com/novoda/gradle-android-command-plugin/pull/87)
+- Move activity detection, add memoization [#88 by Volker Leck](https://github.com/novoda/gradle-android-command-plugin/pull/88)
+- Adds feature to filter monkey by intent category [#90 by Jacek Szmelter](https://github.com/novoda/gradle-android-command-plugin/pull/90)
+- Refactor Category Filter feature [#92 by Jacek Szmelter](https://github.com/novoda/gradle-android-command-plugin/pull/92)
+
 # 1.5.0
 - add support for launching via alias (`activity-alias`) (contribution by [Sebastian Schuberth](https://github.com/sschuberth) [#79](https://github.com/novoda/gradle-android-command-plugin/pull/79))
 - add Stop and Start task (contribution by [Sebastian Schuberth](https://github.com/sschuberth) [#78](https://github.com/novoda/gradle-android-command-plugin/pull/78))
