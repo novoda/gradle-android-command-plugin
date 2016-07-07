@@ -1,3 +1,6 @@
+# 1.6.1
+- Task to enable/disable system animations. [#96 by Said Tahsin Dane](https://github.com/novoda/gradle-android-command-plugin/pull/96)
+
 # 1.6.0
 - Make the "start" task not depend on "install" [#83 by Sebastian Schuberth](https://github.com/novoda/gradle-android-command-plugin/pull/83)
 - Minor formatting / wording improvements [#84 by Sebastian Schuberth](https://github.com/novoda/gradle-android-command-plugin/pull/84) 
