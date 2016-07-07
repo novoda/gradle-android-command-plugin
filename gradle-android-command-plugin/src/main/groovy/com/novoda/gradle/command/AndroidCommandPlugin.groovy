@@ -24,6 +24,20 @@ public class AndroidCommandPlugin implements Plugin<Project> {
         extension.task 'monkey', 'calls the monkey command on the specified device', Monkey, ['installDevice']
         extension.task 'clearPrefs', 'clears the shared preferences on the specified device', ClearPreferences
         extension.task 'uninstallDevice', 'uninstalls the APK from the specific device', Uninstall
+
+        defaultTask (project, 'enableSystemAnimations', 'enables system animations on the connected device', SystemAnimations) {
+            enable = true
+        }
+        defaultTask (project, 'disableSystemAnimations', 'disables system animations on the connected device', SystemAnimations) {
+            enable = false
+        }
+    }
+
+    static def defaultTask(Project project, String taskName, String description, Class<? extends AdbTask> taskType, Closure configuration) {
+        AdbTask task = project.tasks.create(taskName, taskType)
+        task.configure configuration
+        task.group = TASK_GROUP
+        task.description = description
     }
 
     private static String getAndroidHome(androidExtension) {
