@@ -1,3 +1,6 @@
+# 1.6.2
+- Fix source/target compatibility to Java 1.6
+
 # 1.6.1
 - Task to enable/disable system animations. [#96 by Said Tahsin Dane](https://github.com/novoda/gradle-android-command-plugin/pull/96)
 
