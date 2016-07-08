@@ -10,23 +10,20 @@ buildscript {
 apply plugin: 'groovy'
 apply plugin: 'com.novoda.bintray-release'
 
+sourceCompatibility = JavaVersion.VERSION_1_6
+targetCompatibility = JavaVersion.VERSION_1_6
+
 dependencies {
     compile gradleApi()
 }
 
 group = 'com.novoda'
-version = '1.6.1'
-
-ext {
-    sourceCompatibility = 1.6
-    targetCompatibility = 1.6
-    artifactId = 'gradle-android-command-plugin'
-}
+version = '1.6.2'
 
 publish {
     userOrg = 'novoda'
     groupId = 'com.novoda'
-    artifactId = project.ext.artifactId
+    artifactId = 'gradle-android-command-plugin'
     version = project.version
     description = 'Useful tasks for gradle android builds'
     website = 'https://github.com/novoda/gradle-android-command-plugin'
