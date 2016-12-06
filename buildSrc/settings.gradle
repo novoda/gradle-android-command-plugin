@@ -1,2 +1,0 @@
-include ':command'
-project(':command').projectDir = new File('../gradle-android-command-plugin')
