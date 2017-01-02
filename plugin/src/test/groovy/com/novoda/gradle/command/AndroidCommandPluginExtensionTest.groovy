@@ -2,17 +2,13 @@ package com.novoda.gradle.command
 import org.gradle.testfixtures.ProjectBuilder
 
 class AndroidCommandPluginExtensionTest extends GroovyTestCase {
+
     private static final String SDK_PATH = '/some/path'
 
     void testDefaultAdbPath() {
         def extension = createExtension()
         assert extension.getAdb() != null
         assert extension.getAdb().contains('adb')
-    }
-
-    void testDefaultAndroidHomePath() {
-        def extension = createExtension()
-        assert extension.androidHome == SDK_PATH
     }
 
     void testDefaultEvents() {
@@ -31,8 +27,9 @@ class AndroidCommandPluginExtensionTest extends GroovyTestCase {
     }
 
     private static AndroidCommandPluginExtension createExtension() {
-        def projectDir = new File('..')
-        def project = ProjectBuilder.builder().withProjectDir(projectDir).build()
+        def project = ProjectBuilder.builder()
+                .withProjectDir(new File('..'))
+                .build()
         def extension = new AndroidCommandPluginExtension(project, SDK_PATH)
         extension
     }

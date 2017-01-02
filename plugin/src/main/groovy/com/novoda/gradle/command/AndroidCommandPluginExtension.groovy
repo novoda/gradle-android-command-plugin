@@ -7,7 +7,6 @@ public class AndroidCommandPluginExtension {
 
     static final int EVENTS_DEFAULT = 10000
 
-    String androidHome
     def adb
     def aapt
     def deviceId
@@ -17,6 +16,11 @@ public class AndroidCommandPluginExtension {
     def sortBySubtasks
 
     private final Project project
+    private final String androidHome
+
+    AndroidCommandPluginExtension(Project project) {
+        this(project, findAndroidHomeFrom(project.android))
+    }
 
     AndroidCommandPluginExtension(Project project, String androidHome) {
         this.project = project
@@ -70,7 +74,7 @@ public class AndroidCommandPluginExtension {
         if (deviceId instanceof Closure) {
             return deviceId.call()
         }
-        deviceId ?: defaultDeviceId()
+        deviceId ?: firstDeviceId()
     }
 
     // prefer system property over direct setting to enable commandline arguments
@@ -104,11 +108,21 @@ public class AndroidCommandPluginExtension {
         deviceIds
     }
 
-    private def defaultDeviceId() {
+    private def firstDeviceId() {
         def deviceIds = deviceIds()
         if (deviceIds.isEmpty()) {
             throw new IllegalStateException('No attached devices found')
         }
         deviceIds[0]
+    }
+
+    private static def findAndroidHomeFrom(androidExtension) {
+        if (androidExtension.hasProperty('sdkHandler')) {
+            return "${androidExtension.sdkHandler.sdkFolder}"
+        }
+        if (androidExtension.hasProperty('sdkDirectory')) {
+            return "${androidExtension.sdkDirectory}"
+        }
+        throw new IllegalStateException('The android plugin is not exposing the SDK folder in an expected way.')
     }
 }
