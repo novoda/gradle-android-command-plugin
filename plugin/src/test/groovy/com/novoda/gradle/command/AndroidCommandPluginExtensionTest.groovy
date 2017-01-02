@@ -6,8 +6,8 @@ class AndroidCommandPluginExtensionTest extends GroovyTestCase {
 
     void testDefaultAdbPath() {
         def extension = createExtension()
-        assert extension.getAdb() != null
-        assert extension.getAdb().contains('adb')
+        assert extension.adb != null
+        assert extension.adb.contains('adb')
     }
 
     void testDefaultAndroidHomePath() {
@@ -17,17 +17,17 @@ class AndroidCommandPluginExtensionTest extends GroovyTestCase {
 
     void testDefaultEvents() {
         def extension = createExtension()
-        assert extension.getEvents() == AndroidCommandPluginExtension.EVENTS_DEFAULT
+        assert extension.events == AndroidCommandPluginExtension.EVENTS_DEFAULT
     }
 
     void testDefaultSeed() {
         def extension = createExtension()
-        assert extension.getSeed() == null
+        assert extension.seed == null
     }
 
     void testDefaultCategories() {
         def extension = createExtension()
-        assert extension.getCategories() == null
+        assert extension.categories == null
     }
 
     private static AndroidCommandPluginExtension createExtension() {
