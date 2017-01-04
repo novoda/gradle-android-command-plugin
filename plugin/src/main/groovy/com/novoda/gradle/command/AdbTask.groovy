@@ -54,7 +54,7 @@ public class AdbTask extends org.gradle.api.DefaultTask {
     }
 
     protected void runCommand(def parameters) {
-        AdbCommand command = [adb: pluginEx.getAdb(), deviceId: getDeviceId(), parameters: parameters]
+        AdbCommand command = [adb: pluginEx.adb, deviceId: getDeviceId(), parameters: parameters]
         logger.info "running command: $command"
         handleCommandOutput(command.execute().text)
     }
