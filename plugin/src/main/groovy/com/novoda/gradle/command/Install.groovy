@@ -23,4 +23,12 @@ class Install extends AdbTask {
         customFlags ?: ''
     }
 
+    @Override
+    protected handleCommandOutput(def text) {
+        super.handleCommandOutput(text)
+        def matcher = text =~ /Failure \[(.*?)\]/
+        if (matcher) {
+            throw new GroovyRuntimeException("Installation failed with error: ${matcher[0][1]}")
+        }
+    }
 }
