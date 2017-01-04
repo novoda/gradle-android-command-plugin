@@ -76,7 +76,6 @@ android {
         categories = ['android.intent.category.ONLY_ME']
         sortBySubtasks false
 
-
         task('runAmazon', com.novoda.gradle.command.Run) {
             deviceId {
                 def kindle = devices().find { it.brand() == 'Amazon' }
