@@ -70,6 +70,6 @@ class Device {
     }
 
     String toString() {
-        getClass().name + [id: id, sdk: sdkVersion(), version: androidVersion(), brand: brand(), manufacturer: manufacturer(), model: model(), country: country(), language: language(), timezone: timezone()]
+        getClass().simpleName + [id: id, sdk: sdkVersion(), version: androidVersion(), brand: brand(), manufacturer: manufacturer(), model: model(), country: country(), language: language(), timezone: timezone()]
     }
 }
