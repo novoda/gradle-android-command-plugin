@@ -74,7 +74,7 @@ android {
 
         monkey {
             events 1000
-            categories 'android.intent.category.ONLY_ME', 'android.intent.category.ONLY_YOU'
+            categories 'android.intent.category.ONLY_ME', 'android.intent.category.MONKEY'
         }
         sortBySubtasks false
 

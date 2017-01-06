@@ -5,7 +5,7 @@ import groovy.transform.Memoized
 
 public class AdbTask extends org.gradle.api.DefaultTask {
 
-    final def pluginEx = project.android.extensions.findByType(AndroidCommandPluginExtension)
+    final pluginEx = project.android.extensions.findByType(AndroidCommandPluginExtension)
 
     // set automatically by VariantConfigurator
     def apkPath
