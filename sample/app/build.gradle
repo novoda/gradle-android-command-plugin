@@ -72,8 +72,10 @@ android {
             minSdkDevice.id
         }
 
-        events 1000
-        categories = ['android.intent.category.ONLY_ME']
+        monkey {
+            events 1000
+            categories 'android.intent.category.ONLY_ME', 'android.intent.category.ONLY_YOU'
+        }
         sortBySubtasks false
 
         task('runAmazon', com.novoda.gradle.command.Run) {

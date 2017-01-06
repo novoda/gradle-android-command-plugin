@@ -1,6 +1,7 @@
 package com.novoda.gradle.command
 
 import groovy.transform.Memoized
+import org.gradle.api.Action
 import org.gradle.api.Project
 
 public class AndroidCommandPluginExtension {
@@ -10,13 +11,11 @@ public class AndroidCommandPluginExtension {
     def adb
     def aapt
     def deviceId
-    def events
-    def seed
-    def categories
     def sortBySubtasks
 
     private final Project project
     private final String androidHome
+    private final Monkey.Spec monkey
 
     AndroidCommandPluginExtension(Project project) {
         this(project, findAndroidHomeFrom(project.android))
@@ -25,6 +24,7 @@ public class AndroidCommandPluginExtension {
     AndroidCommandPluginExtension(Project project, String androidHome) {
         this.project = project
         this.androidHome = androidHome
+        this.monkey = new Monkey.Spec()
     }
 
     def task(String name, Class<? extends AdbTask> type, Closure configuration) {
@@ -77,18 +77,12 @@ public class AndroidCommandPluginExtension {
         deviceId ?: firstDeviceId()
     }
 
-    // prefer system property over direct setting to enable commandline arguments
-    def getEvents() {
-        System.properties['events'] ?: events ?: EVENTS_DEFAULT
+    public void monkey(Action<Monkey.Spec> action) {
+        action.execute(monkey);
     }
 
-    // prefer system property over direct setting to enable commandline arguments
-    def getCategories() {
-        System.properties['categories'] ?: categories
-    }
-
-    def getSeed() {
-        System.properties['seed'] ?: seed
+    public Monkey.Spec getMonkey() {
+        monkey
     }
 
     def devices() {

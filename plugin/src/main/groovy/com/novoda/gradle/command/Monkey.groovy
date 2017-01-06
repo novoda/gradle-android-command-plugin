@@ -4,51 +4,62 @@ import org.gradle.api.tasks.TaskAction
 
 class Monkey extends AdbTask {
 
-    def events
-    def seed
-    def categories
-
     protected handleCommandOutput(def text) {
         super.handleCommandOutput(text)
-        if (text.contains("Monkey aborted")) {
+        if (text.toLowerCase().contains("monkey aborted")) {
             throw new GroovyRuntimeException('Monkey run failed')
         }
     }
 
     @TaskAction
     void exec() {
+        Spec monkey = pluginEx.monkey
+
+        logger.info monkey.categories.toString()
+
         def arguments = ['shell', 'monkey']
         arguments += ['-p', packageName]
-        arguments += getFormattedCategories()
-        arguments += ['-v', getEvents()]
-        if (getSeed()) {
-            arguments += ['-s', getSeed()]
+        arguments += monkey.categories.collect { ['-c', it] }.flatten()
+        arguments += ['-v', monkey.events]
+        if (monkey.seed) {
+            arguments += ['-s', monkey.seed]
         }
         assertDeviceAndRunCommand(arguments)
     }
 
-    private getFormattedCategories() {
-        getCategories().collect { ['-c', it] }.flatten()
-    }
+    static class Spec {
 
-    private getCategories() {
-        if (categories instanceof Closure) {
-            categories = categories.call()
-        }
-        categories ?: pluginEx.categories
-    }
+        private static final int EVENTS_DEFAULT = 10000
 
-    private getEvents() {
-        if (events instanceof Closure) {
-            events = events.call()
-        }
-        events ?: pluginEx.events
-    }
+        def events
+        def seed
+        def categories = []
 
-    private getSeed() {
-        if (seed instanceof Closure) {
-            seed = seed.call()
+        void events(events) {
+            this.events = events
         }
-        seed ?: pluginEx.seed
+
+        void seed(seed) {
+            this.seed = seed
+        }
+
+        void categories(... categories) {
+            this.categories.addAll(categories)
+        }
+
+        // prefer system property over direct setting to enable commandline arguments
+        def getEvents() {
+            System.properties['events'] ?: events ?: EVENTS_DEFAULT
+        }
+
+        // prefer system property over direct setting to enable commandline arguments
+        def getCategories() {
+            def systemCategories = System.properties['categories']
+            systemCategories ? [systemCategories] : categories
+        }
+
+        def getSeed() {
+            System.properties['seed'] ?: seed
+        }
     }
 }
