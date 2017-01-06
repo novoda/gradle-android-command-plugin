@@ -15,7 +15,7 @@ public class AndroidCommandPluginExtension {
 
     private final Project project
     private final String androidHome
-    private final Monkey.Spec monkey
+    private final MonkeySpec monkey
 
     AndroidCommandPluginExtension(Project project) {
         this(project, findAndroidHomeFrom(project.android))
@@ -24,7 +24,7 @@ public class AndroidCommandPluginExtension {
     AndroidCommandPluginExtension(Project project, String androidHome) {
         this.project = project
         this.androidHome = androidHome
-        this.monkey = new Monkey.Spec()
+        this.monkey = new MonkeySpec()
     }
 
     def task(String name, Class<? extends AdbTask> type, Closure configuration) {
@@ -77,11 +77,11 @@ public class AndroidCommandPluginExtension {
         deviceId ?: firstDeviceId()
     }
 
-    public void monkey(Action<Monkey.Spec> action) {
+    public void monkey(Action<MonkeySpec> action) {
         action.execute(monkey);
     }
 
-    public Monkey.Spec getMonkey() {
+    public MonkeySpec getMonkey() {
         monkey
     }
 
