@@ -2,7 +2,7 @@ package com.novoda.gradle.command;
 
 final class MonkeySpec {
 
-    private static final int EVENTS_DEFAULT = 10000
+    static final int EVENTS_DEFAULT = 10000
 
     def events
     def seed

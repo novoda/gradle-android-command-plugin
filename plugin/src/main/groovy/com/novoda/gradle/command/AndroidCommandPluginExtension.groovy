@@ -6,8 +6,6 @@ import org.gradle.api.Project
 
 public class AndroidCommandPluginExtension {
 
-    static final int EVENTS_DEFAULT = 10000
-
     def adb
     def aapt
     def deviceId

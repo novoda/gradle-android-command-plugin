@@ -11,19 +11,11 @@ class AndroidCommandPluginExtensionTest extends GroovyTestCase {
         assert extension.adb.contains('adb')
     }
 
-    void testDefaultEvents() {
+    void testDefaultMonkey() {
         def extension = createExtension()
-        assert extension.events == AndroidCommandPluginExtension.EVENTS_DEFAULT
-    }
-
-    void testDefaultSeed() {
-        def extension = createExtension()
-        assert extension.seed == null
-    }
-
-    void testDefaultCategories() {
-        def extension = createExtension()
-        assert extension.categories == null
+        assert extension.monkey.events == MonkeySpec.EVENTS_DEFAULT
+        assert extension.monkey.seed == null
+        assert extension.monkey.categories == []
     }
 
     private static AndroidCommandPluginExtension createExtension() {
