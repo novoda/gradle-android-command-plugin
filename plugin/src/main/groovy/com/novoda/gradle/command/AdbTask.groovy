@@ -7,6 +7,8 @@ public class AdbTask extends org.gradle.api.DefaultTask {
 
     final pluginEx = project.android.extensions.findByType(AndroidCommandPluginExtension)
 
+    AdbCommand adbCommand;
+
     // set automatically by VariantConfigurator
     def apkPath
 
@@ -54,9 +56,10 @@ public class AdbTask extends org.gradle.api.DefaultTask {
     }
 
     protected void runCommand(def parameters) {
-        AdbCommand command = [adb: pluginEx.adb, deviceId: getDeviceId(), parameters: parameters]
-        logger.info "running command: $command"
-        handleCommandOutput(command.execute().text)
+        adbCommand.deviceId = getDeviceId()
+        adbCommand.parameters = parameters
+        logger.info "running command: $adbCommand"
+        handleCommandOutput(adbCommand.execute().text)
     }
 
     protected handleCommandOutput(def text)  {
