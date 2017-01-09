@@ -18,9 +18,15 @@ public class AndroidCommandPlugin implements Plugin<Project> {
         extension.task 'run', 'installs and runs a APK on the specified device', Run, ['installDevice']
         extension.task 'start', 'runs an already installed APK on the specified device', Run
         extension.task 'stop', 'forcibly stops the app on the specified device', Stop
-        extension.task 'monkey', 'calls the monkey command on the specified device', Monkey, ['installDevice']
         extension.task 'clearPrefs', 'clears the shared preferences on the specified device', ClearPreferences
         extension.task 'uninstallDevice', 'uninstalls the APK from the specific device', Uninstall
+
+        project.afterEvaluate {
+            def monkeyTasks = extension.task 'monkey', 'calls the monkey command on the specified device', Monkey, ['installDevice']
+            monkeyTasks.all { task ->
+                task.monkey = extension.monkey
+            }
+        }
 
         defaultTask (project, 'enableSystemAnimations', 'enables system animations on the connected device', SystemAnimations) {
             enable = true

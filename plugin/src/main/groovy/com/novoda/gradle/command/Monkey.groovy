@@ -4,6 +4,8 @@ import org.gradle.api.tasks.TaskAction
 
 class Monkey extends AdbTask {
 
+    MonkeySpec monkey;
+
     protected handleCommandOutput(def text) {
         super.handleCommandOutput(text)
         if (text.toLowerCase().contains("monkey aborted")) {
@@ -13,8 +15,6 @@ class Monkey extends AdbTask {
 
     @TaskAction
     void exec() {
-        MonkeySpec monkey = pluginEx.monkey
-
         def arguments = ['shell', 'monkey']
         arguments += ['-p', packageName]
         arguments += monkey.categories.collect { ['-c', it] }.flatten()
