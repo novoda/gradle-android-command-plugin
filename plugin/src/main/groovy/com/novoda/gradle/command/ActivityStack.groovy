@@ -13,7 +13,9 @@ class ActivityStack extends AdbTask {
 
     def getActivityRecords() {
         def commandLine = ['shell', 'dumpsys', 'activity', '|', 'grep', '-i', 'run']
-        AdbCommand command = [adb: pluginEx.adb, deviceId: getDeviceId(), parameters: commandLine]
+
+        adbCommand.deviceId = getDeviceId()
+        adbCommand.parameters = commandLine
         logger.info "running command: $command"
         def output = command.execute().text
 
