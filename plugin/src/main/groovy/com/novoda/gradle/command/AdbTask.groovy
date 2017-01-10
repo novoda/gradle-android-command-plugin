@@ -42,7 +42,7 @@ public class AdbTask extends org.gradle.api.DefaultTask {
         def adb = getAdb() ?: resolveFromExtension("adb")
         def deviceId = getDeviceId() ?: resolveFromExtension("deviceId")
         AdbCommand command = [adb: adb, deviceId: deviceId, parameters: 'get-state']
-        if (command.execute().text != 'device')
+        if (command.execute().text.trim() != 'device')
             throw new IllegalStateException("No device with ID $deviceId found.")
         printDeviceInfo(new Device(adb, deviceId))
     }
