@@ -2,7 +2,6 @@ package com.novoda.gradle.command
 
 import groovy.transform.Memoized
 
-
 public class AdbTask extends org.gradle.api.DefaultTask {
 
     def adb
@@ -40,9 +39,11 @@ public class AdbTask extends org.gradle.api.DefaultTask {
     }
 
     protected void assertDeviceConnected() {
-        AdbCommand command = [adb: getAdb(), deviceId: getDeviceId(), parameters: 'get-state']
+        def adb = getAdb() ?: resolveFromExtension("adb")
+        def deviceId = getDeviceId() ?: resolveFromExtension("deviceId")
+        AdbCommand command = [adb: adb, deviceId: deviceId, parameters: 'get-state']
         if (command.execute().text != 'device')
-            throw new IllegalStateException("No device with ID ${getDeviceId()} found.")
+            throw new IllegalStateException("No device with ID $deviceId found.")
         printDeviceInfo(device)
     }
 
@@ -53,7 +54,9 @@ public class AdbTask extends org.gradle.api.DefaultTask {
     }
 
     protected void runCommand(def parameters) {
-        AdbCommand command = [adb: getAdb(), deviceId: getDeviceId(), parameters: parameters]
+        def adb = getAdb() ?: resolveFromExtension("adb")
+        def deviceId = getDeviceId() ?: resolveFromExtension("deviceId")
+        AdbCommand command = [adb: adb, deviceId: deviceId, parameters: parameters]
         logger.info "running command: $command"
         handleCommandOutput(command.execute().text)
     }
@@ -66,9 +69,22 @@ public class AdbTask extends org.gradle.api.DefaultTask {
         if (!apkPath) {
             throw new IllegalStateException("No APK found for the '$name' task")
         }
-        String output = [getAapt(), 'dump', 'badging', apkPath].execute().text.readLines().find {
+        def aapt = getAapt() ?: resolveFromExtension("aapt")
+        String output = [aapt, 'dump', 'badging', apkPath].execute().text.readLines().find {
             it.startsWith("$propertyKey:")
         }
         output
+    }
+
+    // TODO: Remove this once we have support for nice DSL support for tasks
+    @Deprecated
+    final resolveFromExtension(property) {
+        logger.error """\
+                        $property not specified for the task $name.
+                        Automatically resolving $property via the plugin.
+                        This support will be removed with the next version of the plugin.
+                        Please specify the field $property in you task $name.
+        """.stripIndent()
+        project.android.command."$property"
     }
 }
