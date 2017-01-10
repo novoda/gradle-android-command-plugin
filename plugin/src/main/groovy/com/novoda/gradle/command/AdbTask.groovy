@@ -79,7 +79,7 @@ public class AdbTask extends org.gradle.api.DefaultTask {
     // TODO: Remove this once we have support for nice DSL support for tasks
     @Deprecated
     final resolveFromExtension(property) {
-        logger.error """\
+        logger.warn """\
                         $property not specified for the task $name.
                         Automatically resolving $property via the plugin.
                         This support will be removed with the next version of the plugin.
