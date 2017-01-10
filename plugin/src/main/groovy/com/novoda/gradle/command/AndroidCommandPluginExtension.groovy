@@ -46,8 +46,7 @@ public class AndroidCommandPluginExtension {
     }
 
     def task(String name, String description, Class<? extends AdbTask> type, def dependencies) {
-        AdbCommand adbCommand = [adb: getAdb(), deviceId: getDeviceId()]
-        VariantConfigurator variantConfigurator = new VariantConfigurator(project, adbCommand, name, description, type, dependencies)
+        VariantConfigurator variantConfigurator = new VariantConfigurator(this, project, name, description, type, dependencies)
         project.android.applicationVariants.all {
             variantConfigurator.configure(it)
         }

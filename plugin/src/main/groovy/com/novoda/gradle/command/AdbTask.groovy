@@ -7,15 +7,15 @@ public class AdbTask extends org.gradle.api.DefaultTask {
 
     final pluginEx = project.android.extensions.findByType(AndroidCommandPluginExtension)
 
-    AdbCommand adbCommand;
+    def adb
+    def aapt
+    def deviceId
 
     // set automatically by VariantConfigurator
     def apkPath
 
     // set automatically by VariantConfigurator
     def variationName
-
-    def deviceId
 
     @Memoized
     def getDeviceId() {
@@ -56,10 +56,9 @@ public class AdbTask extends org.gradle.api.DefaultTask {
     }
 
     protected void runCommand(def parameters) {
-        adbCommand.deviceId = getDeviceId()
-        adbCommand.parameters = parameters
-        logger.info "running command: $adbCommand"
-        handleCommandOutput(adbCommand.execute().text)
+        AdbCommand command = [adb: getAdb(), deviceId: getDeviceId(), parameters: parameters]
+        logger.info "running command: $command"
+        handleCommandOutput(command.execute().text)
     }
 
     protected handleCommandOutput(def text)  {
@@ -70,7 +69,7 @@ public class AdbTask extends org.gradle.api.DefaultTask {
         if (!apkPath) {
             throw new IllegalStateException("No APK found for the '$name' task")
         }
-        String output = [pluginEx.aapt, 'dump', 'badging', apkPath].execute().text.readLines().find {
+        String output = [getAapt(), 'dump', 'badging', apkPath].execute().text.readLines().find {
             it.startsWith("$propertyKey:")
         }
         output
