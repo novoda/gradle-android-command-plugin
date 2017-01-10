@@ -36,7 +36,7 @@ class VariantConfigurator {
         task.conventionMapping.aapt = { extension.aapt }
         task.conventionMapping.deviceId = { extension.deviceId }
 
-        if (task.pluginEx && task.pluginEx.sortBySubtasks) {
+        if (extension.sortBySubtasks) {
             task.group = AndroidCommandPlugin.TASK_GROUP + " " + taskName;
         } else {
             task.group = AndroidCommandPlugin.TASK_GROUP + " for variant " + variationName;
