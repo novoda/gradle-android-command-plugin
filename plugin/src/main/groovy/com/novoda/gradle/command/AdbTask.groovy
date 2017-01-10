@@ -21,7 +21,7 @@ public class AdbTask extends org.gradle.api.DefaultTask {
     def getDeviceId() {
         if (deviceId instanceof Closure)
             deviceId = deviceId.call()
-        deviceId ?: pluginEx.deviceId
+        deviceId
     }
 
     def getPackageName() {
