@@ -4,9 +4,9 @@ final class MonkeySpec {
 
     static final int EVENTS_DEFAULT = 10000
 
-    def events
-    def seed
-    def categories = []
+    Integer events
+    Integer seed
+    List<String> categories = []
 
     void events(events) {
         this.events = events
