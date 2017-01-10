@@ -4,7 +4,7 @@ import org.gradle.api.tasks.TaskAction
 
 class Monkey extends AdbTask {
 
-    MonkeySpec monkey;
+    MonkeySpec monkey
 
     protected handleCommandOutput(def text) {
         super.handleCommandOutput(text)
@@ -15,6 +15,7 @@ class Monkey extends AdbTask {
 
     @TaskAction
     void exec() {
+        def monkey = getMonkey()
         def arguments = ['shell', 'monkey']
         arguments += ['-p', packageName]
         arguments += monkey.categories.collect { ['-c', it] }.flatten()

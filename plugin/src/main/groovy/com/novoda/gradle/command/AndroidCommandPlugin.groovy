@@ -21,11 +21,9 @@ public class AndroidCommandPlugin implements Plugin<Project> {
         extension.task 'clearPrefs', 'clears the shared preferences on the specified device', ClearPreferences
         extension.task 'uninstallDevice', 'uninstalls the APK from the specific device', Uninstall
 
-        project.afterEvaluate {
-            def monkeyTasks = extension.task 'monkey', 'calls the monkey command on the specified device', Monkey, ['installDevice']
-            monkeyTasks.all { task ->
-                task.monkey = extension.monkey
-            }
+        def monkeyTasks = extension.task 'monkey', 'calls the monkey command on the specified device', Monkey, ['installDevice']
+        monkeyTasks.all {
+            conventionMapping.monkey = { extension.monkey }
         }
 
         defaultTask (project, 'enableSystemAnimations', 'enables system animations on the connected device', SystemAnimations) {
