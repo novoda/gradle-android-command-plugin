@@ -5,8 +5,6 @@ import groovy.transform.Memoized
 
 public class AdbTask extends org.gradle.api.DefaultTask {
 
-    final pluginEx = project.android.extensions.findByType(AndroidCommandPluginExtension)
-
     def adb
     def aapt
     def deviceId
@@ -42,10 +40,9 @@ public class AdbTask extends org.gradle.api.DefaultTask {
     }
 
     protected void assertDeviceConnected() {
-        def id = getDeviceId()
-        Device device = pluginEx.devices().find { device -> device.id == id }
-        if (!device)
-            throw new IllegalStateException("No device with ID $id found.")
+        AdbCommand command = [adb: getAdb(), deviceId: getDeviceId(), parameters: 'get-state']
+        if (command.execute().text != 'device')
+            throw new IllegalStateException("No device with ID ${getDeviceId()} found.")
         printDeviceInfo(device)
     }
 
