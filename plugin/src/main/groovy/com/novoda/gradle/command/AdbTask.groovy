@@ -39,8 +39,8 @@ public class AdbTask extends org.gradle.api.DefaultTask {
     }
 
     protected void assertDeviceConnected() {
-        def adb = getAdb() ?: resolveFromExtension("adb")
-        def deviceId = getDeviceId() ?: resolveFromExtension("deviceId")
+        def adb = getAdb() ?: resolveFromExtension('adb')
+        def deviceId = getDeviceId() ?: resolveFromExtension('deviceId')
         AdbCommand command = [adb: adb, deviceId: deviceId, parameters: 'get-state']
         if (command.execute().text.trim() != 'device')
             throw new IllegalStateException("No device with ID $deviceId found.")
@@ -54,8 +54,8 @@ public class AdbTask extends org.gradle.api.DefaultTask {
     }
 
     protected void runCommand(def parameters) {
-        def adb = getAdb() ?: resolveFromExtension("adb")
-        def deviceId = getDeviceId() ?: resolveFromExtension("deviceId")
+        def adb = getAdb() ?: resolveFromExtension('adb')
+        def deviceId = getDeviceId() ?: resolveFromExtension('deviceId')
         AdbCommand command = [adb: adb, deviceId: deviceId, parameters: parameters]
         logger.info "running command: $command"
         handleCommandOutput(command.execute().text)
@@ -69,7 +69,7 @@ public class AdbTask extends org.gradle.api.DefaultTask {
         if (!apkPath) {
             throw new IllegalStateException("No APK found for the '$name' task")
         }
-        def aapt = getAapt() ?: resolveFromExtension("aapt")
+        def aapt = getAapt() ?: resolveFromExtension('aapt')
         String output = [aapt, 'dump', 'badging', apkPath].execute().text.readLines().find {
             it.startsWith("$propertyKey:")
         }
