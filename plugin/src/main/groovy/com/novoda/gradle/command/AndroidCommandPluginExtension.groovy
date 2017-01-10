@@ -75,11 +75,11 @@ public class AndroidCommandPluginExtension {
         deviceId ?: firstDeviceId()
     }
 
-    public void monkey(Action<MonkeySpec> action) {
-        action.execute(monkey);
+    void monkey(Action<MonkeySpec> action) {
+        action.execute(monkey)
     }
 
-    public MonkeySpec getMonkey() {
+    MonkeySpec getMonkey() {
         monkey
     }
 
