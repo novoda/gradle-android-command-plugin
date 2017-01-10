@@ -41,7 +41,6 @@ class Files extends AdbTask {
         adbCommand.execute().text
     }
 
-
     @TaskAction
     void exec() {
         assertDeviceConnected()
