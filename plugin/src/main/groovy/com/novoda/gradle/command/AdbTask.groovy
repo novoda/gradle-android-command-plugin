@@ -2,10 +2,11 @@ package com.novoda.gradle.command
 
 import groovy.transform.Memoized
 
-
 public class AdbTask extends org.gradle.api.DefaultTask {
 
-    final pluginEx = project.android.extensions.findByType(AndroidCommandPluginExtension)
+    def adb
+    def aapt
+    def deviceId
 
     // set automatically by VariantConfigurator
     def apkPath
@@ -13,13 +14,11 @@ public class AdbTask extends org.gradle.api.DefaultTask {
     // set automatically by VariantConfigurator
     def variationName
 
-    def deviceId
-
     @Memoized
     def getDeviceId() {
         if (deviceId instanceof Closure)
             deviceId = deviceId.call()
-        deviceId ?: pluginEx.deviceId
+        deviceId
     }
 
     def getPackageName() {
@@ -40,11 +39,12 @@ public class AdbTask extends org.gradle.api.DefaultTask {
     }
 
     protected void assertDeviceConnected() {
-        def id = getDeviceId()
-        Device device = pluginEx.devices().find { device -> device.id == id }
-        if (!device)
-            throw new IllegalStateException("No device with ID $id found.")
-        printDeviceInfo(device)
+        def adb = getAdb() ?: resolveFromExtension('adb')
+        def deviceId = getDeviceId() ?: resolveFromExtension('deviceId')
+        AdbCommand command = [adb: adb, deviceId: deviceId, parameters: 'get-state']
+        if (command.execute().text.trim() != 'device')
+            throw new IllegalStateException("No device with ID $deviceId found.")
+        printDeviceInfo(new Device(adb, deviceId))
     }
 
     private printDeviceInfo(device) {
@@ -54,7 +54,9 @@ public class AdbTask extends org.gradle.api.DefaultTask {
     }
 
     protected void runCommand(def parameters) {
-        AdbCommand command = [adb: pluginEx.adb, deviceId: getDeviceId(), parameters: parameters]
+        def adb = getAdb() ?: resolveFromExtension('adb')
+        def deviceId = getDeviceId() ?: resolveFromExtension('deviceId')
+        AdbCommand command = [adb: adb, deviceId: deviceId, parameters: parameters]
         logger.info "running command: $command"
         handleCommandOutput(command.execute().text)
     }
@@ -67,9 +69,22 @@ public class AdbTask extends org.gradle.api.DefaultTask {
         if (!apkPath) {
             throw new IllegalStateException("No APK found for the '$name' task")
         }
-        String output = [pluginEx.aapt, 'dump', 'badging', apkPath].execute().text.readLines().find {
+        def aapt = getAapt() ?: resolveFromExtension('aapt')
+        String output = [aapt, 'dump', 'badging', apkPath].execute().text.readLines().find {
             it.startsWith("$propertyKey:")
         }
         output
+    }
+
+    // TODO: Remove this once we have support for nice DSL support for tasks
+    @Deprecated
+    final resolveFromExtension(property) {
+        logger.warn """\
+                        $property not specified for the task $name.
+                        Automatically resolving $property via the plugin.
+                        This support will be removed with the next version of the plugin.
+                        Please specify the field $property in you task $name.
+        """.stripIndent()
+        project.android.command."$property"
     }
 }

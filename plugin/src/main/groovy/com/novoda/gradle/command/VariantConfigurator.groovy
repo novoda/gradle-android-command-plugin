@@ -3,19 +3,24 @@ package com.novoda.gradle.command
 import org.gradle.api.Project
 
 class VariantConfigurator {
+    private final AndroidCommandPluginExtension extension
     private final Project project
     private final String taskName
     private final String description
     private final Class<? extends AdbTask> taskType
     private final def dependencies
 
-    VariantConfigurator(Project project, String taskName, String description, Class<? extends AdbTask> taskType,
+    VariantConfigurator(AndroidCommandPluginExtension extension,
+                        Project project,
+                        String taskName,
+                        String description,
+                        Class<? extends AdbTask> taskType,
                         def dependencies) {
-
+        this.extension = extension
+        this.project = project
         this.taskType = taskType
         this.taskName = taskName
         this.description = description
-        this.project = project
         this.dependencies = dependencies
     }
 
@@ -27,7 +32,11 @@ class VariantConfigurator {
 
         AdbTask task = project.tasks.create(taskName + variationName, taskType)
 
-        if (task.pluginEx && task.pluginEx.sortBySubtasks) {
+        task.conventionMapping.adb = { extension.adb }
+        task.conventionMapping.aapt = { extension.aapt }
+        task.conventionMapping.deviceId = { extension.deviceId }
+
+        if (extension.sortBySubtasks) {
             task.group = AndroidCommandPlugin.TASK_GROUP + " " + taskName;
         } else {
             task.group = AndroidCommandPlugin.TASK_GROUP + " for variant " + variationName;

@@ -28,15 +28,15 @@ class Files extends AdbTask {
         shell('ls -la', dir)
     }
 
-    private String adb(String... params) {
-        AdbCommand adbCommand = [adb: pluginEx.adb, deviceId: getDeviceId(), parameters: Arrays.asList(params) ]
-        adbCommand.execute().text
+    private String shell(... values) {
+        def params = ['shell'] + (values as List)
+        adb(*params)
     }
 
-    private String shell(... values) {
-        def parameters = ['shell']
-        parameters.addAll(values)
-        AdbCommand adbCommand = [adb: pluginEx.adb, deviceId: getDeviceId(), parameters: parameters]
+    private String adb(String... params) {
+        def adb = getAdb() ?: resolveFromExtension('adb')
+        def deviceId = getDeviceId() ?: resolveFromExtension('deviceId')
+        AdbCommand adbCommand = [adb: adb, deviceId: deviceId, parameters: params as List ]
         adbCommand.execute().text
     }
 
