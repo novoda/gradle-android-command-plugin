@@ -12,7 +12,7 @@ class Install extends AdbTask {
         if (getCustomFlags())
             arguments += getCustomFlags()
 
-        arguments += ['-rd', apkPath]
+        arguments += ['-r', '-d', apkPath]
 
         assertDeviceAndRunCommand(arguments)
     }
