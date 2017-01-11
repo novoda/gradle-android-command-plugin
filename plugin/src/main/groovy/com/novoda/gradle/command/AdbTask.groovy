@@ -83,7 +83,7 @@ public class AdbTask extends org.gradle.api.DefaultTask {
                         $property not specified for the task $name.
                         Automatically resolving $property via the plugin.
                         This support will be removed with the next version of the plugin.
-                        Please specify the field $property in you task $name.
+                        Please specify the field $property in your task $name.
         """.stripIndent()
         project.android.command."$property"
     }
