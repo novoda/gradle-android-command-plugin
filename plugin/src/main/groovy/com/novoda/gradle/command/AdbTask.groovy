@@ -57,8 +57,14 @@ public class AdbTask extends org.gradle.api.DefaultTask {
         def adb = getAdb() ?: resolveFromExtension('adb')
         def deviceId = getDeviceId() ?: resolveFromExtension('deviceId')
         AdbCommand command = [adb: adb, deviceId: deviceId, parameters: parameters]
+
         logger.info "running command: $command"
-        handleCommandOutput(command.execute().text)
+
+        Process process = command.execute()
+        if (process.waitFor() != 0) {
+            throw new GroovyRuntimeException("Adb command failed with error:\n${process.err.text}");
+        }
+        handleCommandOutput(process.text)
     }
 
     protected handleCommandOutput(def text)  {
