@@ -15,7 +15,7 @@ You can use this plugin to do things such as:
   - Run monkey for that specific APK on that specific device
   - Uninstall the APK
 
-This is particularly useful for CI servers but could be used to speed up IDE development as well.
+This is particularly useful for CI servers but could be used to speed up development as well.
 
 
 ## Adding to your project
@@ -31,10 +31,9 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.novoda:gradle-android-command-plugin:1.6.2'
+        classpath 'com.novoda:gradle-android-command-plugin:1.7.0'
     }
 }
-
 ```
 
 
@@ -50,7 +49,9 @@ The plugin creates new tasks that you can use:
   * `monkey<Variant>` [`com.novoda.gradle.command.Monkey`] - installs and runs monkey on a specific device.
   * `clearPrefs<Variant>` [`com.novoda.gradle.command.ClearPreferences`] - clears app preferences on a specific device.
   * `com.novoda.gradle.command.Input` - runs `input` scripts, wrapping `adb shell input`.
-  * `com.novoda.gradle.command.Files` - enables basic file copy via `push` and `pull`, wrapping the respecitve adb calls.
+  * `com.novoda.gradle.command.Files` - enables basic file copy via `push` and `pull`, wrapping the respective adb calls.
+
+For advanced usage please take a look into the sample project [build.gradle](sample/app/build.gradle) file.
 
 ## Links
 

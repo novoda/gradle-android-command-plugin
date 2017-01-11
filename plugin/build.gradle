@@ -23,7 +23,7 @@ dependencies {
 }
 
 group = 'com.novoda'
-version = '1.6.2'
+version = '1.7.0'
 
 publish {
     userOrg = 'novoda'
