@@ -31,8 +31,12 @@ android {
 
     buildTypes {
         debug 
-        release
-        QA
+        release {
+            signingConfig debug.signingConfig
+        }
+        QA {
+            signingConfig debug.signingConfig
+        }
     }
 
     productFlavors {
@@ -122,6 +126,20 @@ android {
         task dumpActivityStack(type: com.novoda.gradle.command.ActivityStack) {
         }
     }
+}
+
+/**
+ * Sample task that installs APKs of all variants on a device.
+ *
+ * Device can also be specified like below:
+ * ./gradlew installDeviceAllVariants -DdeviceId=SERIAL_NUMBER
+ */
+def installAllTask = task installDeviceAllVariants {
+    description = 'Install APKs for all variants on a specified device'
+    group = 'install'
+}
+android.applicationVariants.all {
+    installAllTask.dependsOn tasks.findByName("installDevice${it.name.capitalize()}")
 }
 
 /**
