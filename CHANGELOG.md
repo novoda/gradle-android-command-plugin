@@ -1,3 +1,51 @@
+# 1.7.0
+
+_2017-01-11_
+
+- Fix a bug where installation error marked as a successful build. [#104](https://github.com/novoda/gradle-android-command-plugin/pull/104)
+- Fixed a bug that caused InstallTask to fail on Nougat devices. [#110](https://github.com/novoda/gradle-android-command-plugin/pull/110)
+- On Nougat devices, errors in `adb shell` commands will now cause the build to fail forwarding the error. [#110](https://github.com/novoda/gradle-android-command-plugin/pull/110)
+- Added a sample showing how to install APKs of all variants in one go. [#109](https://github.com/novoda/gradle-android-command-plugin/pull/109)
+- Monkey task configuration is adjusted to make more sense. [#106](https://github.com/novoda/gradle-android-command-plugin/pull/106)
+
+**Breaking changes in Monkey configuration**
+
+Monkey task configuration is adjusted to make more sense. The following adjustments are needed if custom monkey configs are used.
+
+This sample configuration 
+```groovy
+android {
+    ...
+    command {
+        events 1000
+        categories = ['android.intent.category.ONLY_ME']
+    }
+}
+```
+needs to be changed into these 2 possible options:
+- Just surround with `monkey` closure. (Notice also that equals in `categories` is not necessary anymore)
+```groovy
+android {
+    ...
+    command {
+        monkey {
+            events 1000
+            categories 'android.intent.category.ONLY_ME'
+        }
+    }
+}
+```
+- If you have simple configuration, you can also prepend the fields with `monkey`
+```groovy
+android {
+    ...
+    command {
+        monkey.events 1000
+    }
+}
+```
+
+
 # 1.6.2
 - Fix source/target compatibility to Java 1.6
 
