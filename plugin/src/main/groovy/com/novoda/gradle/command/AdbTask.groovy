@@ -69,9 +69,9 @@ public class AdbTask extends org.gradle.api.DefaultTask {
     }
 
     /**
-     * adb does not always return return appropriate exit code and does not write to error stream.
+     * adb does not always return appropriate exit code and does not write to error stream.
      *
-     * So specific tasks need to implement this and check the text for errors.
+     * So specific tasks need to override {@code handleCommandOutput} method and check the text for errors.
      *
      * See {@link Install}
      * See {@link Monkey}
