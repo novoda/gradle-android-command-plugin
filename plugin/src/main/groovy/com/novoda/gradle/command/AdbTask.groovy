@@ -62,11 +62,20 @@ public class AdbTask extends org.gradle.api.DefaultTask {
 
         Process process = command.execute()
         if (process.waitFor() != 0) {
+            // This error check works only on Nougat+ devices because exit code is always 0 before. http://b.android.com/3254
             throw new GroovyRuntimeException("Adb command failed with error:\n${process.err.text}");
         }
         handleCommandOutput(process.text)
     }
 
+    /**
+     * adb does not always return appropriate exit code and does not write to error stream.
+     *
+     * So specific tasks need to override {@code handleCommandOutput} method and check the text for errors.
+     *
+     * See {@link Install}
+     * See {@link Monkey}
+     */
     protected handleCommandOutput(def text)  {
         logger.info text
     }
