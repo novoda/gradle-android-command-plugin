@@ -109,7 +109,7 @@ android {
             }
         }
 
-        task listDevices << {
+        task listDevices doLast {
             println()
             println 'Attached devices:'
             devices().each {
