@@ -2,6 +2,7 @@ package com.novoda.gradle.command
 
 import groovy.transform.Memoized
 import org.gradle.api.Action
+import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 
 public class AndroidCommandPluginExtension {
@@ -14,6 +15,7 @@ public class AndroidCommandPluginExtension {
     private final Project project
     private final String androidHome
     private final MonkeySpec monkey
+    private final NamedDomainObjectContainer<InputSpec> scripts
 
     AndroidCommandPluginExtension(Project project) {
         this(project, findAndroidHomeFrom(project.android))
@@ -23,6 +25,7 @@ public class AndroidCommandPluginExtension {
         this.project = project
         this.androidHome = androidHome
         this.monkey = new MonkeySpec()
+        this.scripts = project.container(InputSpec)
     }
 
     def task(String name, Class<? extends AdbTask> type, Closure configuration) {
@@ -81,6 +84,14 @@ public class AndroidCommandPluginExtension {
 
     MonkeySpec getMonkey() {
         monkey
+    }
+
+    void script(Action<NamedDomainObjectContainer<InputSpec>> action) {
+        action.execute(scripts)
+    }
+
+    NamedDomainObjectContainer<InputSpec> getScripts() {
+        scripts
     }
 
     void attachDefaults(AdbTask task) {

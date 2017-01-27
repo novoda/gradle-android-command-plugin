@@ -26,6 +26,8 @@ public class AndroidCommandPlugin implements Plugin<Project> {
             conventionMapping.monkey = { extension.monkey }
         }
 
+        configureInputScripts(extension, project)
+
         defaultTask (project, 'enableSystemAnimations', 'enables system animations on the connected device', SystemAnimations) {
             enable = true
         }
@@ -38,7 +40,17 @@ public class AndroidCommandPlugin implements Plugin<Project> {
         }
     }
 
-    static def defaultTask(Project project, String taskName, String description, Class<? extends AdbTask> taskType, Closure configuration) {
+    private configureInputScripts(AndroidCommandPluginExtension extension, Project project) {
+        extension.scripts.all { input ->
+            project.tasks.create(input.name, Input) {
+                group = 'adb script'
+                description = "Runs $input.name script on the specified device"
+                script = input
+            }
+        }
+    }
+
+    static defaultTask(Project project, String taskName, String description, Class<? extends AdbTask> taskType, Closure configuration) {
         AdbTask task = project.tasks.create(taskName, taskType)
         task.configure configuration
         task.group = TASK_GROUP
