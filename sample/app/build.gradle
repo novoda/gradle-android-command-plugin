@@ -30,7 +30,7 @@ android {
     }
 
     buildTypes {
-        debug 
+        debug
         release {
             signingConfig debug.signingConfig
         }
@@ -143,10 +143,10 @@ android.applicationVariants.all {
 }
 
 /**
-* Uses the Files task type to backup photos on the device to
-* some local directory.
-* Only pulls files that are not yet backed up.
-*/
+ * Uses the Files task type to backup photos on the device to
+ * some local directory.
+ * Only pulls files that are not yet backed up.
+ */
 task syncPhotos(type: com.novoda.gradle.command.Files) {
     deviceId {
         def moto = android.command.devices().find { it.brand() == 'motorola' }
@@ -160,10 +160,10 @@ task syncPhotos(type: com.novoda.gradle.command.Files) {
         def backupDir = mkdir('motoPhoto')
 
         list(deviceImageDir).findAll { image ->
-            image.name.endsWith('jpg') && !image.name.contains(':nopm:') 
+            image.name.endsWith('jpg') && !image.name.contains(':nopm:')
         }
-        .findAll { image -> 
-            !new File(backupDir.path, image.name).exists() 
+        .findAll { image ->
+            !new File(backupDir.path, image.name).exists()
         }
         .each { image ->
             println image
