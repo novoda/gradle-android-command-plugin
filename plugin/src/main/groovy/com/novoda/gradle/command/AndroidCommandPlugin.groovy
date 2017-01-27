@@ -32,6 +32,10 @@ public class AndroidCommandPlugin implements Plugin<Project> {
         defaultTask (project, 'disableSystemAnimations', 'disables system animations on the connected device', SystemAnimations) {
             enable = false
         }
+
+        project.tasks.withType(AdbTask) { task ->
+            extension.attachDefaults(task)
+        }
     }
 
     static def defaultTask(Project project, String taskName, String description, Class<? extends AdbTask> taskType, Closure configuration) {
