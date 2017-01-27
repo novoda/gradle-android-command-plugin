@@ -31,10 +31,7 @@ class VariantConfigurator {
         def variationName = projectFlavorName + buildTypeName
 
         AdbTask task = project.tasks.create(taskName + variationName, taskType)
-
-        task.conventionMapping.adb = { extension.adb }
-        task.conventionMapping.aapt = { extension.aapt }
-        task.conventionMapping.deviceId = { extension.deviceId }
+        extension.attachDefaults(task)
 
         if (extension.sortBySubtasks) {
             task.group = AndroidCommandPlugin.TASK_GROUP + " " + taskName;

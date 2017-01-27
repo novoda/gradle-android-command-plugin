@@ -13,7 +13,7 @@ public class AndroidCommandPlugin implements Plugin<Project> {
             throw new StopExecutionException("The 'android' plugin is required.")
         }
 
-        def extension = project.android.extensions.create("command", AndroidCommandPluginExtension, project)
+        AndroidCommandPluginExtension extension = project.android.extensions.create("command", AndroidCommandPluginExtension, project)
         extension.task 'installDevice', 'installs the APK on the specified device', Install, ['assemble']
         extension.task 'run', 'installs and runs a APK on the specified device', Run, ['installDevice']
         extension.task 'start', 'runs an already installed APK on the specified device', Run

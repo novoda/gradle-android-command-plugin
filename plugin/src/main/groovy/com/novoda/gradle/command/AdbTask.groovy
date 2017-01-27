@@ -76,7 +76,7 @@ public class AdbTask extends org.gradle.api.DefaultTask {
      * See {@link Install}
      * See {@link Monkey}
      */
-    protected handleCommandOutput(def text)  {
+    protected handleCommandOutput(def text) {
         logger.info text
     }
 
@@ -95,11 +95,11 @@ public class AdbTask extends org.gradle.api.DefaultTask {
     @Deprecated
     final resolveFromExtension(property) {
         logger.warn """\
-                        $property not specified for the task $name.
-                        Automatically resolving $property via the plugin.
-                        This support will be removed with the next version of the plugin.
-                        Please specify the field $property in your task $name.
-        """.stripIndent()
+                       $property not specified for the task '$name'.
+                       Automatically resolving $property via the plugin.
+                       This support will be removed with the next version of the plugin.
+                       Please specify the field $property in your task '$name'.
+                       """.stripIndent()
         project.android.command."$property"
     }
 }
