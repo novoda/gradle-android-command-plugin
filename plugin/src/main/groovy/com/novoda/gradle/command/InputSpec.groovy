@@ -49,10 +49,6 @@ class InputSpec {
         key 22
     }
 
-    void power() {
-        key 26
-    }
-
     void clear() {
         key 28
     }
@@ -63,6 +59,10 @@ class InputSpec {
 
     void enter() {
         key 66
+    }
+
+    void power() {
+        key 26
     }
 
     void unlock() {
