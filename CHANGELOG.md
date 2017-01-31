@@ -1,3 +1,9 @@
+# 1.7.1
+
+_2017-01-31_
+
+- Fix a bug where system animation tasks output a non-actionable warning 6 times. [#119](https://github.com/novoda/gradle-android-command-plugin/pull/119)
+
 # 1.7.0
 
 _2017-01-11_
