@@ -12,7 +12,7 @@ class Input extends AdbTask {
         logger.warn """\
                        Manual creation of Input task is deprecated.
                        Please refer to scripting documentation to modify your task '$name'
-                       https://github.com/novoda/gradle-android-command-plugin#scripting
+                       https://github.com/novoda/gradle-android-command-plugin#input-scripting
                        """.stripIndent()
         action.execute(script)
     }
