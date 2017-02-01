@@ -68,16 +68,16 @@ android {
 - Refactor Category Filter feature [#92](https://github.com/novoda/gradle-android-command-plugin/pull/92)
 
 # 1.5.0
-- add support for launching via alias [#79 by Sebastian Schuberth](https://github.com/novoda/gradle-android-command-plugin/pull/79))
-- add Stop and Start task [#78 by Sebastian Schuberth](https://github.com/novoda/gradle-android-command-plugin/pull/78))
+- add support for launching via alias [#79 by Sebastian Schuberth](https://github.com/novoda/gradle-android-command-plugin/pull/79)
+- add Stop and Start task [#78 by Sebastian Schuberth](https://github.com/novoda/gradle-android-command-plugin/pull/78)
 
 # 1.4.0
 
 - add Files task to support adb push / pull functionality (see sample project for an example)
-- derive adb location from android plugin [#70 by Emanuele Zattin](https://github.com/novoda/gradle-android-command-plugin/pull/70))
-- better exception on missing android plugin [#68 by Emanuele Zattin](https://github.com/novoda/gradle-android-command-plugin/pull/68))
-- allow to specify seed in monkey task [#67 by Emanuele Zattin](https://github.com/novoda/gradle-android-command-plugin/pull/67))
-- fix broken script task on GenyMotion [#59 by Eugen Martynov](https://github.com/novoda/gradle-android-command-plugin/pull/59))
+- derive adb location from android plugin [#70 by Emanuele Zattin](https://github.com/novoda/gradle-android-command-plugin/pull/70)
+- better exception on missing android plugin [#68 by Emanuele Zattin](https://github.com/novoda/gradle-android-command-plugin/pull/68)
+- allow to specify seed in monkey task [#67 by Emanuele Zattin](https://github.com/novoda/gradle-android-command-plugin/pull/67)
+- fix broken script task on GenyMotion [#59 by Eugen Martynov](https://github.com/novoda/gradle-android-command-plugin/pull/59)
 - update to Gradle 2.2 (via wrapper)
 
 # 1.3.0
