@@ -86,8 +86,8 @@ public class AndroidCommandPluginExtension {
         monkey
     }
 
-    void script(Action<NamedDomainObjectContainer<InputSpec>> action) {
-        action.execute(scripts)
+    void inputScripts(Closure script) {
+        scripts.configure(script)
     }
 
     NamedDomainObjectContainer<InputSpec> getScripts() {

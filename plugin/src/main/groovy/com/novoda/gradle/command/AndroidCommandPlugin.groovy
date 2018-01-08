@@ -45,7 +45,7 @@ public class AndroidCommandPlugin implements Plugin<Project> {
             project.tasks.create(input.name, Input) {
                 group = 'adb script'
                 description = "Runs $input.name script on the specified device"
-                script = input
+                inputSpec = input
             }
         }
     }

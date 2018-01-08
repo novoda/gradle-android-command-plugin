@@ -99,13 +99,15 @@ android {
             }
         }
 
-        script {
+        inputScripts {
             autoLogin {
-                2.times {
-                    text 'bob'
+                inputScript {
+                    2.times {
+                        text 'bob'
+                        enter()
+                    }
                     enter()
                 }
-                enter()
             }
         }
 
