@@ -99,9 +99,9 @@ android {
             }
         }
 
-        inputScripts {
+        scripts {
             autoLogin {
-                inputScript {
+                execute {
                     2.times {
                         text 'bob'
                         enter()

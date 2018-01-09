@@ -86,7 +86,7 @@ public class AndroidCommandPluginExtension {
         monkey
     }
 
-    void inputScripts(Closure script) {
+    void scripts(Closure script) {
         scripts.configure(script)
     }
 

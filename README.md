@@ -66,9 +66,9 @@ The plugin has a extension called `script` which allows you to do simple scripti
 Here is an example called `autoLogin` which will input the test username and password into the sample app.
 
 ```groovy
-inputScripts {
+scripts {
     autoLogin {
-        inputScript {
+        execute {
           2.times {
               text 'bob'
               enter()

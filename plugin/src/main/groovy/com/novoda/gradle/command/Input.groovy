@@ -19,7 +19,7 @@ class Input extends AdbTask {
                        https://github.com/novoda/gradle-android-command-plugin#input-scripting
                        """.stripIndent()
         inputSpec = new InputSpec()
-        inputSpec.inputScript = script
+        inputSpec.script = script
     }
 
     void text(String value) {
@@ -89,7 +89,7 @@ class Input extends AdbTask {
     @TaskAction
     void exec() {
         assertDeviceConnected()
-        inputSpec.inputScript.delegate = this
-        inputSpec.inputScript.call()
+        inputSpec.script.delegate = this
+        inputSpec.script.call()
     }
 }

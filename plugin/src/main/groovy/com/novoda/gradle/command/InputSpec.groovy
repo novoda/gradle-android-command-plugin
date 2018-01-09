@@ -3,14 +3,14 @@ package com.novoda.gradle.command
 class InputSpec {
 
     String name
-    Closure inputScript
+    Closure script
 
     InputSpec(name) {
         this.name = name
     }
 
-    void inputScript(inputScript) {
-        this.inputScript = inputScript
+    void execute(script) {
+        this.script = script
     }
 
 }
