@@ -109,6 +109,10 @@ android {
                     enter()
                 }
             }
+
+            pressBack.execute {
+                back()
+            }
         }
 
         task listDevices doLast {
