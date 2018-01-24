@@ -25,31 +25,31 @@ class VariantConfigurator {
     }
 
     def configure(def variant) {
-        def buildTypeName = variant.buildType.name.capitalize()
-        def projectFlavorNames = variant.productFlavors.collect { it.name.capitalize() }
-        def projectFlavorName = projectFlavorNames.join()
-        def variationName = projectFlavorName + buildTypeName
+        def variantName = variantName(variant)
 
-        AdbTask task = project.tasks.create(taskName + variationName, taskType)
+        AdbTask task = project.tasks.create(taskName + variantName, taskType)
 
         if (extension.sortBySubtasks) {
-            task.group = AndroidCommandPlugin.TASK_GROUP + " " + taskName;
+            task.group = "${AndroidCommandPlugin.TASK_GROUP} $taskName"
         } else {
-            task.group = AndroidCommandPlugin.TASK_GROUP + " for variant " + variationName;
+            task.group = "${AndroidCommandPlugin.TASK_GROUP} for variant $variantName"
         }
 
         task.apkPath = "${-> variant.outputs[0].outputFile}"
-        if (this.description) {
-            task.description = this.description + " for variant ${variationName}"
+        if (description) {
+            task.description = "$description for variant ${variantName}"
         }
-        task.variationName = variationName
 
-        if (dependencies.size() > 0) {
-            task.dependsOn << dependenciesForVariation(variationName)
+        dependencies.each {
+            task.dependsOn "$it$variantName"
         }
+        return task
     }
 
-    private Set<String> dependenciesForVariation(def variationName) {
-        dependencies.collect { "$it$variationName" }
+    private static String variantName(variant) {
+        def buildTypeName = variant.buildType.name.capitalize()
+        def projectFlavorNames = variant.productFlavors.collect { it.name.capitalize() }
+        def projectFlavorName = projectFlavorNames.join()
+        return projectFlavorName + buildTypeName
     }
 }

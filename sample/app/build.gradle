@@ -123,9 +123,12 @@ android {
             }
         }
 
-        task('installFromGooglePlay', com.novoda.gradle.command.Install) {
-            customFlags {
-                return ['-i', 'com.android.vending']
+        install {
+            installFromGooglePlay {
+                description "Custom description"
+                customFlags {
+                    ['-i', 'com.android.vending']
+                }
             }
         }
 

@@ -27,6 +27,7 @@ public class AndroidCommandPlugin implements Plugin<Project> {
         }
 
         configureInputScripts(extension, project)
+        configureInstall(extension, project)
 
         defaultTask (project, 'enableSystemAnimations', 'enables system animations on the connected device', SystemAnimations) {
             enable = true
@@ -46,6 +47,17 @@ public class AndroidCommandPlugin implements Plugin<Project> {
                 group = 'adb script'
                 description = "Runs $extension.name script on the specified device"
                 inputExtension = extension
+            }
+        }
+    }
+
+    private configureInstall(AndroidCommandPluginExtension extension, Project project) {
+        extension.install.all { install ->
+            project.android.applicationVariants.all { variant ->
+                new VariantConfigurator(extension, project, install.name, install.description, Install, ['assemble']).configure(variant).configure {
+                  group = 'install'
+                  installSpec = install
+                }
             }
         }
     }
