@@ -9,6 +9,7 @@ class VariantConfigurator {
     private final String description
     private final Class<? extends AdbTask> taskType
     private final def dependencies
+    private final LegacyTaskGroup taskGroup
 
     VariantConfigurator(AndroidCommandPluginExtension extension,
                         Project project,
@@ -22,34 +23,22 @@ class VariantConfigurator {
         this.taskName = taskName
         this.description = description
         this.dependencies = dependencies
+        this.taskGroup = new LegacyTaskGroup(extension)
     }
 
     def configure(def variant) {
-        def variantName = variantName(variant)
-
+        def variantName = VariantSuffix.variantNameFor(variant)
         AdbTask task = project.tasks.create(taskName + variantName, taskType)
 
-        if (extension.sortBySubtasks) {
-            task.group = "${AndroidCommandPlugin.TASK_GROUP} $taskName"
-        } else {
-            task.group = "${AndroidCommandPlugin.TASK_GROUP} for variant $variantName"
-        }
-
+        task.group = taskGroup.groupFor(taskName, variantName)
         task.apkPath = "${-> variant.outputs[0].outputFile}"
         if (description) {
             task.description = "$description for variant ${variantName}"
         }
-
         dependencies.each {
             task.dependsOn "$it$variantName"
         }
         return task
     }
 
-    private static String variantName(variant) {
-        def buildTypeName = variant.buildType.name.capitalize()
-        def projectFlavorNames = variant.productFlavors.collect { it.name.capitalize() }
-        def projectFlavorName = projectFlavorNames.join()
-        return projectFlavorName + buildTypeName
-    }
 }

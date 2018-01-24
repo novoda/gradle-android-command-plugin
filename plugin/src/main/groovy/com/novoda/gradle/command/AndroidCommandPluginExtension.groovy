@@ -34,23 +34,15 @@ public class AndroidCommandPluginExtension {
         task(name, type).all(configuration)
     }
 
-    def task(String name, String description, Class<? extends AdbTask> type) {
-        task(name, description, type, [])
-    }
-
     def task(String name, Class<? extends AdbTask> type, def dependencies, Closure configuration) {
         task(name, type, dependencies).all(configuration)
     }
 
-    def task(String name, Class<? extends AdbTask> type) {
-        task(name, "", type, [])
-    }
-
-    def task(String name, Class<? extends AdbTask> type, def dependencies) {
+    def task(String name, Class<? extends AdbTask> type, def dependencies = []) {
         task(name, "", type, dependencies)
     }
 
-    def task(String name, String description, Class<? extends AdbTask> type, def dependencies) {
+    def task(String name, String description, Class<? extends AdbTask> type, def dependencies = []) {
         VariantConfigurator variantConfigurator = new VariantConfigurator(this, project, name, description, type, dependencies)
         project.android.applicationVariants.all {
             variantConfigurator.configure(it)
@@ -96,8 +88,8 @@ public class AndroidCommandPluginExtension {
         scriptsContainer
     }
 
-    void install(Closure<InstallSpec> install) {
-        installContainer.configure(install)
+    void install(Action<NamedDomainObjectContainer<InstallSpec>> install) {
+        install.execute(installContainer)
     }
 
     NamedDomainObjectContainer<InstallSpec> getInstall() {
@@ -144,4 +136,5 @@ public class AndroidCommandPluginExtension {
         }
         throw new IllegalStateException('The android plugin is not exposing the SDK folder in an expected way.')
     }
+
 }

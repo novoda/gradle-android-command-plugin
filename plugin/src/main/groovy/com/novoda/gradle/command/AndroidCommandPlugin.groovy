@@ -27,12 +27,12 @@ public class AndroidCommandPlugin implements Plugin<Project> {
         }
 
         configureInputScripts(extension, project)
-        configureInstall(extension, project)
+        configureInstallTasks(extension, project)
 
-        defaultTask (project, 'enableSystemAnimations', 'enables system animations on the connected device', SystemAnimations) {
+        defaultTask(project, 'enableSystemAnimations', 'enables system animations on the connected device', SystemAnimations) {
             enable = true
         }
-        defaultTask (project, 'disableSystemAnimations', 'disables system animations on the connected device', SystemAnimations) {
+        defaultTask(project, 'disableSystemAnimations', 'disables system animations on the connected device', SystemAnimations) {
             enable = false
         }
 
@@ -51,16 +51,15 @@ public class AndroidCommandPlugin implements Plugin<Project> {
         }
     }
 
-    private configureInstall(AndroidCommandPluginExtension extension, Project project) {
-        extension.install.all { install ->
-            project.android.applicationVariants.all { variant ->
-                new VariantConfigurator(extension, project, install.name, install.description, Install, ['assemble']).configure(variant).configure {
-                  group = 'install'
-                  installSpec = install
-                }
+    private static configureInstallTasks(AndroidCommandPluginExtension extension, Project project) {
+        def factory = new InstallTaskFactory(project)
+        project.android.applicationVariants.all { variant ->
+            extension.install.all { spec ->
+                factory.create(variant, spec)
             }
         }
     }
+
 
     static defaultTask(Project project, String taskName, String description, Class<? extends AdbTask> taskType, Closure configuration) {
         AdbTask task = project.tasks.create(taskName, taskType)
