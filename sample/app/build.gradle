@@ -124,7 +124,7 @@ android {
         }
 
         install {
-            installFromGooglePlay {
+            fromGooglePlay {
                 description "Installs with flag Play Store"
                 // Note: here flags are lazy evaluated
                 customFlags {
@@ -132,7 +132,7 @@ android {
                 }
             }
 
-            installAllowingDowngrade {
+            allowingDowngrade {
                 description "Installs with -d flag"
                 customFlags = ['-d']
             }

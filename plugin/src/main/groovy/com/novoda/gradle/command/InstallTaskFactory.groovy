@@ -12,7 +12,8 @@ class InstallTaskFactory {
 
     void create(variant, InstallExtension extension) {
         def variantName = VariantSuffix.variantNameFor(variant)
-        Install task = project.tasks.create(extension.name + variantName, Install)
+        def taskName = "install${extension.name.capitalize()}$variantName"
+        Install task = project.tasks.create(taskName, Install)
 
         task.dependsOn "assemble$variantName"
         task.group = 'install'
