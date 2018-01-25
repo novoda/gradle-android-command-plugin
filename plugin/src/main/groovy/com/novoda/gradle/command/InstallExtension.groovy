@@ -1,12 +1,12 @@
 package com.novoda.gradle.command
 
-class InstallSpec {
+class InstallExtension {
 
     String name
     String description
     def customFlags
 
-    InstallSpec(name) {
+    InstallExtension(name) {
         this.name = name
     }
 

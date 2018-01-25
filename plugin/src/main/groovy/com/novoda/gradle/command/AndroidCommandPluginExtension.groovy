@@ -16,7 +16,7 @@ public class AndroidCommandPluginExtension {
     private final String androidHome
     private final MonkeySpec monkey
     private final NamedDomainObjectContainer<InputExtension> scriptsContainer
-    private final NamedDomainObjectContainer<InstallSpec> installContainer
+    private final NamedDomainObjectContainer<InstallExtension> installContainer
 
     AndroidCommandPluginExtension(Project project) {
         this(project, findAndroidHomeFrom(project.android))
@@ -27,7 +27,7 @@ public class AndroidCommandPluginExtension {
         this.androidHome = androidHome
         this.monkey = new MonkeySpec()
         this.scriptsContainer = project.container(InputExtension)
-        this.installContainer = project.container(InstallSpec)
+        this.installContainer = project.container(InstallExtension)
     }
 
     def task(String name, Class<? extends AdbTask> type, Closure configuration) {
@@ -88,11 +88,11 @@ public class AndroidCommandPluginExtension {
         scriptsContainer
     }
 
-    void install(Action<NamedDomainObjectContainer<InstallSpec>> install) {
+    void install(Action<NamedDomainObjectContainer<InstallExtension>> install) {
         install.execute(installContainer)
     }
 
-    NamedDomainObjectContainer<InstallSpec> getInstall() {
+    NamedDomainObjectContainer<InstallExtension> getInstall() {
         installContainer
     }
 

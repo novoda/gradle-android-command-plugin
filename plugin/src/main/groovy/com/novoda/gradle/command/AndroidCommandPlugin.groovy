@@ -51,11 +51,11 @@ public class AndroidCommandPlugin implements Plugin<Project> {
         }
     }
 
-    private static configureInstallTasks(AndroidCommandPluginExtension extension, Project project) {
+    private static configureInstallTasks(AndroidCommandPluginExtension command, Project project) {
         def factory = new InstallTaskFactory(project)
         project.android.applicationVariants.all { variant ->
-            extension.install.all { spec ->
-                factory.create(variant, spec)
+            command.install.all { extension ->
+                factory.create(variant, extension)
             }
         }
     }

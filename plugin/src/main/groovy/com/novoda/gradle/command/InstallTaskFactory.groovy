@@ -10,17 +10,17 @@ class InstallTaskFactory {
         this.project = project
     }
 
-    void create(variant, InstallSpec spec) {
+    void create(variant, InstallExtension extension) {
         def variantName = VariantSuffix.variantNameFor(variant)
-        Install task = project.tasks.create(spec.name + variantName, Install)
+        Install task = project.tasks.create(extension.name + variantName, Install)
 
         task.dependsOn "assemble$variantName"
         task.group = 'install'
-        task.installSpec = spec
+        task.installExtension = extension
 
         task.apkPath = "${-> variant.outputs[0].outputFile}"
-        if (spec.description) {
-            task.description = "$spec.description for $variantName"
+        if (extension.description) {
+            task.description = "$extension.description for $variantName"
         }
     }
 }

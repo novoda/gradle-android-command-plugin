@@ -4,7 +4,7 @@ import org.gradle.api.tasks.TaskAction
 
 class Install extends AdbTask {
 
-    InstallSpec installSpec
+    InstallExtension installExtension
 
     /**
      * Manual creation of Install task is deprecated.
@@ -18,8 +18,8 @@ class Install extends AdbTask {
                        Please refer to install dsl documentation and modify your task '$name'
                        https://github.com/novoda/gradle-android-command-plugin#install
                        """.stripIndent()
-        installSpec = new InstallSpec()
-        installSpec.customFlags = customFlags
+        installExtension = new InstallExtension()
+        installExtension.customFlags = customFlags
     }
 
     @TaskAction
@@ -34,7 +34,7 @@ class Install extends AdbTask {
     }
 
     private resolveCustomFlags() {
-        def customFlags = installSpec.customFlags
+        def customFlags = installExtension.customFlags
         if (customFlags instanceof Closure) {
             return customFlags.call() ?: ''
         }
