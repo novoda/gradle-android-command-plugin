@@ -14,7 +14,9 @@ public class AndroidCommandPlugin implements Plugin<Project> {
         }
 
         AndroidCommandPluginExtension extension = project.android.extensions.create('command', AndroidCommandPluginExtension, project)
-        extension.task 'installDevice', 'installs the APK on the specified device', Install, ['assemble']
+
+        configureInstallTasks(extension, project)
+
         extension.task 'run', 'installs and runs a APK on the specified device', Run, ['installDevice']
         extension.task 'start', 'runs an already installed APK on the specified device', Run
         extension.task 'stop', 'forcibly stops the app on the specified device', Stop
@@ -27,7 +29,6 @@ public class AndroidCommandPlugin implements Plugin<Project> {
         }
 
         configureInputScripts(extension, project)
-        configureInstallTasks(extension, project)
 
         defaultTask(project, 'enableSystemAnimations', 'enables system animations on the connected device', SystemAnimations) {
             enable = true
@@ -57,6 +58,7 @@ public class AndroidCommandPlugin implements Plugin<Project> {
             command.install.all { extension ->
                 factory.create(variant, extension)
             }
+            factory.create(variant, new InstallExtension('device', 'installs the APK on the specified device'))
         }
     }
 

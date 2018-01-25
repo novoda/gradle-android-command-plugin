@@ -6,8 +6,9 @@ class InstallExtension {
     String description
     def customFlags
 
-    InstallExtension(name) {
+    InstallExtension(name, description = null) {
         this.name = name
+        this.description = description
     }
 
     void customFlags(Closure customFlags) {
