@@ -1,11 +1,11 @@
 package com.novoda.gradle.command
 
-class InputSpec {
+class InputExtension {
 
     String name
     Closure script
 
-    InputSpec(name) {
+    InputExtension(name) {
         this.name = name
     }
 

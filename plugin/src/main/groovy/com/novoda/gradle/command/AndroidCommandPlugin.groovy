@@ -40,12 +40,12 @@ public class AndroidCommandPlugin implements Plugin<Project> {
         }
     }
 
-    private configureInputScripts(AndroidCommandPluginExtension extension, Project project) {
-        extension.scripts.all { input ->
-            project.tasks.create(input.name, Input) {
+    private configureInputScripts(AndroidCommandPluginExtension command, Project project) {
+        command.scripts.all { extension ->
+            project.tasks.create(extension.name, Input) {
                 group = 'adb script'
-                description = "Runs $input.name script on the specified device"
-                inputSpec = input
+                description = "Runs $extension.name script on the specified device"
+                inputExtension = extension
             }
         }
     }

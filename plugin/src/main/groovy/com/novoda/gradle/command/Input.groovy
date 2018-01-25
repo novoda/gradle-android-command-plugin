@@ -4,7 +4,7 @@ import org.gradle.api.tasks.TaskAction
 
 class Input extends AdbTask {
 
-    InputSpec inputSpec
+    InputExtension inputExtension
 
     /**
      * Manual creation of Input task is deprecated.
@@ -18,8 +18,8 @@ class Input extends AdbTask {
                        Please refer to scripting documentation to modify your task '$name'
                        https://github.com/novoda/gradle-android-command-plugin#input-scripting
                        """.stripIndent()
-        inputSpec = new InputSpec()
-        inputSpec.script = script
+        inputExtension = new InputExtension()
+        inputExtension.script = script
     }
 
     void text(String value) {
@@ -89,7 +89,7 @@ class Input extends AdbTask {
     @TaskAction
     void exec() {
         assertDeviceConnected()
-        inputSpec.script.delegate = this
-        inputSpec.script.call()
+        inputExtension.script.delegate = this
+        inputExtension.script.call()
     }
 }
