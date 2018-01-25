@@ -1,10 +1,12 @@
-# gradle-android-command-plugin 
+gradle-android-command-plugin
+=============================
 [![](https://ci.novoda.com/buildStatus/icon?job=gradle-android-command-plugin)](https://ci.novoda.com/job/gradle-android-command-plugin/lastSuccessfulBuild/console) [![](https://raw.githubusercontent.com/novoda/novoda/master/assets/btn_apache_lisence.png)](LICENSE.txt) [![Bintray](https://api.bintray.com/packages/novoda/maven/gradle-android-command-plugin/images/download.svg) ](https://bintray.com/novoda/maven/gradle-android-command-plugin/_latestVersion)
 
 Use gradle tasks to run specific `adb` commands.
 
 
-## Description
+Description
+-----------
 
 You can use this plugin to do things such as:
 
@@ -18,7 +20,8 @@ You can use this plugin to do things such as:
 This is particularly useful for CI servers but could be used to speed up development as well.
 
 
-## Adding to your project
+Adding to your project
+----------------------
 
 To start using this library, add these lines to the `build.gradle` of your project:
 
@@ -37,7 +40,8 @@ buildscript {
 ```
 
 
-## Simple usage
+Simple usage
+------------
 
 The plugin creates new tasks that you can use:
 
@@ -53,7 +57,53 @@ The plugin creates new tasks that you can use:
 
 For advanced usage please take a look into the sample project [build.gradle](sample/app/build.gradle) file.
 
-## Links
+Configuration
+-------------
+
+### Input Scripting
+
+The plugin has a extension called `script` which allows you to do simple scripting automation in a connected device.
+Here is an example called `autoLogin` which will input the test username and password into the sample app.
+
+```groovy
+scripts {
+    autoLogin {
+        execute {
+          2.times {
+              text 'bob'
+              enter()
+          }
+          enter()
+        }
+    }
+}
+```
+
+This config will create a gradle task called `autoLogin`. Running `./gradlew autoLogin` will try to input `bob` then press `enter`. This will be done 2 times and then another `enter` will be pressed.
+
+You may have a custom groovy closure to do scripting as you like. The following input methods are available:
+
+```
+text(String value)
+tap(int x, int y)
+swipe(int startX, int startY, int endX, int endY)
+key(int code)
+home()
+back()
+up()
+down()
+left()
+right()
+clear()
+tab()
+enter()
+power()
+unlock()
+```
+
+
+Links
+-----
 
 Here are a list of useful links:
 

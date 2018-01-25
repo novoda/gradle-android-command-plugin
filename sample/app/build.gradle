@@ -99,13 +99,19 @@ android {
             }
         }
 
-        task autoLogin(type: com.novoda.gradle.command.Input) {
-            script {
-                2.times {
-                    text 'bob'
+        scripts {
+            autoLogin {
+                execute {
+                    2.times {
+                        text 'bob'
+                        enter()
+                    }
                     enter()
                 }
-                enter()
+            }
+
+            pressBack.execute {
+                back()
             }
         }
 

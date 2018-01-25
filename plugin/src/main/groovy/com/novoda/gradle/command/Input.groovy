@@ -4,7 +4,23 @@ import org.gradle.api.tasks.TaskAction
 
 class Input extends AdbTask {
 
-    Closure script
+    InputExtension inputExtension
+
+    /**
+     * Manual creation of Input task is deprecated.
+     * Please refer to scripting documentation for details:
+     * https://github.com/novoda/gradle-android-command-plugin#input-scripting
+     */
+    @Deprecated
+    void setScript(Closure script) {
+        logger.warn """\
+                       Manual creation of Input task is deprecated.
+                       Please refer to scripting documentation to modify your task '$name'
+                       https://github.com/novoda/gradle-android-command-plugin#input-scripting
+                       """.stripIndent()
+        inputExtension = new InputExtension()
+        inputExtension.script = script
+    }
 
     void text(String value) {
         input('text', "$value")
@@ -21,11 +37,11 @@ class Input extends AdbTask {
     void key(int code) {
         input('keyevent', code)
     }
-    
+
     void home() {
         key 3
     }
-    
+
     void back() {
         key 4
     }
@@ -37,7 +53,7 @@ class Input extends AdbTask {
     void down() {
         key 20
     }
-    
+
     void left() {
         key 21
     }
@@ -49,7 +65,7 @@ class Input extends AdbTask {
     void power() {
         key 26
     }
-    
+
     void clear() {
         key 28
     }
@@ -57,7 +73,7 @@ class Input extends AdbTask {
     void tab() {
         key 61
     }
-    
+
     void enter() {
         key 66
     }
@@ -67,14 +83,13 @@ class Input extends AdbTask {
     }
 
     private input(... values) {
-        def command = ["shell", "input"]
-        command.addAll(values)
-        runCommand(command)
+        runCommand(['shell', 'input', *values])
     }
 
     @TaskAction
     void exec() {
         assertDeviceConnected()
-        script.call()
+        inputExtension.script.delegate = this
+        inputExtension.script.call()
     }
 }
