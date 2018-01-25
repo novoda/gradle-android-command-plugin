@@ -23,5 +23,8 @@ class InstallTaskFactory {
         if (extension.description) {
             task.description = "$extension.description for $variantName"
         }
+        if (extension.deviceId) {
+            task.deviceId = extension.deviceId
+        }
     }
 }

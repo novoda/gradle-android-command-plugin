@@ -136,6 +136,13 @@ android {
                 description "Installs with -d flag"
                 customFlags = ['-d']
             }
+
+            toNewestDevice {
+                deviceId {
+                    def device = devices().max { it.sdkVersion() }
+                    device.id
+                }
+            }
         }
 
         task dumpActivityStack(type: com.novoda.gradle.command.ActivityStack) {
