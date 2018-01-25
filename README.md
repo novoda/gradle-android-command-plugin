@@ -62,7 +62,7 @@ Configuration
 
 ### Input Scripting
 
-The plugin has a extension called `script` which allows you to do simple scripting automation in a connected device.
+The plugin has a extension called `scripts` which allows you to do simple scripting automation in a connected device.
 Here is an example called `autoLogin` which will input the test username and password into the sample app.
 
 ```groovy
@@ -101,6 +101,28 @@ power()
 unlock()
 ```
 
+
+### Install
+
+`installDevice<Variant>` tasks are available by default just to install the app. 
+
+Plugin also supports `install` extension to define install tasks with custom adb flags.
+Here is an extension called `fromGooglePlay` which will create `installFromGooglePlay<Variant>` tasks.
+
+```groovy
+install {
+    fromGooglePlay {
+        description "Installs with flag Play Store"
+        customFlags {
+            ['-i', 'com.android.vending']
+        }
+    }
+}
+```
+
+**Note:** `customFlags` also supports any custom Closure to be lazy evaluated.
+
+More flags can be found in the `install` section of [the official adb document](https://developer.android.com/studio/command-line/adb.html#pm).
 
 Links
 -----
