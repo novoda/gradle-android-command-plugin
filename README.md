@@ -104,9 +104,10 @@ unlock()
 
 ### Install
 
-`installDevice<Variant>` tasks are available by default just to install the app. 
+`installDevice<Variant>` tasks are available by default just to install the app. Plugin also supports `install` dsl to define custom installation tasks.
 
-Plugin also supports `install` extension to define install tasks with custom adb flags.
+**customFlags**
+
 Here is an extension called `fromGooglePlay` which will create `installFromGooglePlay<Variant>` tasks.
 
 ```groovy
@@ -123,6 +124,21 @@ install {
 **Note:** `customFlags` also supports any custom Closure to be lazy evaluated.
 
 More flags can be found in the `install` section of [the official adb document](https://developer.android.com/studio/command-line/adb.html#pm).
+
+**deviceId**
+
+Here is how you can install on a specific device using `deviceId`
+
+```groovy
+install {
+    toNewestDevice {
+        deviceId {
+            def device = devices().max { it.sdkVersion() }
+            device.id
+        }
+    }
+}
+```
 
 Links
 -----
