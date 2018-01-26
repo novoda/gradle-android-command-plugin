@@ -3,7 +3,7 @@ package com.novoda.gradle.command
 class DemoModeExtension {
 
     final name
-    final extras = new HashMap<String, String>()
+    final extras = [:]
 
     DemoModeExtension(name) {
         this.name = name
