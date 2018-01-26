@@ -1,5 +1,6 @@
 package com.novoda.gradle.command
 
+import org.gradle.api.GradleException
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.tasks.TaskAction
 
@@ -16,6 +17,7 @@ class DemoModeTask extends AdbTask {
     @TaskAction
     void exec() {
         assertDeviceConnected()
+        assertDeviceAndroidM()
         if (enable) {
             allowDemoMode()
             executeDefaults()
@@ -53,5 +55,11 @@ class DemoModeTask extends AdbTask {
                 '-e', 'command', name,
                 *args
         ])
+    }
+
+    void assertDeviceAndroidM() {
+        if (device().sdkVersion() < 23) {
+            throw new GradleException("Connected device must have at least Android Marshmallow (API level 23)")
+        }
     }
 }

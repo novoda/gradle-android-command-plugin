@@ -106,13 +106,13 @@ public class AndroidCommandPluginExtension {
         task.conventionMapping.deviceId = { getDeviceId() }
     }
 
-    def devices() {
+    List<Device> devices() {
         deviceIds().collect { deviceId ->
             new Device(getAdb(), deviceId)
         }
     }
 
-    def deviceIds() {
+    List<String> deviceIds() {
         def deviceIds = []
         [getAdb(), 'devices'].execute().text.eachLine { line ->
             def matcher = line =~ /^(.*)\tdevice/
