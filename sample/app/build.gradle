@@ -99,14 +99,7 @@ android {
             }
         }
 
-        demoMode {
-            clock.hhmm '1134'
-            network {
-                wifi 'show'
-                level '3'
-            }
-        }
-
+        // More info: https://github.com/novoda/gradle-android-command-plugin#input-scripting
         scripts {
             autoLogin {
                 execute {
@@ -120,6 +113,15 @@ android {
 
             pressBack.execute {
                 back()
+            }
+        }
+
+        // More info: https://github.com/novoda/gradle-android-command-plugin#demo-mode
+        demoMode {
+            clock.hhmm '1134'
+            network {
+                wifi 'show'
+                level '3'
             }
         }
 
