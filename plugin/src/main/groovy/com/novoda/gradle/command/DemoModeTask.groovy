@@ -47,7 +47,7 @@ class DemoModeTask extends AdbTask {
         }
     }
 
-    def broadcast(String name, Map<String, String> intentExtras) {
+    def broadcast(String name, Map<String, String> intentExtras = [:]) {
         def args = intentExtras.collectMany { key, value -> ['-e', "$key", "$value"] }
         runCommand([
                 'shell', 'am', 'broadcast',
