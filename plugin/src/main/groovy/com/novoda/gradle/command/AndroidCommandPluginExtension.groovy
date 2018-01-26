@@ -16,6 +16,7 @@ public class AndroidCommandPluginExtension {
     private final String androidHome
     private final MonkeySpec monkey
     private final NamedDomainObjectContainer<InputExtension> scriptsContainer
+    final NamedDomainObjectContainer<DemoModeExtension> demoModeContainer
 
     AndroidCommandPluginExtension(Project project) {
         this(project, findAndroidHomeFrom(project.android))
@@ -25,6 +26,7 @@ public class AndroidCommandPluginExtension {
         this.project = project
         this.androidHome = androidHome
         this.monkey = new MonkeySpec()
+        this.demoModeContainer = project.container(DemoModeExtension)
         this.scriptsContainer = project.container(InputExtension)
     }
 
@@ -84,6 +86,10 @@ public class AndroidCommandPluginExtension {
 
     MonkeySpec getMonkey() {
         monkey
+    }
+
+    void demoMode(Action<NamedDomainObjectContainer<DemoModeExtension>> action) {
+        action.execute(demoModeContainer)
     }
 
     void scripts(Action<NamedDomainObjectContainer<InputExtension>> script) {

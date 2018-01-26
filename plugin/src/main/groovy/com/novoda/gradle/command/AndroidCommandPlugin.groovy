@@ -34,10 +34,19 @@ public class AndroidCommandPlugin implements Plugin<Project> {
         defaultTask (project, 'disableSystemAnimations', 'disables system animations on the connected device', SystemAnimations) {
             enable = false
         }
+        configureDemoMode(project, extension.demoModeContainer)
 
         project.tasks.withType(AdbTask) { task ->
             extension.attachDefaults(task)
         }
+    }
+
+    private void configureDemoMode(Project project, demoModeContainer) {
+        project.tasks.create('enableDemoMode', DemoModeTask) {
+            enable = true
+            commands = demoModeContainer
+        }
+        project.tasks.create('disableDemoMode', DemoModeTask) { enable = false }
     }
 
     private configureInputScripts(AndroidCommandPluginExtension command, Project project) {

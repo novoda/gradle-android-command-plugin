@@ -99,6 +99,14 @@ android {
             }
         }
 
+        demoMode {
+            clock.hhmm '1134'
+            network {
+                wifi 'show'
+                level '3'
+            }
+        }
+
         scripts {
             autoLogin {
                 execute {
