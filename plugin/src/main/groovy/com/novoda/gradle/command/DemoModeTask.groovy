@@ -16,7 +16,7 @@ class DemoModeTask extends AdbTask {
     @TaskAction
     void exec() {
         assertDeviceConnected()
-        assertDeviceAndroidM()
+        assertDeviceAtLeastAndroidM()
         if (enable) {
             allowDemoMode()
             executeDefaults()
@@ -56,7 +56,7 @@ class DemoModeTask extends AdbTask {
         ])
     }
 
-    void assertDeviceAndroidM() {
+    void assertDeviceAtLeastAndroidM() {
         if (device().sdkVersion() < 23) {
             logger.warn "Connected device must have at least Android Marshmallow (API level 23) to enable Demo Mode"
         }
