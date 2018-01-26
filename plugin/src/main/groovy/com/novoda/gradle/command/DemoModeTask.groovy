@@ -22,7 +22,6 @@ class DemoModeTask extends AdbTask {
             commands.each {
                 broadcast it.name, it.extras
             }
-
         } else {
             broadcast 'exit'
         }
@@ -40,7 +39,7 @@ class DemoModeTask extends AdbTask {
         runCommand(['shell', 'settings', 'put', 'global', 'sysui_demo_allowed', '1'])
     }
 
-    def broadcastDefault(String name, Map<String, String> intentExtras) {
+    def broadcastDefault(String name, intentExtras) {
         if (!commands.findByName(name)) {
             broadcast(name, intentExtras)
         }
