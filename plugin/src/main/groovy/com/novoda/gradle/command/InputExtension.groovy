@@ -1,6 +1,6 @@
 package com.novoda.gradle.command
 
-class InputExtension {
+final class InputExtension {
 
     String name
     Closure script

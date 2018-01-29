@@ -4,7 +4,7 @@ import org.gradle.api.tasks.TaskAction
 
 class Monkey extends AdbTask {
 
-    MonkeySpec monkey
+    MonkeyExtension monkey
 
     protected handleCommandOutput(def text) {
         super.handleCommandOutput(text)

@@ -4,7 +4,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.StopExecutionException
 
-public class AndroidCommandPlugin implements Plugin<Project> {
+class AndroidCommandPlugin implements Plugin<Project> {
 
     public final static String TASK_GROUP = 'ADB command'
 
@@ -14,7 +14,9 @@ public class AndroidCommandPlugin implements Plugin<Project> {
         }
 
         AndroidCommandPluginExtension extension = project.android.extensions.create('command', AndroidCommandPluginExtension, project)
-        extension.task 'installDevice', 'installs the APK on the specified device', Install, ['assemble']
+
+        configureInstallTasks(extension, project)
+
         extension.task 'run', 'installs and runs a APK on the specified device', Run, ['installDevice']
         extension.task 'start', 'runs an already installed APK on the specified device', Run
         extension.task 'stop', 'forcibly stops the app on the specified device', Stop
@@ -28,10 +30,10 @@ public class AndroidCommandPlugin implements Plugin<Project> {
 
         configureInputScripts(extension, project)
 
-        defaultTask (project, 'enableSystemAnimations', 'enables system animations on the connected device', SystemAnimations) {
+        defaultTask(project, 'enableSystemAnimations', 'enables system animations on the connected device', SystemAnimations) {
             enable = true
         }
-        defaultTask (project, 'disableSystemAnimations', 'disables system animations on the connected device', SystemAnimations) {
+        defaultTask(project, 'disableSystemAnimations', 'disables system animations on the connected device', SystemAnimations) {
             enable = false
         }
         configureDemoMode(project, extension.demoModeContainer)
@@ -49,7 +51,7 @@ public class AndroidCommandPlugin implements Plugin<Project> {
     }
 
     private configureInputScripts(AndroidCommandPluginExtension command, Project project) {
-        command.scripts.all { extension ->
+        command.scriptsContainer.all { extension ->
             project.tasks.create(extension.name, Input) {
                 group = 'adb script'
                 description = "Runs $extension.name script on the specified device"
@@ -58,6 +60,16 @@ public class AndroidCommandPlugin implements Plugin<Project> {
         }
     }
 
+    private static configureInstallTasks(AndroidCommandPluginExtension command, Project project) {
+        def factory = new InstallTaskFactory(project)
+        project.android.applicationVariants.all { variant ->
+            command.installContainer.all { extension ->
+                factory.create(variant, extension)
+            }
+            factory.create(variant, new InstallExtension('device', 'installs the APK on the specified device'))
+        }
+    }
+    
     static defaultTask(Project project, String taskName, String description, Class<? extends AdbTask> taskType, Closure configuration) {
         AdbTask task = project.tasks.create(taskName, taskType)
         task.configure configuration

@@ -62,7 +62,7 @@ Configuration
 
 ### Input Scripting
 
-The plugin has a extension called `script` which allows you to do simple scripting automation in a connected device.
+The plugin provides an extension called `scripts` which allows to perform simple scripting automation.
 Here is an example called `autoLogin` which will input the test username and password into the sample app.
 
 ```groovy
@@ -123,6 +123,44 @@ demoMode {
 ``` 
 
 All possible values can be found in [the official Android documentation](https://android.googlesource.com/platform/frameworks/base/+/master/packages/SystemUI/docs/demo_mode.md)
+
+### Install
+
+`installDevice<Variant>` tasks are available by default just to install the app. The plugin also supports an `install` dsl to define custom installation tasks.
+
+**customFlags**
+
+Here is an extension called `fromGooglePlay` which will create `installFromGooglePlay<Variant>` tasks.
+
+```groovy
+install {
+    fromGooglePlay {
+        description "Installs with flag Play Store"
+        customFlags {
+            ['-i', 'com.android.vending']
+        }
+    }
+}
+```
+
+**Note:** `customFlags` also supports any custom Closure to be lazily evaluated.
+
+More flags can be found in the `install` section of [the official adb document](https://developer.android.com/studio/command-line/adb.html#pm).
+
+**deviceId**
+
+Here is how you can install on a specific device using `deviceId`
+
+```groovy
+install {
+    toNewestDevice {
+        deviceId {
+            def device = devices().max { it.sdkVersion() }
+            device.id
+        }
+    }
+}
+```
 
 Links
 -----
