@@ -1,8 +1,9 @@
 package com.novoda.gradle.command
 
 import groovy.transform.Memoized
+import org.gradle.api.DefaultTask
 
-public class AdbTask extends org.gradle.api.DefaultTask {
+class AdbTask extends DefaultTask {
 
     def adb
     def aapt
@@ -40,31 +41,28 @@ public class AdbTask extends org.gradle.api.DefaultTask {
     }
 
     protected void assertDeviceConnected() {
-        def adb = getAdb() ?: resolveFromExtension('adb')
-        def deviceId = getDeviceId() ?: resolveFromExtension('deviceId')
-        AdbCommand command = [adb: adb, deviceId: deviceId, parameters: 'get-state']
+        def deviceId = getDeviceId()
+        AdbCommand command = [adb: getAdb(), deviceId: deviceId, parameters: 'get-state']
         if (command.execute().text.trim() != 'device')
             throw new IllegalStateException("No device with ID $deviceId found.")
-        printDeviceInfo(new Device(adb, deviceId))
+        printDeviceInfo()
     }
 
-    private printDeviceInfo(device) {
+    private printDeviceInfo() {
         println '=========================='
-        println device.toString()
+        println device().toString()
         println '=========================='
     }
 
     protected void runCommand(def parameters) {
-        def adb = getAdb() ?: resolveFromExtension('adb')
-        def deviceId = getDeviceId() ?: resolveFromExtension('deviceId')
-        AdbCommand command = [adb: adb, deviceId: deviceId, parameters: parameters]
+        AdbCommand command = [adb: getAdb(), deviceId: getDeviceId(), parameters: parameters]
 
         logger.info "running command: $command"
 
         Process process = command.execute()
         if (process.waitFor() != 0) {
             // This error check works only on Nougat+ devices because exit code is always 0 before. http://b.android.com/3254
-            throw new GroovyRuntimeException("Adb command failed with error:\n${process.err.text}");
+            throw new GroovyRuntimeException("Adb command failed with error:\n${process.err.text}")
         }
         handleCommandOutput(process.text)
     }
@@ -85,22 +83,10 @@ public class AdbTask extends org.gradle.api.DefaultTask {
         if (!apkPath) {
             throw new IllegalStateException("No APK found for the '$name' task")
         }
-        def aapt = getAapt() ?: resolveFromExtension('aapt')
-        String output = [aapt, 'dump', 'badging', apkPath].execute().text.readLines().find {
+        String output = [getAapt(), 'dump', 'badging', apkPath].execute().text.readLines().find {
             it.startsWith("$propertyKey:")
         }
         output
     }
 
-    // TODO: Remove this once we have support for nice DSL support for tasks
-    @Deprecated
-    final resolveFromExtension(property) {
-        logger.warn """\
-                       $property not specified for the task '$name'.
-                       Automatically resolving $property via the plugin.
-                       This support will be removed with the next version of the plugin.
-                       Please specify the field $property in your task '$name'.
-                       """.stripIndent()
-        project.android.command."$property"
-    }
 }
