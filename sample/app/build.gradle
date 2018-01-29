@@ -95,14 +95,7 @@ android {
             }
         }
 
-        task listDevices doLast {
-            println()
-            println 'Attached devices:'
-            devices().each {
-                println it
-            }
-        }
-
+        // More info: https://github.com/novoda/gradle-android-command-plugin#install
         install {
             fromGooglePlay {
                 description "Installs with flag Play Store"
@@ -125,6 +118,14 @@ android {
             }
 
             currentUser.customFlags = ['--user', 'current']
+        }
+
+        task listDevices doLast {
+            println()
+            println 'Attached devices:'
+            devices().each {
+                println it
+            }
         }
 
         task dumpActivityStack(type: com.novoda.gradle.command.ActivityStack) {
