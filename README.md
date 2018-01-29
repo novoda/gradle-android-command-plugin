@@ -101,6 +101,28 @@ power()
 unlock()
 ```
 
+### Demo Mode
+
+`[enable|disable]DemoMode` tasks are create to control demo mode on Android Marshmallow (API level 23) devices.
+
+By default these tasks setup the demo mode with most common used default values. And they can be controlled with `demoMode` DSL.
+
+```groovy          
+demoMode {
+    battery {
+        level '100'
+        plugged 'false'
+    }
+    network {
+        wifi 'show'
+        level '4'
+    }
+    clock.hhmm '0810'
+    notifications.visible 'false'
+}
+``` 
+
+All possible values can be found in [the official Android documentation](https://android.googlesource.com/platform/frameworks/base/+/master/packages/SystemUI/docs/demo_mode.md)
 
 ### Install
 

@@ -18,6 +18,10 @@ public class AdbTask extends org.gradle.api.DefaultTask {
         deviceId
     }
 
+    Device device() {
+        new Device(getAdb(), getDeviceId())
+    }
+
     def getPackageName() {
         def output = readApkProperty('package')
         if (output) {

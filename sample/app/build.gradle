@@ -1,42 +1,18 @@
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.3'
-        // To depend on the deployed version of the plugin add the following line here:
-        // classpath 'com.novoda:gradle-android-command-plugin:{latest-version}'
-    }
-}
-
 apply plugin: 'com.android.application'
 // apply AFTER android plugin
 apply plugin: 'com.novoda.android-command'
 
-repositories {
-    mavenCentral()
-}
-
 android {
-    compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    compileSdkVersion 27
 
     defaultConfig {
-        versionCode 1
-        versionName 'v0.0.1'
-
         minSdkVersion 14
-        targetSdkVersion 25
+        targetSdkVersion 27
     }
 
     buildTypes {
-        debug
-        release {
-            signingConfig debug.signingConfig
-        }
-        QA {
-            signingConfig debug.signingConfig
-        }
+        release.signingConfig debug.signingConfig
+        QA.signingConfig debug.signingConfig
     }
 
     productFlavors {
@@ -58,12 +34,6 @@ android {
         paid {
             dimension 'pricing'
         }
-    }
-
-    // change APK name to include the version name
-    applicationVariants.all { variant ->
-        def file = variant.outputs[0].packageApplication.outputFile
-        variant.outputs[0].packageApplication.outputFile = new File(file.parent, file.name.replace('.apk', "-${defaultConfig.versionName}.apk"))
     }
 
     command {
@@ -99,6 +69,7 @@ android {
             }
         }
 
+        // More info: https://github.com/novoda/gradle-android-command-plugin#input-scripting
         scripts {
             autoLogin {
                 execute {
@@ -112,6 +83,15 @@ android {
 
             pressBack.execute {
                 back()
+            }
+        }
+
+        // More info: https://github.com/novoda/gradle-android-command-plugin#demo-mode
+        demoMode {
+            clock.hhmm '1134'
+            network {
+                wifi 'show'
+                level '3'
             }
         }
 

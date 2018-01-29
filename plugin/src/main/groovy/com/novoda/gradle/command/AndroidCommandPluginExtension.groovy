@@ -16,6 +16,7 @@ public class AndroidCommandPluginExtension {
     private final String androidHome
     private final MonkeySpec monkey
     private final NamedDomainObjectContainer<InputExtension> scriptsContainer
+    final NamedDomainObjectContainer<DemoModeExtension> demoModeContainer
     private final NamedDomainObjectContainer<InstallExtension> installContainer
 
     AndroidCommandPluginExtension(Project project) {
@@ -26,6 +27,7 @@ public class AndroidCommandPluginExtension {
         this.project = project
         this.androidHome = androidHome
         this.monkey = new MonkeySpec()
+        this.demoModeContainer = project.container(DemoModeExtension)
         this.scriptsContainer = project.container(InputExtension)
         this.installContainer = project.container(InstallExtension)
     }
@@ -80,6 +82,10 @@ public class AndroidCommandPluginExtension {
         monkey
     }
 
+    void demoMode(Action<NamedDomainObjectContainer<DemoModeExtension>> action) {
+        action.execute(demoModeContainer)
+    }
+
     void scripts(Action<NamedDomainObjectContainer<InputExtension>> script) {
         script.execute(scriptsContainer)
     }
@@ -102,13 +108,13 @@ public class AndroidCommandPluginExtension {
         task.conventionMapping.deviceId = { getDeviceId() }
     }
 
-    def devices() {
+    List<Device> devices() {
         deviceIds().collect { deviceId ->
             new Device(getAdb(), deviceId)
         }
     }
 
-    def deviceIds() {
+    List<String> deviceIds() {
         def deviceIds = []
         [getAdb(), 'devices'].execute().text.eachLine { line ->
             def matcher = line =~ /^(.*)\tdevice/
