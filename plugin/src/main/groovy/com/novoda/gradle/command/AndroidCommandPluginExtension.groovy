@@ -90,12 +90,6 @@ public class AndroidCommandPluginExtension {
         install.execute(installContainer)
     }
 
-    void attachDefaults(AdbTask task) {
-        task.conventionMapping.adb = { getAdb() }
-        task.conventionMapping.aapt = { getAapt() }
-        task.conventionMapping.deviceId = { getDeviceId() }
-    }
-
     List<Device> devices() {
         deviceIds().collect { deviceId ->
             new Device(getAdb(), deviceId)
