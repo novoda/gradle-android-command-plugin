@@ -13,7 +13,7 @@ class AndroidCommandPluginExtensionTest extends GroovyTestCase {
 
     void testDefaultMonkey() {
         def extension = createExtension()
-        assert extension.monkey.events == MonkeySpec.EVENTS_DEFAULT
+        assert extension.monkey.events == MonkeyExtension.EVENTS_DEFAULT
         assert extension.monkey.seed == null
         assert extension.monkey.categories == []
     }
