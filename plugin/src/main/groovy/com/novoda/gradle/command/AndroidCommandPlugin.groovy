@@ -42,11 +42,10 @@ public class AndroidCommandPlugin implements Plugin<Project> {
     }
 
     private void configureDemoMode(Project project, demoModeContainer) {
-        project.tasks.create('enableDemoMode', DemoModeTask) {
-            enable = true
+        project.tasks.create('enableDemoMode', EnableDemoModeTask) {
             commands = demoModeContainer
         }
-        project.tasks.create('disableDemoMode', DemoModeTask) { enable = false }
+        project.tasks.create('disableDemoMode', DisableDemoModeTask)
     }
 
     private configureInputScripts(AndroidCommandPluginExtension command, Project project) {

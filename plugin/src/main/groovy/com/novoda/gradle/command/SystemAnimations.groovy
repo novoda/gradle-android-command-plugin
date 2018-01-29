@@ -1,7 +1,9 @@
 package com.novoda.gradle.command
 
+import groovy.transform.PackageScope
 import org.gradle.api.tasks.TaskAction
 
+@PackageScope
 class SystemAnimations extends AdbTask {
 
     boolean enable
