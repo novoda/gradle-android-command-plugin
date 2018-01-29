@@ -1,6 +1,6 @@
 package com.novoda.gradle.command
 
-class InstallExtension {
+final class InstallExtension {
 
     String name
     String description
