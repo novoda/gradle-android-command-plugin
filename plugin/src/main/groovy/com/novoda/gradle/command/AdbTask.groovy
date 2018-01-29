@@ -11,9 +11,6 @@ public class AdbTask extends org.gradle.api.DefaultTask {
     // set automatically by VariantConfigurator
     def apkPath
 
-    // set automatically by VariantConfigurator
-    def variationName
-
     @Memoized
     def getDeviceId() {
         if (deviceId instanceof Closure)

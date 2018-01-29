@@ -95,17 +95,36 @@ android {
             }
         }
 
+        // More info: https://github.com/novoda/gradle-android-command-plugin#install
+        install {
+            fromGooglePlay {
+                description "Installs with flag Play Store"
+                // Note: here flags are lazy evaluated
+                customFlags {
+                    ['-i', 'com.android.vending']
+                }
+            }
+
+            allowingDowngrade {
+                description "Installs with -d flag"
+                customFlags = ['-d']
+            }
+
+            toNewestDevice {
+                deviceId {
+                    def device = devices().max { it.sdkVersion() }
+                    device.id
+                }
+            }
+
+            currentUser.customFlags = ['--user', 'current']
+        }
+
         task listDevices doLast {
             println()
             println 'Attached devices:'
             devices().each {
                 println it
-            }
-        }
-
-        task('installFromGooglePlay', com.novoda.gradle.command.Install) {
-            customFlags {
-                return ['-i', 'com.android.vending']
             }
         }
 

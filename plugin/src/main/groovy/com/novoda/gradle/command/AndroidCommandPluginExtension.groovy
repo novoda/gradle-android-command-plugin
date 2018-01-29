@@ -14,9 +14,10 @@ public class AndroidCommandPluginExtension {
 
     private final Project project
     private final String androidHome
-    private final MonkeySpec monkey
-    private final NamedDomainObjectContainer<InputExtension> scriptsContainer
+    final MonkeyExtension monkey
+    final NamedDomainObjectContainer<InputExtension> scriptsContainer
     final NamedDomainObjectContainer<DemoModeExtension> demoModeContainer
+    final NamedDomainObjectContainer<InstallExtension> installContainer
 
     AndroidCommandPluginExtension(Project project) {
         this(project, findAndroidHomeFrom(project.android))
@@ -25,32 +26,25 @@ public class AndroidCommandPluginExtension {
     AndroidCommandPluginExtension(Project project, String androidHome) {
         this.project = project
         this.androidHome = androidHome
-        this.monkey = new MonkeySpec()
+        this.monkey = new MonkeyExtension()
         this.demoModeContainer = project.container(DemoModeExtension)
         this.scriptsContainer = project.container(InputExtension)
+        this.installContainer = project.container(InstallExtension)
     }
 
     def task(String name, Class<? extends AdbTask> type, Closure configuration) {
         task(name, type).all(configuration)
     }
 
-    def task(String name, String description, Class<? extends AdbTask> type) {
-        task(name, description, type, [])
-    }
-
     def task(String name, Class<? extends AdbTask> type, def dependencies, Closure configuration) {
         task(name, type, dependencies).all(configuration)
     }
 
-    def task(String name, Class<? extends AdbTask> type) {
-        task(name, "", type, [])
-    }
-
-    def task(String name, Class<? extends AdbTask> type, def dependencies) {
+    def task(String name, Class<? extends AdbTask> type, def dependencies = []) {
         task(name, "", type, dependencies)
     }
 
-    def task(String name, String description, Class<? extends AdbTask> type, def dependencies) {
+    def task(String name, String description, Class<? extends AdbTask> type, def dependencies = []) {
         VariantConfigurator variantConfigurator = new VariantConfigurator(this, project, name, description, type, dependencies)
         project.android.applicationVariants.all {
             variantConfigurator.configure(it)
@@ -80,12 +74,8 @@ public class AndroidCommandPluginExtension {
         deviceId ?: firstDeviceId()
     }
 
-    void monkey(Action<MonkeySpec> action) {
+    void monkey(Action<MonkeyExtension> action) {
         action.execute(monkey)
-    }
-
-    MonkeySpec getMonkey() {
-        monkey
     }
 
     void demoMode(Action<NamedDomainObjectContainer<DemoModeExtension>> action) {
@@ -96,8 +86,8 @@ public class AndroidCommandPluginExtension {
         script.execute(scriptsContainer)
     }
 
-    NamedDomainObjectContainer<InputExtension> getScripts() {
-        scriptsContainer
+    void install(Action<NamedDomainObjectContainer<InstallExtension>> install) {
+        install.execute(installContainer)
     }
 
     void attachDefaults(AdbTask task) {
@@ -140,4 +130,5 @@ public class AndroidCommandPluginExtension {
         }
         throw new IllegalStateException('The android plugin is not exposing the SDK folder in an expected way.')
     }
+
 }

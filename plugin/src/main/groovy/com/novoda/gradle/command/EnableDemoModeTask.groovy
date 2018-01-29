@@ -5,7 +5,7 @@ import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.tasks.TaskAction
 
 @PackageScope
-class EnableDemoModeTask extends AdbTask {
+final class EnableDemoModeTask extends AdbTask {
 
     NamedDomainObjectContainer<DemoModeExtension> commands
 

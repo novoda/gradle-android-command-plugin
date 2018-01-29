@@ -4,7 +4,7 @@ import groovy.transform.PackageScope
 import org.gradle.api.tasks.TaskAction
 
 @PackageScope
-class SystemAnimations extends AdbTask {
+final class SystemAnimations extends AdbTask {
 
     boolean enable
 

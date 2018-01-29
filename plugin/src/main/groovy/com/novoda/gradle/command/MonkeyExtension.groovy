@@ -1,6 +1,6 @@
 package com.novoda.gradle.command;
 
-final class MonkeySpec {
+final class MonkeyExtension {
 
     static final int EVENTS_DEFAULT = 10000
 
