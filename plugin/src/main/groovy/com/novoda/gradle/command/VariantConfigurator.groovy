@@ -33,7 +33,7 @@ class VariantConfigurator {
         task.group = taskGroup.groupFor(taskName, variantName)
         task.apkPath = "${-> variant.outputs[0].outputFile}"
         if (description) {
-            task.description = "$description for variant ${variantName}"
+            task.description = "$description for variant $variantName"
         }
         dependencies.each {
             task.dependsOn "$it$variantName"

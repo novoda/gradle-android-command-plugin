@@ -4,8 +4,7 @@ class VariantSuffix {
 
   static String variantNameFor(variant) {
     def buildTypeName = variant.buildType.name.capitalize()
-    def projectFlavorNames = variant.productFlavors.collect { it.name.capitalize() }
-    def projectFlavorName = projectFlavorNames.join()
+    def projectFlavorName = variant.productFlavors.collect { it.name.capitalize() }.join()
     return projectFlavorName + buildTypeName
   }
 }

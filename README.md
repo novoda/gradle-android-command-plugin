@@ -62,7 +62,7 @@ Configuration
 
 ### Input Scripting
 
-The plugin has a extension called `scripts` which allows you to do simple scripting automation in a connected device.
+The plugin provides an extension called `scripts` which allows to perform simple scripting automation.
 Here is an example called `autoLogin` which will input the test username and password into the sample app.
 
 ```groovy
@@ -126,7 +126,7 @@ All possible values can be found in [the official Android documentation](https:/
 
 ### Install
 
-`installDevice<Variant>` tasks are available by default just to install the app. Plugin also supports `install` dsl to define custom installation tasks.
+`installDevice<Variant>` tasks are available by default just to install the app. The plugin also supports an `install` dsl to define custom installation tasks.
 
 **customFlags**
 
@@ -143,7 +143,7 @@ install {
 }
 ```
 
-**Note:** `customFlags` also supports any custom Closure to be lazy evaluated.
+**Note:** `customFlags` also supports any custom Closure to be lazily evaluated.
 
 More flags can be found in the `install` section of [the official adb document](https://developer.android.com/studio/command-line/adb.html#pm).
 
