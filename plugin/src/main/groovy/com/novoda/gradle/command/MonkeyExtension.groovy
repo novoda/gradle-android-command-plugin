@@ -1,4 +1,4 @@
-package com.novoda.gradle.command;
+package com.novoda.gradle.command
 
 final class MonkeyExtension {
 

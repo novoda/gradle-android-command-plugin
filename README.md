@@ -60,6 +60,70 @@ For advanced usage please take a look into the sample project [build.gradle](sam
 Configuration
 -------------
 
+### Command Extension
+
+The plugin provides `command` extension under the official `android` extension for configuration. 
+
+```groovy
+command {
+    // Optional adb and aapt path. By default, $ANDROID_HOME will be used 
+    adb '~/full/path/to/adb'
+    aapt '~/full/path/to/aapt'
+    
+    // Optional device id
+    // By default, the first device will be used 
+    // Can be overridden at any time with `-DdeviceId` command line argument
+    // Can be a closure (for lazy evaluation) or just a String.
+    deviceId = "DEVICE_SERIAL"
+    // or
+    deviceId {
+        // some lazy script to evaluate deviceId 
+    }
+    
+    // Categorize plugin tasks by task type or by variant names
+    sortBySubtasks false
+    
+    // Additional methods to utilize in custom closures:
+    List<Device> devices = devices()        // connected devices 
+    List<String> deviceIds = deviceIds()    // connected device ids
+    
+    // Sub-extensions. More info below ⬇️
+    monkey {
+        // Configure monkey task
+    }
+    
+    scripts {
+        // named scripts for device input automation
+    }
+    
+    demoMode {
+        // configure Android Marshmallow's demo mode
+    }
+    
+    install {
+        // named install tasks with custom flags
+    }
+}
+```
+
+### Device class
+
+Current connected devices can be retrieved via `devices()`. Here are the methods available on a `Device` object.
+These can be useful if used in other configurations. Examples can be found in the sample.
+
+```groovy
+Integer sdkVersion()
+String androidVersion()
+String brand()
+String model()
+String manufacturer()
+String screenDensity()
+String country()
+String language()
+String timezone()
+String deviceProperty(String key) // Possible keys: https://developer.android.com/studio/test/monkeyrunner/MonkeyDevice.html#table1
+```
+
 ### Input Scripting
 
 The plugin provides an extension called `scripts` which allows to perform simple scripting automation.
