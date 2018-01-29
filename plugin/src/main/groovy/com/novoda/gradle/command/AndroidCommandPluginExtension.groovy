@@ -14,10 +14,10 @@ public class AndroidCommandPluginExtension {
 
     private final Project project
     private final String androidHome
-    private final MonkeySpec monkey
-    private final NamedDomainObjectContainer<InputExtension> scriptsContainer
+    final MonkeyExtension monkey
+    final NamedDomainObjectContainer<InputExtension> scriptsContainer
     final NamedDomainObjectContainer<DemoModeExtension> demoModeContainer
-    private final NamedDomainObjectContainer<InstallExtension> installContainer
+    final NamedDomainObjectContainer<InstallExtension> installContainer
 
     AndroidCommandPluginExtension(Project project) {
         this(project, findAndroidHomeFrom(project.android))
@@ -26,7 +26,7 @@ public class AndroidCommandPluginExtension {
     AndroidCommandPluginExtension(Project project, String androidHome) {
         this.project = project
         this.androidHome = androidHome
-        this.monkey = new MonkeySpec()
+        this.monkey = new MonkeyExtension()
         this.demoModeContainer = project.container(DemoModeExtension)
         this.scriptsContainer = project.container(InputExtension)
         this.installContainer = project.container(InstallExtension)
@@ -74,12 +74,8 @@ public class AndroidCommandPluginExtension {
         deviceId ?: firstDeviceId()
     }
 
-    void monkey(Action<MonkeySpec> action) {
+    void monkey(Action<MonkeyExtension> action) {
         action.execute(monkey)
-    }
-
-    MonkeySpec getMonkey() {
-        monkey
     }
 
     void demoMode(Action<NamedDomainObjectContainer<DemoModeExtension>> action) {
@@ -90,16 +86,8 @@ public class AndroidCommandPluginExtension {
         script.execute(scriptsContainer)
     }
 
-    NamedDomainObjectContainer<InputExtension> getScripts() {
-        scriptsContainer
-    }
-
     void install(Action<NamedDomainObjectContainer<InstallExtension>> install) {
         install.execute(installContainer)
-    }
-
-    NamedDomainObjectContainer<InstallExtension> getInstall() {
-        installContainer
     }
 
     void attachDefaults(AdbTask task) {

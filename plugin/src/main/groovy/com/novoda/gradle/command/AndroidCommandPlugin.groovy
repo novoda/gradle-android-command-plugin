@@ -4,7 +4,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.StopExecutionException
 
-public class AndroidCommandPlugin implements Plugin<Project> {
+class AndroidCommandPlugin implements Plugin<Project> {
 
     public final static String TASK_GROUP = 'ADB command'
 
@@ -51,7 +51,7 @@ public class AndroidCommandPlugin implements Plugin<Project> {
     }
 
     private configureInputScripts(AndroidCommandPluginExtension command, Project project) {
-        command.scripts.all { extension ->
+        command.scriptsContainer.all { extension ->
             project.tasks.create(extension.name, Input) {
                 group = 'adb script'
                 description = "Runs $extension.name script on the specified device"
@@ -63,7 +63,7 @@ public class AndroidCommandPlugin implements Plugin<Project> {
     private static configureInstallTasks(AndroidCommandPluginExtension command, Project project) {
         def factory = new InstallTaskFactory(project)
         project.android.applicationVariants.all { variant ->
-            command.install.all { extension ->
+            command.installContainer.all { extension ->
                 factory.create(variant, extension)
             }
             factory.create(variant, new InstallExtension('device', 'installs the APK on the specified device'))
