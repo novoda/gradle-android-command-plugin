@@ -4,7 +4,7 @@ import groovy.transform.PackageScope
 import org.gradle.api.tasks.TaskAction
 
 @PackageScope
-class DisableDemoModeTask extends AdbTask {
+final class DisableDemoModeTask extends AdbTask {
 
     DisableDemoModeTask() {
         this.group = AndroidCommandPlugin.TASK_GROUP
