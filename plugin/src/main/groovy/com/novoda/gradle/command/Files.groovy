@@ -34,8 +34,6 @@ class Files extends AdbTask {
     }
 
     private String adb(String... params) {
-        def adb = getAdb() ?: resolveFromExtension('adb')
-        def deviceId = getDeviceId() ?: resolveFromExtension('deviceId')
         AdbCommand adbCommand = [adb: adb, deviceId: deviceId, parameters: params as List ]
         adbCommand.execute().text
     }

@@ -8,7 +8,7 @@ class DisableDemoModeTask extends AdbTask {
 
     DisableDemoModeTask() {
         this.group = AndroidCommandPlugin.TASK_GROUP
-        this.description = "Disables demo mode on the device"
+        this.description = 'Disables demo mode on the device'
     }
 
     @TaskAction

@@ -22,7 +22,6 @@ class Run extends AdbTask {
             // https://code.google.com/p/android/issues/detail?id=157150
             logger.info 'no launchable-activity found, falling back to parsing the manifest'
 
-            def aapt = this.aapt ?: resolveFromExtension('aapt')
             output = [aapt, 'dump', 'xmltree', apkPath, 'AndroidManifest.xml'].execute().text
 
             def it = output.readLines().iterator()
