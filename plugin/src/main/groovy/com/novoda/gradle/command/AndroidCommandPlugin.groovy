@@ -69,8 +69,7 @@ class AndroidCommandPlugin implements Plugin<Project> {
             factory.create(variant, new InstallExtension('device', 'installs the APK on the specified device'))
         }
     }
-
-
+    
     static defaultTask(Project project, String taskName, String description, Class<? extends AdbTask> taskType, Closure configuration) {
         AdbTask task = project.tasks.create(taskName, taskType)
         task.configure configuration
