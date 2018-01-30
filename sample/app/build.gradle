@@ -50,7 +50,6 @@ android {
             events 1000
             categories 'android.intent.category.ONLY_ME', 'android.intent.category.MONKEY'
         }
-        sortBySubtasks false
         
         // More info: https://github.com/novoda/gradle-android-command-plugin#input-scripting
         scripts {

@@ -10,7 +10,6 @@ public class AndroidCommandPluginExtension {
     def adb
     def aapt
     def deviceId
-    def sortBySubtasks
 
     private final Project project
     private final String androidHome
@@ -32,6 +31,10 @@ public class AndroidCommandPluginExtension {
         this.scriptsContainer = project.container(InputExtension)
         this.installContainer = project.container(InstallExtension)
         this.startContainer = project.container(RunExtension)
+    }
+
+    void setSortBySubtasks(sortBySubtasks) {
+        project.logger.warn 'android-command plugin sortBySubtasks configuration is deprecated and is not be used for task grouping. Please remove it from your gradle build script.'
     }
 
     @Deprecated
