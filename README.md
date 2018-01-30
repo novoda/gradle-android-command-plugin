@@ -164,9 +164,9 @@ install {
 
 ### Start
 
-`start<Variant>` and `run<Variant>` tasks are available by default. Start tasks just start and already installed application. Run tasks first install the app before starting.
+`start<Variant>` and `run<Variant>` tasks are available by default. Start tasks just start an already installed application. Run tasks first install the app before starting.
  
-Just like `install` dsl, it is possible specify device id. Doing this will create corresponding `start` and `run` tasks. 
+Just like the `install` dsl, it is possible to specify a device id. Doing this will create corresponding `start` and `run` tasks. 
 
 ```groovy
 start {
