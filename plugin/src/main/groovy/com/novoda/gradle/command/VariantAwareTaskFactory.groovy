@@ -2,7 +2,7 @@ package com.novoda.gradle.command
 
 import org.gradle.api.Project
 
-class VariantAwareTaskFactory<T extends AdbTask> {
+final class VariantAwareTaskFactory<T extends AdbTask> {
 
     final Project project
 

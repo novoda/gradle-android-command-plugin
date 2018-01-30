@@ -51,24 +51,7 @@ android {
             categories 'android.intent.category.ONLY_ME', 'android.intent.category.MONKEY'
         }
         sortBySubtasks false
-
-        task('runAmazon', com.novoda.gradle.command.Run) {
-            deviceId {
-                def kindle = devices().find { it.brand() == 'Amazon' }
-                if (!kindle) {
-                    throw new GroovyRuntimeException('No Amazon device found')
-                }
-                kindle.id
-            }
-        }
-
-        task('runNewest', com.novoda.gradle.command.Run, ['installDevice']) {
-            deviceId {
-                def device = devices().max { it.sdkVersion() }
-                device.id
-            }
-        }
-
+        
         // More info: https://github.com/novoda/gradle-android-command-plugin#input-scripting
         scripts {
             autoLogin {
@@ -110,7 +93,7 @@ android {
                 customFlags = ['-d']
             }
 
-            toNewestDevice {
+            onNewestDevice {
                 deviceId {
                     def device = devices().max { it.sdkVersion() }
                     device.id
@@ -120,17 +103,37 @@ android {
             currentUser.customFlags = ['--user', 'current']
         }
 
-        task listDevices doLast {
-            println()
-            println 'Attached devices:'
-            devices().each {
-                println it
+        // More info: https://github.com/novoda/gradle-android-command-plugin#start
+        start {
+            amazon {
+                deviceId {
+                    def kindle = devices().find { it.brand() == 'Amazon' }
+                    if (!kindle) {
+                        throw new GroovyRuntimeException('No Amazon device found')
+                    }
+                    kindle.id
+                }
+            }
+
+            onNewestDevice {
+                deviceId {
+                    def device = devices().max { it.sdkVersion() }
+                    device.id
+                }
             }
         }
-
-        task dumpActivityStack(type: com.novoda.gradle.command.ActivityStack) {
-        }
     }
+}
+
+task listDevices doLast {
+    println()
+    println 'Attached devices:'
+    android.command.devices().each {
+        println it
+    }
+}
+
+task dumpActivityStack(type: com.novoda.gradle.command.ActivityStack) {
 }
 
 /**
