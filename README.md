@@ -34,7 +34,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.novoda:gradle-android-command-plugin:1.7.1'
+        classpath 'com.novoda:gradle-android-command-plugin:2.0'
     }
 }
 ```
@@ -190,7 +190,7 @@ All possible values can be found in [the official Android documentation](https:/
 
 ### Install
 
-`installDevice<Variant>` tasks are available by default just to install the app. The plugin also supports an `install` dsl to define custom installation tasks.
+`installDevice<Variant>` tasks are available by default just to install the app. The plugin also supports an `install` DSL to define custom installation tasks.
 
 **customFlags**
 
@@ -230,7 +230,7 @@ install {
 
 `start<Variant>` and `run<Variant>` tasks are available by default. Start tasks just start an already installed application. Run tasks first install the app before starting.
  
-Just like the `install` dsl, it is possible to specify a device id. Doing this will create corresponding `start` and `run` tasks. 
+Just like the `install` DSL, it is possible to specify a device id. Doing this will create corresponding `start` and `run` tasks. 
 
 ```groovy
 start {
