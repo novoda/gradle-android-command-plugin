@@ -18,6 +18,7 @@ public class AndroidCommandPluginExtension {
     final NamedDomainObjectContainer<InputExtension> scriptsContainer
     final NamedDomainObjectContainer<DemoModeExtension> demoModeContainer
     final NamedDomainObjectContainer<InstallExtension> installContainer
+    final NamedDomainObjectContainer<RunExtension> startContainer
 
     AndroidCommandPluginExtension(Project project) {
         this(project, findAndroidHomeFrom(project.android))
@@ -30,6 +31,7 @@ public class AndroidCommandPluginExtension {
         this.demoModeContainer = project.container(DemoModeExtension)
         this.scriptsContainer = project.container(InputExtension)
         this.installContainer = project.container(InstallExtension)
+        this.startContainer = project.container(RunExtension)
     }
 
     def task(String name, Class<? extends AdbTask> type, Closure configuration) {
@@ -82,12 +84,16 @@ public class AndroidCommandPluginExtension {
         action.execute(demoModeContainer)
     }
 
-    void scripts(Action<NamedDomainObjectContainer<InputExtension>> script) {
-        script.execute(scriptsContainer)
+    void scripts(Action<NamedDomainObjectContainer<InputExtension>> action) {
+        action.execute(scriptsContainer)
     }
 
-    void install(Action<NamedDomainObjectContainer<InstallExtension>> install) {
-        install.execute(installContainer)
+    void install(Action<NamedDomainObjectContainer<InstallExtension>> action) {
+        action.execute(installContainer)
+    }
+    
+    void start(Action<NamedDomainObjectContainer<RunExtension>> action) {
+        action.execute(startContainer)
     }
 
     List<Device> devices() {

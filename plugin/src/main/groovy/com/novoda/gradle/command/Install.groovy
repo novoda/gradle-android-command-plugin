@@ -25,8 +25,9 @@ class Install extends AdbTask {
     @TaskAction
     void exec() {
         def arguments = ['install']
-        if (resolveCustomFlags())
+        if (resolveCustomFlags()) {
             arguments += resolveCustomFlags()
+        }
 
         arguments += ['-r', apkPath]
 

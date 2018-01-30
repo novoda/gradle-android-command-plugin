@@ -1,11 +1,9 @@
 package com.novoda.gradle.command
 
-final class InstallExtension {
+final class InstallExtension implements DeviceAware, DescriptionAware {
 
     String name
-    String description
     def customFlags
-    def deviceId
 
     InstallExtension(name, description = null) {
         this.name = name
@@ -16,11 +14,4 @@ final class InstallExtension {
         this.customFlags = customFlags
     }
 
-    void deviceId(deviceId) {
-        this.deviceId = deviceId
-    }
-
-    void description(String description) {
-        this.description = description
-    }
 }

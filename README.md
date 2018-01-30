@@ -217,7 +217,7 @@ Here is how you can install on a specific device using `deviceId`
 
 ```groovy
 install {
-    toNewestDevice {
+    onNewestDevice {
         deviceId {
             def device = devices().max { it.sdkVersion() }
             device.id
@@ -225,6 +225,28 @@ install {
     }
 }
 ```
+
+### Start
+
+`start<Variant>` and `run<Variant>` tasks are available by default. Start tasks just start an already installed application. Run tasks first install the app before starting.
+ 
+Just like the `install` dsl, it is possible to specify a device id. Doing this will create corresponding `start` and `run` tasks. 
+
+```groovy
+start {
+    amazon {
+        deviceId {
+            def kindle = devices().find { it.brand() == 'Amazon' }
+            if (!kindle) {
+                throw new GroovyRuntimeException('No Amazon device found')
+            }
+            kindle.id
+        }
+    }
+}
+``` 
+
+This configuration creates `startAmazon<Variant>` and `runAmazon<Variant>` tasks.
 
 Links
 -----

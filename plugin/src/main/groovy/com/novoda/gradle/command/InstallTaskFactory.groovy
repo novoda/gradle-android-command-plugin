@@ -4,27 +4,23 @@ import org.gradle.api.Project
 
 class InstallTaskFactory {
 
-    final Project project
+    private static final String DEFAULT_DESCRIPTION = 'installs the APK on the specified device'
+
+    private final Project project
+    private final VariantAwareTaskFactory<Install> variantAwareTaskFactory
 
     InstallTaskFactory(Project project) {
         this.project = project
+        this.variantAwareTaskFactory = new VariantAwareTaskFactory<>(project)
     }
 
-    void create(variant, InstallExtension extension) {
-        def variantName = VariantSuffix.variantNameFor(variant)
-        def taskName = "install${extension.name.capitalize()}$variantName"
-        Install task = project.tasks.create(taskName, Install)
-
-        task.dependsOn "assemble$variantName"
-        task.group = 'install'
-        task.installExtension = extension
-
-        task.apkPath = "${-> variant.outputs[0].outputFile}"
-        if (extension.description) {
-            task.description = "$extension.description for $variantName"
-        }
-        if (extension.deviceId) {
-            task.deviceId = extension.deviceId
+    def create(variant, InstallExtension extension) {
+        variantAwareTaskFactory.create(variant, "install${extension.name.capitalize()}", Install, 'assemble').configure {
+            description = VariantAwareDescription.descriptionFor(variant, extension, DEFAULT_DESCRIPTION)
+            group = 'install'
+            installExtension = extension
+            conventionMapping.deviceId = { extension.deviceId }
         }
     }
+
 }
