@@ -4,7 +4,7 @@ import org.gradle.api.Project
 
 class RunTaskFactory {
 
-    final Project project
+    private final Project project
     private final VariantAwareTaskFactory<Run> variantAwareTaskFactory
 
     RunTaskFactory(Project project) {
@@ -15,29 +15,28 @@ class RunTaskFactory {
     def create(variant, RunExtension extension = new RunExtension()) {
         def extensionSuffix = extension.name ? extension.name.capitalize() : ''
 
-        variantAwareTaskFactory.create(variant,
+        variantAwareTaskFactory.create(
+                variant: variant,
                 taskName: "run${extensionSuffix}",
                 taskType: Run,
                 dependsOn: 'installDevice'
         ).configure {
+            description = VariantAwareDescription.createFor(variant, extension,
+                    defaultDescription: 'installs and runs APK on the specified device')
             group = 'start'
             conventionMapping.deviceId = { extension.deviceId }
-            description = descriptionFor(variant, extension, 'installs and runs APK on the specified device')
         }
-        
-        variantAwareTaskFactory.create(variant,
+
+        variantAwareTaskFactory.create(
+                variant: variant,
                 taskName: "start${extensionSuffix}",
                 taskType: Run
         ).configure {
+            description = VariantAwareDescription.createFor(variant, extension,
+                    defaultDescription: 'runs an already installed APK on the specified device')
             group = 'start'
             conventionMapping.deviceId = { extension.deviceId }
-            description = descriptionFor(variant, extension, 'runs an already installed APK on the specified device')
         }
     }
 
-    private static String descriptionFor(variant, RunExtension extension, String defaultDescription) {
-        def variantName = VariantSuffix.variantNameFor(variant)
-        def description = extension.description ?: defaultDescription
-        return "$description for $variantName"
-    }
 }

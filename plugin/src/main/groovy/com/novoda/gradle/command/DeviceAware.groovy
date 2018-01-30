@@ -1,6 +1,6 @@
 package com.novoda.gradle.command;
 
-class DeviceAwareExtension {
+trait DeviceAware {
 
     def deviceId
     
