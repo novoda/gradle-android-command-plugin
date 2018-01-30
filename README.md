@@ -52,6 +52,8 @@ The plugin creates new tasks that you can use:
   * `stop<Variant>` [`com.novoda.gradle.command.Stop`] - Forcibly stops the app on a specific device.
   * `monkey<Variant>` [`com.novoda.gradle.command.Monkey`] - installs and runs monkey on a specific device.
   * `clearPrefs<Variant>` [`com.novoda.gradle.command.ClearPreferences`] - clears app preferences on a specific device.
+  * `[enable|disable]SystemAnimations` - Enables/Disables system animations on the device.
+  * `[enable|disable]DemoMode` - Enables/Disables demo mode on the device.
   * `com.novoda.gradle.command.Files` - enables basic file copy via `push` and `pull`, wrapping the respective adb calls.
 
 For advanced usage please take a look into the sample project [build.gradle](sample/app/build.gradle) file.
@@ -101,6 +103,10 @@ command {
     
     install {
         // named install tasks with custom flags
+    }
+    
+    start {
+        // named run/start tasks
     }
 }
 ```
