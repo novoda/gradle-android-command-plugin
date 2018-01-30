@@ -1,18 +1,13 @@
 package com.novoda.gradle.command
 
-final class InstallExtension extends DeviceAwareExtension {
+final class RunExtension extends DeviceAwareExtension {
 
     String name
     String description
-    def customFlags
 
-    InstallExtension(name, description = null) {
+    RunExtension(name = null, description = null) {
         this.name = name
         this.description = description
-    }
-
-    void customFlags(customFlags) {
-        this.customFlags = customFlags
     }
 
     void description(String description) {

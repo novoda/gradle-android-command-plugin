@@ -17,9 +17,8 @@ class AndroidCommandPlugin implements Plugin<Project> {
         AndroidCommandPluginExtension extension = project.android.extensions.create('command', AndroidCommandPluginExtension, project)
 
         configureInstallTasks(extension, project)
+        configureStartTasks(extension, project)
 
-        extension.task 'run', 'installs and runs a APK on the specified device', Run, ['installDevice']
-        extension.task 'start', 'runs an already installed APK on the specified device', Run
         extension.task 'stop', 'forcibly stops the app on the specified device', Stop
         extension.task 'clearPrefs', 'clears the shared preferences on the specified device', ClearPreferences
         extension.task 'uninstallDevice', 'uninstalls the APK from the specific device', Uninstall
@@ -59,7 +58,17 @@ class AndroidCommandPlugin implements Plugin<Project> {
             command.installContainer.all { extension ->
                 factory.create(variant, extension)
             }
-            factory.create(variant, new InstallExtension('device', 'installs the APK on the specified device'))
+            factory.create(variant, new InstallExtension('device'))
+        }
+    }
+
+    private static configureStartTasks(AndroidCommandPluginExtension command, Project project) {
+        def factory = new RunTaskFactory(project)
+        project.android.applicationVariants.all { variant ->
+            command.startContainer.all { extension ->
+                factory.create(variant, extension)
+            }
+            factory.create(variant)
         }
     }
 
