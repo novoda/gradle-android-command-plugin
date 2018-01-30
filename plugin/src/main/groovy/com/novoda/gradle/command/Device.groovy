@@ -48,6 +48,10 @@ class Device {
         deviceProperty('persist.sys.timezone')
     }
 
+    /**
+     * Retrieves a system property of a given key.
+     * List of keys can be found in official MonkeyRunner documentation. https://developer.android.com/studio/test/monkeyrunner/MonkeyDevice.html#table1
+     */
     String deviceProperty(String key) {
         AdbCommand command = [adb: adb, deviceId: id, parameters: ['shell', 'getprop', key]]
         command.execute().text.trim()
