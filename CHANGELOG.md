@@ -1,3 +1,27 @@
+# 2.0
+
+_2018-01-30_
+
+### New
+
+- DSL support for main adb wrappers.
+  - Currently supporting `monkey`, `scripts` (#121), `demoMode` (#125), `install` (#127) and `start` (#130) extensions.
+  - More information can be found in https://github.com/novoda/gradle-android-command-plugin#configuration
+
+### Improvements
+
+- Full documentation on public configuration on `command` extension [#129](https://github.com/novoda/gradle-android-command-plugin/pull/129)
+- Clean-up sample project [#126](https://github.com/novoda/gradle-android-command-plugin/pull/126)
+
+### Deprecations
+
+- `task` methods in the extension are deprecated. Instead use the provided and documented DSL's to configure custom tasks. With this change,
+  - Generated tasks are more consistent
+  - usage is nicer-looking thanks to Groovy DSL
+- `sortBySubtasks` is deprecated and not used internally in the plugin.
+  - Tasks are not categorized by variant or simply task names anymore.
+  - Instead, each provided DSL has more meaningful category.
+
 # 1.7.1
 
 _2017-01-31_

@@ -23,13 +23,13 @@ dependencies {
 }
 
 group = 'com.novoda'
-version = '1.7.1'
+version = '2.0'
 
 publish {
     userOrg = 'novoda'
     groupId = 'com.novoda'
     artifactId = 'gradle-android-command-plugin'
-    version = project.version
-    description = 'Useful tasks for gradle android builds'
+    publishVersion = project.version
+    desc = 'Useful tasks for gradle android builds'
     website = 'https://github.com/novoda/gradle-android-command-plugin'
 }
