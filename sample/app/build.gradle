@@ -125,15 +125,13 @@ android {
 }
 
 task listDevices doLast {
-    println()
     println 'Attached devices:'
     android.command.devices().each {
         println it
     }
 }
 
-task dumpActivityStack(type: com.novoda.gradle.command.ActivityStack) {
-}
+task dumpActivityStack(type: com.novoda.gradle.command.ActivityStack)
 
 /**
  * Sample task that installs APKs of all variants on a device.
