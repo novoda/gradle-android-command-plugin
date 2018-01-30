@@ -9,7 +9,7 @@ class SystemAnimations extends AdbTask {
     boolean enable
 
     SystemAnimations() {
-        this.group = AndroidCommandPlugin.TASK_GROUP
+        this.group = 'adb device setting'
         this.description = "${enable ? 'Enables' : 'Disables'} system animations on the device"
     }
 

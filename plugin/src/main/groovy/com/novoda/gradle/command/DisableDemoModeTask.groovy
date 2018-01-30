@@ -7,7 +7,7 @@ import org.gradle.api.tasks.TaskAction
 class DisableDemoModeTask extends AdbTask {
 
     DisableDemoModeTask() {
-        this.group = AndroidCommandPlugin.TASK_GROUP
+        this.group = 'adb device setting'
         this.description = 'Disables demo mode on the device'
     }
 
