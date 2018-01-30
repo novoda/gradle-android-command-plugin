@@ -1,7 +1,10 @@
 package com.novoda.gradle.command
 
+import groovy.transform.PackageScope
 import org.gradle.api.Project
 
+@Deprecated
+@PackageScope
 class VariantConfigurator {
     private final AndroidCommandPluginExtension extension
     private final Project project
