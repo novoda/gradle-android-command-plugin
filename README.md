@@ -48,11 +48,10 @@ The plugin creates new tasks that you can use:
   * `installDevice<Variant>` [`com.novoda.gradle.command.InstallDevice`] - installs the app on a specific device.
   * `uninstallDevice<Variant>` [`com.novoda.gradle.command.UninstallDevice`] - uninstalls the app from a specific device.
   * `run<Variant>` [`com.novoda.gradle.command.Run`] - installs and launches the app on a specific device.
-  * `start<Variant>` [`com.novoda.gradle.command.Run`] - launches the app on a specific device (without installing it).
+  * `start<Variant>` [`com.novoda.gradle.command.Run`] - launches an already installed app on a specific device.
   * `stop<Variant>` [`com.novoda.gradle.command.Stop`] - Forcibly stops the app on a specific device.
   * `monkey<Variant>` [`com.novoda.gradle.command.Monkey`] - installs and runs monkey on a specific device.
   * `clearPrefs<Variant>` [`com.novoda.gradle.command.ClearPreferences`] - clears app preferences on a specific device.
-  * `com.novoda.gradle.command.Input` - runs `input` scripts, wrapping `adb shell input`.
   * `com.novoda.gradle.command.Files` - enables basic file copy via `push` and `pull`, wrapping the respective adb calls.
 
 For advanced usage please take a look into the sample project [build.gradle](sample/app/build.gradle) file.
@@ -126,7 +125,8 @@ String deviceProperty(String key) // Possible keys: https://developer.android.co
 
 ### Input Scripting
 
-The plugin provides an extension called `scripts` which allows to perform simple scripting automation.
+The plugin provides an extension called `scripts` which allows to perform simple scripting automation. It wraps `adb shell input` tool.
+ 
 Here is an example called `autoLogin` which will input the test username and password into the sample app.
 
 ```groovy

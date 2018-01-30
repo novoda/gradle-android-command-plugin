@@ -10,7 +10,7 @@ class EnableDemoModeTask extends AdbTask {
     NamedDomainObjectContainer<DemoModeExtension> commands
 
     EnableDemoModeTask() {
-        this.group = AndroidCommandPlugin.TASK_GROUP
+        this.group = 'adb device setting'
         this.description = 'Enables demo mode on the device'
     }
 

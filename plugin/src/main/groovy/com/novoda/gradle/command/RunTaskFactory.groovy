@@ -20,13 +20,13 @@ class RunTaskFactory {
 
         variantAwareTaskFactory.create(variant, "run${extensionSuffix}", Run, 'installDevice').configure {
             description = VariantAwareDescription.descriptionFor(variant, extension, RUN_DEFAULT_DESCRIPTION)
-            group = 'start'
+            group = 'adb start'
             conventionMapping.deviceId = { extension.deviceId }
         }
 
         variantAwareTaskFactory.create(variant, "start${extensionSuffix}", Run).configure {
             description = VariantAwareDescription.descriptionFor(variant, extension, START_DEFAULT_DESCRIPTION)
-            group = 'start'
+            group = 'adb start'
             conventionMapping.deviceId = { extension.deviceId }
         }
     }

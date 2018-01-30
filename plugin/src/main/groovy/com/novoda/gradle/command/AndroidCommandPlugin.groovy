@@ -7,8 +7,6 @@ import org.gradle.api.tasks.StopExecutionException
 
 class AndroidCommandPlugin implements Plugin<Project> {
 
-    public final static String TASK_GROUP = 'ADB command'
-
     void apply(Project project) {
         if (!project.plugins.hasPlugin('android')) {
             throw new StopExecutionException("The 'android' plugin is required.")
@@ -18,38 +16,13 @@ class AndroidCommandPlugin implements Plugin<Project> {
 
         configureInstallTasks(extension, project)
         configureStartTasks(extension, project)
-
-        extension.task 'stop', 'forcibly stops the app on the specified device', Stop
-        extension.task 'clearPrefs', 'clears the shared preferences on the specified device', ClearPreferences
-        extension.task 'uninstallDevice', 'uninstalls the APK from the specific device', Uninstall
-
-        def monkeyTasks = extension.task 'monkey', 'calls the monkey command on the specified device', Monkey, ['installDevice']
-        monkeyTasks.all {
-            conventionMapping.monkey = { extension.monkey }
-        }
-
+        configureOtherTasks(project)
+        configureMonkeyTasks(extension, project)
         configureInputScripts(extension, project)
         configureDemoMode(project, extension.demoModeContainer)
         configureSystemAnimations(project)
 
         attachDefaults(project, extension)
-    }
-
-    private configureInputScripts(AndroidCommandPluginExtension command, Project project) {
-        command.scriptsContainer.all { extension ->
-            project.tasks.create(extension.name, Input) {
-                group = 'adb script'
-                description = "Runs $extension.name script on the specified device"
-                inputExtension = extension
-            }
-        }
-    }
-
-    private void configureDemoMode(Project project, demoModeContainer) {
-        project.tasks.create('enableDemoMode', EnableDemoModeTask) {
-            commands = demoModeContainer
-        }
-        project.tasks.create('disableDemoMode', DisableDemoModeTask)
     }
 
     private static configureInstallTasks(AndroidCommandPluginExtension command, Project project) {
@@ -72,7 +45,55 @@ class AndroidCommandPlugin implements Plugin<Project> {
         }
     }
 
-    private void configureSystemAnimations(Project project) {
+    private static configureOtherTasks(Project project) {
+        def factory = new VariantAwareTaskFactory(project)
+        project.android.applicationVariants.all { variant ->
+
+            factory.create(variant, 'stop', Stop) {
+                description = 'forcibly stops the app on the specified device'
+                group = 'adb app settings'
+            }
+            factory.create(variant, 'clearPrefs', ClearPreferences) {
+                description = 'clears the shared preferences on the specified device'
+                group = 'adb app settings'
+            }
+            factory.create(variant, 'uninstallDevice', Uninstall) {
+                description = 'uninstalls the APK from the specific device'
+                group = 'install'
+            }
+        }
+    }
+
+    private static configureMonkeyTasks(AndroidCommandPluginExtension command, Project project) {
+        def factory = new VariantAwareTaskFactory(project)
+        project.android.applicationVariants.all { variant ->
+
+            factory.create(variant, 'monkey', Monkey, 'installDevice') {
+                description = 'calls the monkey command on the specified device'
+                group = 'verification'
+                conventionMapping.monkey = { command.monkey }
+            }
+        }
+    }
+
+    private static configureInputScripts(AndroidCommandPluginExtension command, Project project) {
+        command.scriptsContainer.all { extension ->
+            project.tasks.create(extension.name, Input) {
+                group = 'adb input script'
+                description = "Runs $extension.name script on the specified device"
+                inputExtension = extension
+            }
+        }
+    }
+
+    private static configureDemoMode(Project project, demoModeContainer) {
+        project.tasks.create('enableDemoMode', EnableDemoModeTask) {
+            commands = demoModeContainer
+        }
+        project.tasks.create('disableDemoMode', DisableDemoModeTask)
+    }
+
+    private static configureSystemAnimations(Project project) {
         project.tasks.create('enableSystemAnimations', SystemAnimations) { enable = true }
         project.tasks.create('disableSystemAnimations', SystemAnimations) { enable = false }
     }

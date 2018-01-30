@@ -50,7 +50,6 @@ android {
             events 1000
             categories 'android.intent.category.ONLY_ME', 'android.intent.category.MONKEY'
         }
-        sortBySubtasks false
         
         // More info: https://github.com/novoda/gradle-android-command-plugin#input-scripting
         scripts {
@@ -126,15 +125,13 @@ android {
 }
 
 task listDevices doLast {
-    println()
     println 'Attached devices:'
     android.command.devices().each {
         println it
     }
 }
 
-task dumpActivityStack(type: com.novoda.gradle.command.ActivityStack) {
-}
+task dumpActivityStack(type: com.novoda.gradle.command.ActivityStack)
 
 /**
  * Sample task that installs APKs of all variants on a device.
