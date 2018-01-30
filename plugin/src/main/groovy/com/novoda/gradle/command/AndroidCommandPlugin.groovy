@@ -7,8 +7,6 @@ import org.gradle.api.tasks.StopExecutionException
 
 class AndroidCommandPlugin implements Plugin<Project> {
 
-    public final static String TASK_GROUP = 'ADB command'
-
     void apply(Project project) {
         if (!project.plugins.hasPlugin('android')) {
             throw new StopExecutionException("The 'android' plugin is required.")
