@@ -4,6 +4,9 @@ import org.gradle.api.Project
 
 class RunTaskFactory {
 
+    private static final String RUN_DEFAULT_DESCRIPTION = 'installs and runs APK on the specified device'
+    private static final String START_DEFAULT_DESCRIPTION = 'runs an already installed APK on the specified device'
+
     private final Project project
     private final VariantAwareTaskFactory<Run> variantAwareTaskFactory
 
@@ -15,25 +18,14 @@ class RunTaskFactory {
     def create(variant, RunExtension extension = new RunExtension()) {
         def extensionSuffix = extension.name ? extension.name.capitalize() : ''
 
-        variantAwareTaskFactory.create(
-                variant: variant,
-                taskName: "run${extensionSuffix}",
-                taskType: Run,
-                dependsOn: 'installDevice'
-        ).configure {
-            description = VariantAwareDescription.createFor(variant, extension,
-                    defaultDescription: 'installs and runs APK on the specified device')
+        variantAwareTaskFactory.create(variant, "run${extensionSuffix}", Run, 'installDevice').configure {
+            description = VariantAwareDescription.descriptionFor(variant, extension, RUN_DEFAULT_DESCRIPTION)
             group = 'start'
             conventionMapping.deviceId = { extension.deviceId }
         }
 
-        variantAwareTaskFactory.create(
-                variant: variant,
-                taskName: "start${extensionSuffix}",
-                taskType: Run
-        ).configure {
-            description = VariantAwareDescription.createFor(variant, extension,
-                    defaultDescription: 'runs an already installed APK on the specified device')
+        variantAwareTaskFactory.create(variant, "start${extensionSuffix}", Run).configure {
+            description = VariantAwareDescription.descriptionFor(variant, extension, START_DEFAULT_DESCRIPTION)
             group = 'start'
             conventionMapping.deviceId = { extension.deviceId }
         }

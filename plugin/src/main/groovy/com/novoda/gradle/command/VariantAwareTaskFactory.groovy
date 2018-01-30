@@ -10,7 +10,7 @@ class VariantAwareTaskFactory<T extends AdbTask> {
         this.project = project
     }
 
-    T create(variant, String taskName, Class<T> taskType, String dependsOn) {
+    T create(variant, String taskName, Class<T> taskType, String dependsOn = null) {
         def variantName = VariantSuffix.variantNameFor(variant)
         T task = project.tasks.create("$taskName$variantName", taskType)
 

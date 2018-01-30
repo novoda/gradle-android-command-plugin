@@ -15,13 +15,8 @@ class InstallTaskFactory {
     }
 
     def create(variant, InstallExtension extension) {
-        variantAwareTaskFactory.create(
-                variant: variant,
-                taskName: "install${extension.name.capitalize()}",
-                taskType: Install,
-                dependsOn: 'assemble'
-        ).configure {
-            description = VariantAwareDescription.createFor(variant, extension, DEFAULT_DESCRIPTION)
+        variantAwareTaskFactory.create(variant, "install${extension.name.capitalize()}", Install, 'assemble').configure {
+            description = VariantAwareDescription.descriptionFor(variant, extension, DEFAULT_DESCRIPTION)
             group = 'install'
             installExtension = extension
             conventionMapping.deviceId = { extension.deviceId }
