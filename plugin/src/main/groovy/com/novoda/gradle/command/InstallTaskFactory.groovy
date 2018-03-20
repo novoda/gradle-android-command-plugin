@@ -19,7 +19,6 @@ class InstallTaskFactory {
             description = VariantAwareDescription.descriptionFor(variant, extension, DEFAULT_DESCRIPTION)
             group = 'install'
             installExtension = extension
-            conventionMapping.deviceId = { extension.deviceId }
         }
     }
 
