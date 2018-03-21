@@ -92,36 +92,9 @@ android {
                 customFlags = ['-d']
             }
 
-            onNewestDevice {
-                deviceId {
-                    def device = devices().max { it.sdkVersion() }
-                    device.id
-                }
-            }
-
             currentUser.customFlags = ['--user', 'current']
         }
-
-        // More info: https://github.com/novoda/gradle-android-command-plugin#start
-        start {
-            amazon {
-                deviceId {
-                    def kindle = devices().find { it.brand() == 'Amazon' }
-                    if (!kindle) {
-                        throw new GroovyRuntimeException('No Amazon device found')
-                    }
-                    kindle.id
-                }
-            }
-
-            onNewestDevice {
-                deviceId {
-                    def device = devices().max { it.sdkVersion() }
-                    device.id
-                }
-            }
-        }
-    }
+   }
 }
 
 task listDevices doLast {
