@@ -3,7 +3,7 @@
 _2018-03-21_
 
 Fixes a bug that lead to a NullPointerException when executing `install` and `run` tasks, see this [issue](https://github.com/novoda/gradle-android-command-plugin/issues/138). 
-As a side-effect, `device-id` can not be set via the new DSL. Set it within the `command` extension for now.
+As a side-effect, `deviceId` can not be set via the new DSL. Set it within the `command` extension for now.
 
 # 2.0
 
