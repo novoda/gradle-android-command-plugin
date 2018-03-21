@@ -34,7 +34,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.novoda:gradle-android-command-plugin:2.0'
+        classpath 'com.novoda:gradle-android-command-plugin:2.0.1'
     }
 }
 ```
