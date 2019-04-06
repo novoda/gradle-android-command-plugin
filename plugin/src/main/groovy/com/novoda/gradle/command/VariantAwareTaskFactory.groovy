@@ -1,5 +1,6 @@
 package com.novoda.gradle.command
 
+import org.gradle.api.Action
 import org.gradle.api.Project
 
 final class VariantAwareTaskFactory<T extends AdbTask> {
@@ -10,18 +11,18 @@ final class VariantAwareTaskFactory<T extends AdbTask> {
         this.project = project
     }
 
-    void create(variant, String taskName, Class<T> taskType, Closure configure) {
+    void create(variant, String taskName, Class<? extends T> taskType, Action<? super T> configure) {
         create(variant, taskName, taskType, null, configure)
     }
     
-    void create(variant, String taskName, Class<T> taskType, String dependsOn = null, Closure configure = {}) {
+    void create(variant, String taskName, Class<? extends T> taskType, String dependsOn = null, Action<? super T> configure = {}) {
         def variantName = VariantSuffix.variantNameFor(variant)
         TasksCompat.createTask(project, "$taskName$variantName", taskType) { T task ->
             if (dependsOn) {
                 task.dependsOn "$dependsOn$variantName"
             }
             task.apkPath = "${-> variant.outputs[0].outputFile}"
-            task.configure(configure)
+            configure.execute(task)
         }
     }
 }

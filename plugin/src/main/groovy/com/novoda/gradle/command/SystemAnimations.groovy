@@ -10,6 +10,10 @@ class SystemAnimations extends AdbTask {
 
     SystemAnimations() {
         this.group = 'adb device setting'
+    }
+
+    void setEnable(boolean enable) {
+        this.enable = enable
         this.description = "${enable ? 'Enables' : 'Disables'} system animations on the device"
     }
 

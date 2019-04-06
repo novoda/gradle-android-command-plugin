@@ -18,14 +18,18 @@ class RunTaskFactory {
     void create(variant, RunExtension extension = new RunExtension()) {
         def extensionSuffix = extension.name ? extension.name.capitalize() : ''
 
-        variantAwareTaskFactory.create(variant, "run${extensionSuffix}", Run, 'installDevice').configure {
-            description = VariantAwareDescription.descriptionFor(variant, extension, RUN_DEFAULT_DESCRIPTION)
-            group = 'adb start'
+        variantAwareTaskFactory.create(
+                variant, "run${extensionSuffix}", Run, 'installDevice'
+        ) { task ->
+            task.description = VariantAwareDescription.descriptionFor(variant, extension, RUN_DEFAULT_DESCRIPTION)
+            task.group = 'adb start'
         }
 
-        variantAwareTaskFactory.create(variant, "start${extensionSuffix}", Run).configure {
-            description = VariantAwareDescription.descriptionFor(variant, extension, START_DEFAULT_DESCRIPTION)
-            group = 'adb start'
+        variantAwareTaskFactory.create(
+                variant, "start${extensionSuffix}", Run
+        ) { task ->
+            task.description = VariantAwareDescription.descriptionFor(variant, extension, START_DEFAULT_DESCRIPTION)
+            task.group = 'adb start'
         }
     }
 
