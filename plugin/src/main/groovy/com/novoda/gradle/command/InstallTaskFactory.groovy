@@ -14,7 +14,7 @@ class InstallTaskFactory {
         this.variantAwareTaskFactory = new VariantAwareTaskFactory<>(project)
     }
 
-    def create(variant, InstallExtension extension) {
+    void create(variant, InstallExtension extension) {
         variantAwareTaskFactory.create(variant, "install${extension.name.capitalize()}", Install, 'assemble').configure {
             description = VariantAwareDescription.descriptionFor(variant, extension, DEFAULT_DESCRIPTION)
             group = 'install'

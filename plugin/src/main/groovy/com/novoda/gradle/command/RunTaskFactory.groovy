@@ -15,7 +15,7 @@ class RunTaskFactory {
         this.variantAwareTaskFactory = new VariantAwareTaskFactory<>(project)
     }
 
-    def create(variant, RunExtension extension = new RunExtension()) {
+    void create(variant, RunExtension extension = new RunExtension()) {
         def extensionSuffix = extension.name ? extension.name.capitalize() : ''
 
         variantAwareTaskFactory.create(variant, "run${extensionSuffix}", Run, 'installDevice').configure {
