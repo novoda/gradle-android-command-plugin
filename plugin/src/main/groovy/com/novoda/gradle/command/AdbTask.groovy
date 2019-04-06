@@ -8,8 +8,6 @@ class AdbTask extends DefaultTask {
     def adb
     def aapt
     def deviceId
-
-    // set automatically by VariantConfigurator
     def apkPath
 
     @Memoized

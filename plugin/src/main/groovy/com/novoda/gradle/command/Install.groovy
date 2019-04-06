@@ -6,22 +6,6 @@ class Install extends AdbTask {
 
     InstallExtension installExtension
 
-    /**
-     * Manual creation of Install task is deprecated.
-     * Please refer to install DSL documentation for details:
-     * https://github.com/novoda/gradle-android-command-plugin#install
-     */
-    @Deprecated
-    void setCustomFlags(customFlags) {
-        logger.warn """\
-                       Manual creation of Install task is deprecated.
-                       Please refer to install DSL documentation and modify your task '$name'
-                       https://github.com/novoda/gradle-android-command-plugin#install
-                       """.stripIndent()
-        installExtension = new InstallExtension()
-        installExtension.customFlags = customFlags
-    }
-
     @TaskAction
     void exec() {
         def arguments = ['install']

@@ -33,47 +33,6 @@ public class AndroidCommandPluginExtension {
         this.startContainer = project.container(RunExtension)
     }
 
-    void setSortBySubtasks(sortBySubtasks) {
-        project.logger.warn 'android-command plugin sortBySubtasks configuration is deprecated and is not be used for task grouping. Please remove it from your gradle build script.'
-    }
-
-    @Deprecated
-    def task(String name, Class<? extends AdbTask> type, Closure configuration) {
-        logDeprecation()
-        task(name, type).all(configuration)
-    }
-
-    @Deprecated
-    def task(String name, Class<? extends AdbTask> type, def dependencies, Closure configuration) {
-        logDeprecation()
-        task(name, type, dependencies).all(configuration)
-    }
-
-    @Deprecated
-    def task(String name, Class<? extends AdbTask> type, def dependencies = []) {
-        logDeprecation()
-        task(name, "", type, dependencies)
-    }
-
-    @Deprecated
-    def task(String name, String description, Class<? extends AdbTask> type, def dependencies = []) {
-        logDeprecation()
-        VariantConfigurator variantConfigurator = new VariantConfigurator(this, project, name, description, type, dependencies)
-        project.android.applicationVariants.all {
-            variantConfigurator.configure(it)
-        }
-        project.tasks.matching {
-            it.name.startsWith name
-        }
-    }
-
-    private logDeprecation() {
-        project.logger.warn '''\
-            "task" method in command plugin extension is deprecated. Use extension DSL instead
-            https://github.com/novoda/gradle-android-command-plugin#configuration
-            '''.stripIndent()
-    }
-
     def getAdb() {
         adb ?: "$androidHome/platform-tools/adb"
     }
