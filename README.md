@@ -34,7 +34,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.novoda:gradle-android-command-plugin:2.0.1'
+        classpath 'com.novoda:gradle-android-command-plugin:2.1.0'
     }
 }
 ```
@@ -216,23 +216,6 @@ install {
 **Note:** `customFlags` also supports any custom Closure to be lazily evaluated.
 
 More flags can be found in the `install` section of [the official adb document](https://developer.android.com/studio/command-line/adb.html#pm).
-
-**deviceId**
-
-*Note:* Due to a [bug](https://github.com/novoda/gradle-android-command-plugin/issues/138), setting `deviceId` has been disabled for version `2.0.1`. 
-
-Here is how you can install on a specific device using `deviceId`
-
-```groovy
-install {
-    onNewestDevice {
-        deviceId {
-            def device = devices().max { it.sdkVersion() }
-            device.id
-        }
-    }
-}
-```
 
 ### Start
 
