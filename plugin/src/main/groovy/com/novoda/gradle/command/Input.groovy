@@ -6,22 +6,6 @@ class Input extends AdbTask {
 
     InputExtension inputExtension
 
-    /**
-     * Manual creation of Input task is deprecated.
-     * Please refer to scripting documentation for details:
-     * https://github.com/novoda/gradle-android-command-plugin#input-scripting
-     */
-    @Deprecated
-    void setScript(Closure script) {
-        logger.warn """\
-                       Manual creation of Input task is deprecated.
-                       Please refer to scripting documentation to modify your task '$name'
-                       https://github.com/novoda/gradle-android-command-plugin#input-scripting
-                       """.stripIndent()
-        inputExtension = new InputExtension()
-        inputExtension.script = script
-    }
-
     void text(String value) {
         input('text', "$value")
     }
