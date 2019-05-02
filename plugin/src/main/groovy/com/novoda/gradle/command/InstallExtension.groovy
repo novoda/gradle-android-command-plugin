@@ -1,6 +1,6 @@
 package com.novoda.gradle.command
 
-final class InstallExtension implements DeviceAware, DescriptionAware {
+final class InstallExtension implements DescriptionAware {
 
     String name
     def customFlags

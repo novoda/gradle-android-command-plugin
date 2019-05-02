@@ -1,6 +1,6 @@
 package com.novoda.gradle.command
 
-final class RunExtension implements DeviceAware, DescriptionAware {
+final class RunExtension implements DescriptionAware {
 
     String name
 
