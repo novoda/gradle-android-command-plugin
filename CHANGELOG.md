@@ -1,3 +1,9 @@
+# 2.1.0
+
+_2019-05-05_
+
+Support Task Configuration Avoidance from Gradle 5. Thanks to this support, it is now zero overhead to add the Android Command Plugin. Plugin's tasks will not be eagerly configured unless they are explicitly run.
+
 # 2.0.1
 
 _2018-03-21_

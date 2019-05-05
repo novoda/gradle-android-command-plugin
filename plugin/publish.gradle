@@ -1,0 +1,56 @@
+apply plugin: 'com.novoda.build-properties'
+apply plugin: 'com.novoda.bintray-release'
+
+version = '2.1.0'
+
+buildProperties {
+    cli {
+        using(project)
+    }
+
+    bintray {
+        using(bintrayCredentials()).or(cli)
+        description = '''This should contain the following properties:
+                       - bintrayOrg: name of the Bintray organisation to deploy the artifacts to
+                       - bintrayRepo: name of the repo of the organisation to deploy the artifacts to
+                       - bintrayUser: name of the account used to deploy the artifacts
+                       - bintrayKey: API key of the account used to deploy the artifacts
+        '''.stripIndent()
+    }
+
+    publish {
+        using(['version': "${generateVersion()}"]).or(project.buildProperties.bintray)
+    }
+}
+
+publish {
+    groupId = 'com.novoda'
+    artifactId = 'gradle-android-command-plugin'
+    desc = 'Useful tasks for gradle android builds'
+    website = 'https://github.com/novoda/gradle-android-command-plugin'
+
+    version = project.buildProperties.publish['version'].string
+    publishVersion = project.buildProperties.publish['version'].string
+    bintrayUser = project.buildProperties.publish['bintrayUser'].string
+    bintrayKey = project.buildProperties.publish['bintrayKey'].string
+    repoName = project.buildProperties.publish['bintrayRepo'].string
+    userOrg = project.buildProperties.publish['bintrayOrg'].string
+}
+
+def bintrayCredentials() {
+    return isDryRun() ?
+            ['bintrayOrg': 'n/a', 'bintrayRepo': 'n/a', 'bintrayUser': 'n/a', 'bintrayKey': 'n/a'] :
+            new File("${System.getenv('BINTRAY_PROPERTIES')}")
+}
+
+def generateVersion() {
+    return isSnapshot() ? "DEVELOP-${System.getenv('BUILD_NUMBER') ?: 'LOCAL'}" : project.version
+}
+
+boolean isDryRun() {
+    project.buildProperties.cli['dryRun'].or(true).boolean
+}
+
+boolean isSnapshot() {
+    project.buildProperties.cli['bintraySnapshot'].or(false).boolean
+}

@@ -1,6 +1,6 @@
 gradle-android-command-plugin
 =============================
-[![](https://ci.novoda.com/buildStatus/icon?job=gradle-android-command-plugin)](https://ci.novoda.com/job/gradle-android-command-plugin/lastSuccessfulBuild/console) [![](https://raw.githubusercontent.com/novoda/novoda/master/assets/btn_apache_lisence.png)](LICENSE.txt) [![Bintray](https://api.bintray.com/packages/novoda/maven/gradle-android-command-plugin/images/download.svg) ](https://bintray.com/novoda/maven/gradle-android-command-plugin/_latestVersion)
+[![](https://ci.novoda.com/buildStatus/icon?job=gradle-android-command-plugin)](https://ci.novoda.com/job/gradle-android-command-plugin/lastSuccessfulBuild/console) [![](https://raw.githubusercontent.com/novoda/novoda/master/assets/btn_apache_lisence.png)](LICENSE.txt) [![Bintray](https://api.bintray.com/packages/novoda-oss/maven/gradle-android-command-plugin/images/download.svg) ](https://bintray.com/novoda-oss/maven/gradle-android-command-plugin/_latestVersion)
 
 Use gradle tasks to run specific `adb` commands.
 
@@ -34,7 +34,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.novoda:gradle-android-command-plugin:2.0.1'
+        classpath 'com.novoda:gradle-android-command-plugin:2.1.0'
     }
 }
 ```
@@ -217,23 +217,6 @@ install {
 
 More flags can be found in the `install` section of [the official adb document](https://developer.android.com/studio/command-line/adb.html#pm).
 
-**deviceId**
-
-*Note:* Due to a [bug](https://github.com/novoda/gradle-android-command-plugin/issues/138), setting `deviceId` has been disabled for version `2.0.1`. 
-
-Here is how you can install on a specific device using `deviceId`
-
-```groovy
-install {
-    onNewestDevice {
-        deviceId {
-            def device = devices().max { it.sdkVersion() }
-            device.id
-        }
-    }
-}
-```
-
 ### Start
 
 `start<Variant>` and `run<Variant>` tasks are available by default. Start tasks just start an already installed application. Run tasks first install the app before starting.
@@ -255,6 +238,21 @@ start {
 ``` 
 
 This configuration creates `startAmazon<Variant>` and `runAmazon<Variant>` tasks.
+
+## Snapshots
+[![CI status](https://ci.novoda.com/buildStatus/icon?job=gradle-android-command-plugin)](https://ci.novoda.com/job/gradle-android-command-plugin/lastBuild/console) [![Download from Bintray](https://api.bintray.com/packages/novoda-oss/snapshots/gradle-android-command-plugin/images/download.svg)](https://bintray.com/novoda-oss/snapshots/gradle-android-command-plugin/_latestVersion)
+
+Snapshot builds from [`develop`](https://github.com/novoda/gradle-android-command-plugin/compare/master...develop) are automatically deployed to a [repository](https://bintray.com/novoda-oss/snapshots/gradle-android-command-plugin/_latestVersion) that is **not** synced with JCenter.
+To consume a snapshot build add an additional maven repo as follows:
+```
+repositories {
+    maven {
+        url 'https://dl.bintray.com/novoda-oss/snapshots/'
+    }
+}
+```
+
+You can find the latest snapshot version following this [link](https://bintray.com/novoda-oss/snapshots/gradle-android-command-plugin/_latestVersion).
 
 Links
 -----

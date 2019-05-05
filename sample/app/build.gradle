@@ -149,5 +149,3 @@ task syncPhotos(type: com.novoda.gradle.command.Files) {
         }
     }
 }
-
-
