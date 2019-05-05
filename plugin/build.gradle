@@ -1,14 +1,5 @@
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.novoda:bintray-release:0.4.0'
-    }
-}
-
 apply plugin: 'groovy'
-apply plugin: 'com.novoda.bintray-release'
+apply from: 'publish.gradle'
 
 repositories {
     mavenCentral()
@@ -17,16 +8,4 @@ repositories {
 dependencies {
     compile gradleApi()
     testCompile 'junit:junit:4.12'
-}
-
-group = 'com.novoda'
-version = '2.1.0'
-
-publish {
-    userOrg = 'novoda'
-    groupId = 'com.novoda'
-    artifactId = 'gradle-android-command-plugin'
-    publishVersion = project.version
-    desc = 'Useful tasks for gradle android builds'
-    website = 'https://github.com/novoda/gradle-android-command-plugin'
 }
