@@ -1,3 +1,5 @@
+# 🛑 THIS REPOSITORY IS OFFICIALLY NO LONGER UNDER MAINTENANCE since 10/02/2022 🛑
+
 gradle-android-command-plugin
 =============================
 [![Build](https://ci.novoda.com/buildStatus/icon?job=gradle-android-command-plugin)](https://ci.novoda.com/job/gradle-android-command-plugin/lastSuccessfulBuild/console) 
